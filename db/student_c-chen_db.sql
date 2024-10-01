@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Sep 06, 2024 at 08:36 AM
+-- Generation Time: Oct 01, 2024 at 08:57 AM
 -- Server version: 8.0.31
 -- PHP Version: 7.4.33
 
@@ -86,7 +86,14 @@ CREATE TABLE IF NOT EXISTS `tbl_bookings` (
   `evidence` varchar(255) NOT NULL,
   `created_at` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `tbl_bookings`
+--
+
+INSERT INTO `tbl_bookings` (`id`, `full_name`, `email`, `phone_number`, `telephone_number`, `date_check_in`, `date_check_out`, `service_id`, `message`, `mode_of_payment_id`, `evidence`, `created_at`) VALUES
+(17, 'test', 'kentanthony070495@gmail.com', '09453145499', '123456', '2024-10-03 08:00:00', '2024-10-05 12:00:00', 1, 'asefsfv wsetrf', 1, 'Array', 'October 1, 2024 | Tuesday - 04 : 45 : 56 pm');
 
 -- --------------------------------------------------------
 
