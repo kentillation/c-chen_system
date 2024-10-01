@@ -78,7 +78,21 @@
             </div>
         </div>
 
+        <?php
+            if (isset($_GET['success'])) {
+            ?>
+                <div class="alert alert-success alert-dismissible fade show d-flex align-items-center justify-content-center rounded-0" role="alert">
+                    <span><?php echo $_GET['success'], "Your booking has been save successfully!"; ?></span>
+                    <a href="#">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </a>
+                </div>
+            <?php
+            }
+            ?>
+
         <section class="contact section">
+            
             <div class="container section-title" data-aos="fade-up">
                 <p>Don’t wait – book now and start your journey to relaxation and rejuvenation!</p>
             </div>
