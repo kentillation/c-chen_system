@@ -29,7 +29,7 @@ if (isset($_POST['user_name']) && isset($_POST['password'])) {
 
                 $_SESSION['id'] = $row['id'];
 
-                header("Location: ../../views/admin/calendar");
+                header("Location: ../../views/admin/bookings");
                 exit();
             } else {
                 header("Location: ../../admin-login?invalid$user_data");

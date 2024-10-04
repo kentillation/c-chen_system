@@ -20,11 +20,11 @@ if (isset($_SESSION['id'])) {
         <main id="main" class="main">
 
             <div class="pagetitle">
-                <h1>Calendar</h1>
+                <h1>Bookings</h1>
                 <nav>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">Main</li>
-                        <li class="breadcrumb-item active">Calendar</li>
+                        <li class="breadcrumb-item active">Bookings</li>
                     </ol>
                 </nav>
             </div>

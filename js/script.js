@@ -27,7 +27,7 @@
             headerToolbar: {
                 left: 'prev,next today',
                 right: 'dayGridMonth,dayGridWeek,list',
-                center: 'full_name',
+                center: 'title',
             },
             selectable: true,
             themeSystem: 'bootstrap',
