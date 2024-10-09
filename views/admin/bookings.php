@@ -32,151 +32,176 @@ if (isset($_SESSION['id'])) {
             <section class="section dashboard mb-5">
                 <div class="row">
                     <div class="col-lg-12">
+                    <?php
+                            if (isset($_GET['updated'])) {
+                            ?>
+                                <div class="alert alert-success alert-dismissible fade show d-flex align-items-center justify-content-center" role="alert">
+                                    <span><?php echo $_GET['updated'], "Booking has been confirmed successfully!"; ?></span>
+                                    <a href="#">
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </a>
+                                </div>
+                            <?php
+                            }
+                            ?>
                         <div class="card">
                             <div class="card-body">
-                                <div class="container mt-4" id="page-container">
-                                    <div id="calendar"></div>
+                                <div class="table-responsive mt-4">
+                                    <table class="table" id="paginateAllOrders">
+                                        <col width="20%">
+                                        <col width="20%">
+                                        <col width="15%">
+                                        <col width="20%">
+                                        <col width="15%">
+                                        <col width="10%">
+                                        <thead>
+                                            <tr>
+                                                <th>Customer name</th>
+                                                <th>Email</th>
+                                                <th>Phone #</th>
+                                                <th>Booking date</th>
+                                                <th class="text-center">Status</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $stmt = $conn->prepare(' SELECT
+                                            tbl_bookings.id,
+                                            tbl_bookings.fullname,
+                                            tbl_bookings.email,
+                                            tbl_bookings.phone_number,
+                                            tbl_bookings.telephone_number,
+                                            tbl_bookings.date_check_in,
+                                            tbl_bookings.date_check_out,
+                                            tbl_services.service_name,
+                                            tbl_bookings.message,
+                                            tbl_mode_of_payment.mode_of_payment,
+                                            tbl_bookings.evidence,
+                                            tbl_bookings.booking_status_id,
+                                            tbl_bookings.created_at
+                                            FROM tbl_bookings
+                                            INNER JOIN tbl_services ON tbl_bookings.service_id = tbl_services.service_id
+                                            INNER JOIN tbl_mode_of_payment ON tbl_bookings.mode_of_payment_id = tbl_mode_of_payment.mode_of_payment_id
+                                            ORDER BY tbl_bookings.created_at ASC');
+                                            $stmt->execute();
+                                            $result = $stmt->get_result();
+                                            while($row = $result->fetch_assoc()) {
+                                                $id = $row['id'];
+                                                $fullname = $row['fullname'];
+                                                $email = $row['email'];
+                                                $phone_number = $row['phone_number'];
+                                                $telephone_number = $row['telephone_number'];
+                                                $date_check_in = $row['date_check_in'];
+                                                $date_check_out = $row['date_check_out'];
+                                                $service_name = $row['service_name'];
+                                                $message = $row['message'];
+                                                $mode_of_payment = $row['mode_of_payment'];
+                                                $evidence = $row['evidence'];
+                                                $booking_status_id = $row['booking_status_id'];
+                                                $created_at = $row['created_at'];
+                                                if ($booking_status_id == 1) {
+                                                    $status = "Pending";
+                                                    $style = "class='text-danger'";
+                                                } else if ($booking_status_id == 2) {
+                                                    $status = "Confirmed";
+                                                    $style = "class='text-primary'";
+                                                } else {
+                                                    $status = "Decline";
+                                                    $style = "class='text-warning'";
+                                                }
+                                                echo "
+                                                <tr>
+                                                    <td>$fullname</td>
+                                                    <td>$email</td>
+                                                    <td>$phone_number</td>
+                                                    <td>$created_at</td>
+                                                    <td class='text-center'><span $style>$status</span></td>
+                                                    <td class='text-center'>
+                                                        <button class='btn btn-sm btn-primary rounded-5' data-bs-toggle='modal' data-bs-target='#infoModal$id'>
+                                                            <i class='bi bi-eye'></i>&nbsp; <span class='to-hide'>View</span>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                ";
+                                                ?>
+                                                <div class="modal fade" tabindex="-1" data-bs-backdrop="static" id="infoModal<?=$id?>">
+                                                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                                                        <form action="../../controller/admin/confirm-booking.php?booking_id=<?=$id?>" method="post">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Customer details</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="row">
+                                                                        <div class="mt-2 col-12 col-lg-3 col-md-4 col-sm-12">
+                                                                            <h6 class="text-secondary">Full name</h6>
+                                                                            <p><?=$fullname?></p>
+                                                                        </div>
+                                                                        <div class="mt-2 col-12 col-lg-3 col-md-4 col-sm-12">
+                                                                            <h6 class="text-secondary">Email</h6>
+                                                                            <p><?=$email?></p>
+                                                                        </div>
+                                                                        <div class="mt-2 col-12 col-lg-3 col-md-4 col-sm-12">
+                                                                            <h6 class="text-secondary">Phone number</h6>
+                                                                            <p><?=$phone_number?></p>
+                                                                        </div>
+                                                                        <div class="mt-2 col-12 col-lg-3 col-md-4 col-sm-12">
+                                                                            <h6 class="text-secondary">Telephone number</h6>
+                                                                            <p><?=$telephone_number?></p>
+                                                                        </div>
+                                                                        <div class="mt-2 col-12 col-lg-3 col-md-4 col-sm-12">
+                                                                            <h6 class="text-secondary">Date check-in</h6>
+                                                                            <p><?=$date_check_in?></p>
+                                                                        </div>
+                                                                        <div class="mt-2 col-12 col-lg-3 col-md-4 col-sm-12">
+                                                                            <h6 class="text-secondary">Date check-out</h6>
+                                                                            <p><?=$date_check_out?></p>
+                                                                        </div>
+                                                                        <div class="mt-2 col-12 col-lg-3 col-md-4 col-sm-12">
+                                                                            <h6 class="text-secondary">Service</h6>
+                                                                            <p><?=$service_name?></p>
+                                                                        </div>
+                                                                        <div class="mt-2 col-12 col-lg-3 col-md-4 col-sm-12">
+                                                                            <h6 class="text-secondary">Mode of payment</h6>
+                                                                            <p><?=$mode_of_payment?></p>
+                                                                        </div>
+                                                                        <div class="mt-2 col-12 col-lg-6 col-md-6 col-sm-12">
+                                                                            <h6 class="text-secondary">Evidence (mode of payment)</h6>
+                                                                            <img src="../../evidence/<?=$evidence?>" width="250" alt="Evidence">
+                                                                        </div>
+                                                                        <div class="mt-2 col-12 col-lg-6 col-md-6 col-sm-12">
+                                                                            <h6 class="text-secondary">Message</h6>
+                                                                            <textarea cols="30" row="10" class="form-control"><?=$message?></textarea>
+                                                                        </div>
+                                                                        <div class="mt-2 text-end">
+                                                                            <h6><span class="text-secondary">Status: </span><span <?=$style?>><?=$status?></span></h6>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-sm btn-danger" data-bs-dismiss="modal">
+                                                                        <i class="bi bi-x"></i>&nbsp; Close
+                                                                    </button>
+                                                                    <button class="btn btn-sm btn-primary" type="submit">
+                                                                        <i class="bi bi-check"></i>&nbsp; Confirm
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <?php
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="col-lg-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="container">
-                                    <h5 class="card-title">Schedule Form</h5>
-                                    <form action="save_schedule.php" method="post" id="schedule-form">
-                                        <input type="hidden" name="id" value="">
-                                        <div class="form-group mb-2">
-                                            <label for="full_name" class="control-label">Title</label>
-                                            <input type="text" class="form-control form-control-sm" name="full_name" id="full_name" required>
-                                        </div>
-                                        <div class="form-group mb-2">
-                                            <label for="email" class="control-label">Email</label>
-                                            <textarea rows="3" class="form-control form-control-sm" name="email" id="email" required></textarea>
-                                        </div>
-                                        <div class="form-group mb-2">
-                                            <label for="phone_number" class="control-label">Phone number</label>
-                                            <textarea rows="3" class="form-control form-control-sm" name="phone_number" id="phone_number" required></textarea>
-                                        </div>
-                                        <div class="form-group mb-2">
-                                            <label for="telephone_number" class="control-label">Telephone number</label>
-                                            <textarea rows="3" class="form-control form-control-sm" name="telephone_number" id="telephone_number" required></textarea>
-                                        </div>
-                                        <div class="form-group mb-2">
-                                            <label for="date_check_in" class="control-label">Start</label>
-                                            <input type="datetime-local" class="form-control form-control-sm" name="date_check_in" id="date_check_in" required>
-                                        </div>
-                                        <div class="form-group mb-2">
-                                            <label for="date_check_out" class="control-label">End</label>
-                                            <input type="datetime-local" class="form-control form-control-sm" name="date_check_out" id="date_check_out" required>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <div class="text-center">
-                                    <button class="btn btn-outline-success" type="submit" form="schedule-form"><i class="bi bi-save"></i>&nbsp; Save</button>
-                                    <button class="btn btn-outline-danger" type="reset" form="schedule-form"><i class="bi bi-eraser"></i>&nbsp; Clear</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
                 </div>
-
-                <div class="modal fade" tabindex="-1" id="event-details-modal">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Schedule Details</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="container-fluid">
-                                    <dl>
-                                        <dt class="text-muted">Full name</dt>
-                                        <dd id="full_name"></dd>
-
-                                        <dt class="text-muted">Email</dt>
-                                        <dd id="email"></dd>
-
-                                        <dt class="text-muted">Phone number</dt>
-                                        <dd id="phone_number"></dd>
-
-                                        <dt class="text-muted">Telephone number</dt>
-                                        <dd id="telephone_number"></dd>
-
-                                        <dt class="text-muted">Start</dt>
-                                        <dd id="date_check_in"></dd>
-
-                                        <dt class="text-muted">End</dt>
-                                        <dd id="date_check_out"></dd>
-                                    </dl>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <a href="../../email-reminder">
-                                    <button class='btn btn-primary w-100 d-flex align-items-center justify-content-center rounded-5' id='submitRemind' type='button' onclick='submitRemindFn()'>
-                                        <span id='remind'>Remind everyone now</span>
-                                        <div class='d-flex justify-content-center' style='padding: 4px;'>
-                                            <span class='d-flex align-items-center justify-content-center'>
-                                                <span id="remind_text" style="display: none;" class='text-dark'>Reminding...</span>
-                                                <div class='spinner-border spinner-border-sm' id='loading_remind' style="display: none;" role='status'></div>
-                                            </span>
-                                        </div>
-                                    </button>
-                                </a>
-                                <div class="text-end">
-                                    <button type="button" class="btn btn-outline-success" id="edit" data-id="">
-                                        <i class="bi bi-pencil-square"></i>&nbsp; Edit
-                                    </button>
-                                    <!-- <button type="button" class="btn btn-outline-danger" id="delete" data-id="">
-                                        <i class="bi bi-trash"></i>&nbsp; Delete
-                                    </button> -->
-                                    <button class='btn btn-outline-danger' id='submitDelete' type='button' data-id="" onclick='submitDeleteFn()'>
-                                        <span id='delete'><i class="bi bi-trash"></i>&nbsp; Delete</span>
-                                        <div class='d-flex justify-content-center'>
-                                            <span class='d-flex align-items-center justify-content-center'>
-                                                <div class='spinner-border spinner-border-sm' id='loading_delete' style="margin: 4px;display: none;" role='status'></div>
-                                            </span>
-                                        </div>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal fade" tabindex="-1" data-bs-backdrop="static" id="delete-confirm-modal">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Confirm Delete</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                Are you sure you want to delete this schedule?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-danger" id="confirm-delete">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <?php
-                $schedules = $conn->query("SELECT * FROM tbl_bookings");
-                $sched_res = [];
-                foreach ($schedules->fetch_all(MYSQLI_ASSOC) as $row) {
-                    $row['date_check_in'] = date("F d, Y h:i A", strtotime($row['date_check_in']));
-                    $row['date_check_out'] = date("F d, Y h:i A", strtotime($row['date_check_out']));
-                    $sched_res[$row['id']] = $row;
-                }
-                ?>
-                <?php
-                if (isset($conn)) $conn->close();
-                ?>
             </section>
 
         </main>
@@ -187,50 +212,6 @@ if (isset($_SESSION['id'])) {
 
         <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="../../assets/js/main.js"></script>
-        <script src="../../js/script.js"></script>
-        <script>
-            var scheds = $.parseJSON('<?= json_encode($sched_res) ?>')
-            var currentDate = new Date();
-            document.getElementById("date_check_in").min = currentDate.toISOString().slice(0, -8);
-            document.getElementById("date_check_out").min = currentDate.toISOString().slice(0, -8);
-        </script>
-
-        <script>
-            let submitRemind = document.getElementById("submitRemind");
-            let success_alert = document.getElementById("success-alert-container");
-
-            function submitRemindFn() {
-                document.getElementById('remind').style.display = "none";
-                document.getElementById('loading_remind').style.display = "flex";
-                document.getElementById('loading_remind').style.alignItems = "center";
-                document.getElementById('loading_remind').style.justifyContent = "center";
-                document.getElementById('loading_remind').style.cursor = "not-allowed";
-                document.getElementById('remind_text').style.display = "flex";
-                document.getElementById('remind_text').style.cursor = "not-allowed";
-                submitRemind.classList.remove("btn-primary");
-                submitRemind.classList.add("bg-secondary");
-                submitRemind.classList.add("btn");
-            }
-
-            function submitDeleteFn() {
-                document.getElementById('delete').style.display = "none";
-                document.getElementById('loading_delete').style.display = "flex";
-                document.getElementById('loading_delete').style.alignItems = "center";
-                document.getElementById('loading_delete').style.justifyContent = "center";
-                document.getElementById('loading_delete').style.cursor = "not-allowed";
-                submitRemind.classList.remove("btn-outline-danger");
-                submitRemind.classList.add("bg-secondary");
-                submitRemind.classList.add("btn");
-            }
-
-            success_alert.style.bottom = "10px";
-            success_alert.style.transition = "0.5s all ease";
-            setTimeout(function() {
-                success_alert.style.bottom = "-70px";
-                success_alert.style.transition = "0.5s all ease";
-            }, 7000);
-        </script>
-
     </body>
 
     </html>

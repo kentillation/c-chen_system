@@ -79,20 +79,20 @@
         </div>
 
         <?php
-            if (isset($_GET['success'])) {
-            ?>
-                <div class="alert alert-success alert-dismissible fade show d-flex align-items-center justify-content-center rounded-0" role="alert">
-                    <span><?php echo $_GET['success'], "Your booking has been save successfully!"; ?></span>
-                    <a href="#">
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </a>
-                </div>
-            <?php
-            }
-            ?>
+        if (isset($_GET['success'])) {
+        ?>
+            <div class="alert alert-success alert-dismissible fade show d-flex align-items-center justify-content-center rounded-0" role="alert">
+                <span><?php echo $_GET['success'], "Your booking has been save successfully!"; ?></span>
+                <a href="#">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </a>
+            </div>
+        <?php
+        }
+        ?>
 
         <section class="contact section">
-            
+
             <div class="container section-title" data-aos="fade-up">
                 <p>Don’t wait – book now and start your journey to relaxation and rejuvenation!</p>
             </div>
@@ -104,8 +104,8 @@
                             <input type="hidden" name="id" value="">
                             <div class="row gy-4">
                                 <div class="col-md-6">
-                                    <label for="full_name"><span class="text-danger me-1">*</span>Full name</label>
-                                    <input type="text" name="full_name" id="full_name" class="form-control" placeholder="Type here..." required>
+                                    <label for="fullname"><span class="text-danger me-1">*</span>Full name</label>
+                                    <input type="text" name="fullname" id="fullname" class="form-control" placeholder="Type here..." required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="email"><span class="text-danger me-1">*</span>Email</label>
@@ -130,7 +130,6 @@
                                 <div class="col-md-6">
                                     <label for="service_id"><span class="text-danger me-1">*</span>Service</label>
                                     <select class="form-control" name="service_id" id="service_id" required>
-                                        <option selected disabled>-select-</option>
                                         <?php
                                         $stmt = $conn->prepare(' SELECT * FROM tbl_services ');
                                         $stmt->execute();
@@ -152,7 +151,6 @@
                                 <div class="col-md-6">
                                     <label for="mode_of_payment_id"><span class="text-danger me-1">*</span>Mode of Payment</label>
                                     <select class="form-control" id="mode_of_payment_id" name="mode_of_payment_id" required>
-                                        <option selected disabled>-select-</option>
                                         <?php
                                         $stmt = $conn->prepare(' SELECT * FROM tbl_mode_of_payment ');
                                         $stmt->execute();
@@ -166,6 +164,7 @@
                                         }
                                         ?>
                                     </select>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#qrModal">View QR Code</a>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="evidence"><span class="text-danger me-1">*</span>Evidence</label>
@@ -180,6 +179,26 @@
                 </div>
             </div>
         </section>
+        <div class="modal fade" tabindex="-1" id="qrModal">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">C-chen Paradise Beach Resort QR Code</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <img src="assets/img/qr.png" width="300" alt="QR Code" id="qrCode">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-sm btn-primary" data-bs-dismiss="modal" onclick="downloadQrFn()">
+                            <i class="bi bi-download"></i>&nbsp; Download QR Code
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer id="footer" class="footer dark-background">
@@ -213,7 +232,6 @@
     <script src="assets1/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
     <script src="assets1/vendor/isotope-layout/isotope.pkgd.min.js"></script>
     <script src="assets1/vendor/swiper/swiper-bundle.min.js"></script>
-
     <script src="assets1/js/main.js"></script>
 
     <script>
@@ -226,6 +244,15 @@
         document.getElementById('date_check_out').addEventListener('click', function() {
             this.showPicker();
         });
+
+        function downloadQrFn() {
+            const qrCodeImage = document.getElementById('qrCode');
+            const qrCodeUrl = qrCodeImage.src;
+            const downloadLink = document.createElement('a');
+            downloadLink.href = qrCodeUrl;
+            downloadLink.download = 'C-chen_Paradise_Resort_QR_Code.png';
+            downloadLink.click();
+        }
     </script>
 
 </body>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Oct 01, 2024 at 08:57 AM
+-- Generation Time: Oct 09, 2024 at 03:49 AM
 -- Server version: 8.0.31
 -- PHP Version: 7.4.33
 
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `tbl_admin` (
 --
 
 INSERT INTO `tbl_admin` (`id`, `email`, `user_name`, `password`, `firstname`, `middlename`, `lastname`, `img_url`, `created_at`, `updated_at`) VALUES
-(1, 'support@kentillation.com', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Inday', 'Beauty', 'Engbino', 'Client Mobile App Mockup.png', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(1, 'support@kentillation.com', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Juan', 'Dela', 'Cruz', 'profile.png', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `tbl_announcements` (
 DROP TABLE IF EXISTS `tbl_bookings`;
 CREATE TABLE IF NOT EXISTS `tbl_bookings` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `full_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `fullname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `phone_number` varchar(50) NOT NULL,
   `telephone_number` varchar(50) NOT NULL,
@@ -84,16 +84,10 @@ CREATE TABLE IF NOT EXISTS `tbl_bookings` (
   `message` text NOT NULL,
   `mode_of_payment_id` int NOT NULL,
   `evidence` varchar(255) NOT NULL,
-  `created_at` varchar(50) NOT NULL,
+  `booking_status_id` int NOT NULL,
+  `created_at` timestamp NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `tbl_bookings`
---
-
-INSERT INTO `tbl_bookings` (`id`, `full_name`, `email`, `phone_number`, `telephone_number`, `date_check_in`, `date_check_out`, `service_id`, `message`, `mode_of_payment_id`, `evidence`, `created_at`) VALUES
-(17, 'test', 'kentanthony070495@gmail.com', '09453145499', '123456', '2024-10-03 08:00:00', '2024-10-05 12:00:00', 1, 'asefsfv wsetrf', 1, 'Array', 'October 1, 2024 | Tuesday - 04 : 45 : 56 pm');
+) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -116,6 +110,23 @@ INSERT INTO `tbl_mode_of_payment` (`mode_of_payment_id`, `mode_of_payment`) VALU
 (1, 'GCash'),
 (2, 'PayMaya'),
 (3, 'Shoppe Pay');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_schedule`
+--
+
+DROP TABLE IF EXISTS `tbl_schedule`;
+CREATE TABLE IF NOT EXISTS `tbl_schedule` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `fullname` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `description` text NOT NULL,
+  `start_datetime` datetime NOT NULL,
+  `end_datetime` datetime DEFAULT NULL,
+  `created_at` timestamp NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 

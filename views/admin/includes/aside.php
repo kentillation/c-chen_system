@@ -9,6 +9,13 @@
         </li>
 
         <li class="nav-item">
+            <a class="nav-link collapsed" href="../admin/calendar">
+                <i class="bi bi-calendar-event"></i>
+                <span>Calendar</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
             <a class="nav-link collapsed" href="../admin/announcements">
                 <i class="bi bi-megaphone"></i>
                 <span>Announcements</span>
