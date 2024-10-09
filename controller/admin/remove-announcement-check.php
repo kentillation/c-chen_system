@@ -28,7 +28,7 @@ if (isset($_SESSION['id'])) {
     $row = $result->fetch_assoc();
     $announcement = $row['announcement'];
 
-    $stmt = $conn->prepare(" SELECT * FROM tbl_student ");
+    $stmt = $conn->prepare(" SELECT * FROM tbl_bookings ");
     $stmt->execute();
     $result = $stmt->get_result();
     while ($row = $result->fetch_assoc()) {
@@ -47,11 +47,11 @@ if (isset($_SESSION['id'])) {
             // Email content
             date_default_timezone_set('Asia/Manila');
             $datetime = date("F j, Y - l") . " | " . date("h:i:sa");
-            $subject = "Kent's App | Announcement [Removed]";
+            $subject = "C-chen Paradise Beach Resort | Announcement [Removed]";
             $message = "The announcement below is already removed. \n \n";
             $message .= "$announcement \n \n \n";
             $message .= "Note: This is a system-generated email. Please do not reply!.";
-            $mail->setFrom('christianschool.main@gmail.com', "Kent's App");
+            $mail->setFrom('christianschool.main@gmail.com', "C-chen Paradise Beach Resort");
             $mail->addAddress($email);
             $mail->Subject = $subject;
             $mail->Body = $message;

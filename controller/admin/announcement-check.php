@@ -1,6 +1,8 @@
 <?php
 include "../../config.php";
 session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 'On');
 
 // Send email using PHPMailer library
 require '../../email-plugin/PHPMailer.php';
@@ -31,7 +33,7 @@ if (isset($_SESSION['id'])) {
         $stmt->bind_param('isss', $admin_id, $announcement, $created_at, $updated_at);
         $stmt->execute();
 
-        $stmt = $conn->prepare(" SELECT * FROM tbl_student ");
+        $stmt = $conn->prepare(" SELECT * FROM tbl_bookings ");
         $stmt->execute();
         $result = $stmt->get_result();
         while($row = $result->fetch_assoc()) {
@@ -50,11 +52,11 @@ if (isset($_SESSION['id'])) {
                 // Email content
                 date_default_timezone_set('Asia/Manila');
                 $datetime = date("F j, Y - l") . " | " . date("h:i:sa");
-                $subject = "Kent's App | Announcement";
+                $subject = "C-chen Paradise Beach Resort | Announcement";
                 $message = "Announcement!!! \n \n";
                 $message .= "$announcement \n \n \n";
                 $message .= "Note: This is a system-generated email. Please do not reply!.";
-                $mail->setFrom('christianschool.main@gmail.com', "Kent's App");
+                $mail->setFrom('christianschool.main@gmail.com', "C-chen Paradise Beach Resort");
                 $mail->addAddress($email);
                 $mail->Subject = $subject;
                 $mail->Body = $message;
