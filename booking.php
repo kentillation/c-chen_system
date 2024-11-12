@@ -104,6 +104,17 @@
                             <input type="hidden" name="id" value="">
                             <div class="row gy-4">
                                 <div class="col-md-6">
+                                    <label for="date_check_in"><span class="text-danger me-1">*</span>Starting Date</label>
+                                    <input type="datetime-local" name="date_check_in" class="form-control" id="date_check_in" placeholder="Type here..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="date_check_out"><span class="text-danger me-1">*</span>Ending Date</label>
+                                    <input type="datetime-local" name="date_check_out" class="form-control" id="date_check_out" placeholder="Type here..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="date_check_out"><span class="text-danger me-1">*</span>Services</label>
+                                </div>
+                                <div class="col-md-6">
                                     <label for="fullname"><span class="text-danger me-1">*</span>Full name</label>
                                     <input type="text" name="fullname" id="fullname" class="form-control" placeholder="Type here..." required>
                                 </div>
@@ -119,31 +130,23 @@
                                     <label for="telephone_number">Telephone number (optional)</label>
                                     <input type="text" name="telephone_number" class="form-control" id="telephone_number" placeholder="Type here..." required>
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="date_check_in"><span class="text-danger me-1">*</span>Date check-in</label>
-                                    <input type="datetime-local" name="date_check_in" class="form-control" id="date_check_in" id="date_check_in" placeholder="Type here..." required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="date_check_out"><span class="text-danger me-1">*</span>Date check-out</label>
-                                    <input type="datetime-local" name="date_check_out" class="form-control" id="date_check_out" placeholder="Type here..." required>
-                                </div>
-                                <div class="col-md-6">
+                                <!-- <div class="col-md-6">
                                     <label for="service_id"><span class="text-danger me-1">*</span>Service</label>
                                     <select class="form-control" name="service_id" id="service_id" required>
                                         <?php
-                                        $stmt = $conn->prepare(' SELECT * FROM tbl_services ');
-                                        $stmt->execute();
-                                        $result = $stmt->get_result();
-                                        while ($rows = $result->fetch_assoc()) {
-                                            $service_id = $rows['service_id'];
-                                            $service_name = $rows['service_name'];
-                                            echo "
-                                            <option value='$service_id'>$service_name</option>
-                                        ";
-                                        }
+                                        // $stmt = $conn->prepare(' SELECT * FROM tbl_services ');
+                                        // $stmt->execute();
+                                        // $result = $stmt->get_result();
+                                        // while ($rows = $result->fetch_assoc()) {
+                                        //     $service_id = $rows['service_id'];
+                                        //     $service_name = $rows['service_name'];
+                                        //     echo "
+                                        //     <option value='$service_id'>$service_name</option>
+                                        // ";
+                                        // }
                                         ?>
                                     </select>
-                                </div>
+                                </div> -->
                                 <div class="col-md-6">
                                     <label for="message">Message (optional)</label>
                                     <input type="text" class="form-control" id="message" name="message" placeholder="Type here..." required>
@@ -235,13 +238,29 @@
     <script src="assets1/js/main.js"></script>
 
     <script>
-        var currentDate = new Date();
-        document.getElementById("date_check_in").min = currentDate.toISOString().slice(0, -8);
-        document.getElementById("date_check_out").min = currentDate.toISOString().slice(0, -8);
-        document.getElementById('date_check_in').addEventListener('click', function() {
+        const date_check_in = document.getElementById("date_check_in");
+        const date_check_out = document.getElementById("date_check_out");
+        const currentDate = new Date();
+        
+        currentDate.setMinutes(0, 0, 0);
+        date_check_in.min = currentDate.toISOString().slice(0, -8);
+        date_check_out.min = currentDate.toISOString().slice(0, -8);
+
+        date_check_in.addEventListener('change', function() {
+            const checkInDate = new Date(this.value);
+            const checkOutDate = new Date(checkInDate);
+            checkOutDate.setDate(checkOutDate.getDate() + 1);
+            checkOutDate.setHours(24, 0, 0, 0);
+            checkInDate.setMinutes(0, 0, 0);
+            checkOutDate.setMinutes(0, 0, 0);
+            date_check_out.value = checkOutDate.toISOString().slice(0, -8);
+            date_check_out.min = date_check_out.value;
+        });
+
+        date_check_in.addEventListener('click', function() {
             this.showPicker();
         });
-        document.getElementById('date_check_out').addEventListener('click', function() {
+        date_check_out.addEventListener('click', function() {
             this.showPicker();
         });
 
