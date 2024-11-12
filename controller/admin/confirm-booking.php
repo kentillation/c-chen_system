@@ -27,7 +27,7 @@ if (isset($_SESSION['id'])) {
     tbl_mode_of_payment.mode_of_payment
     FROM tbl_bookings 
     INNER JOIN tbl_services ON tbl_bookings.service_id = tbl_services.service_id
-    INNER JOIN tbl_mode_of_payment ON tbl_bookings.tbl_mode_of_payment_id = tbl_mode_of_payment.mode_of_payment_id
+    INNER JOIN tbl_mode_of_payment ON tbl_bookings.mode_of_payment_id = tbl_mode_of_payment.mode_of_payment_id
     WHERE tbl_bookings.id = ? ");
     $stmt->bind_param('i', $booking_id);
     $stmt->execute();

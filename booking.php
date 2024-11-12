@@ -27,6 +27,7 @@
         display: grid;
         place-items: center;
     }
+
     #services input[type="checkbox"] {
         transform: scale(2);
         -webkit-transform: scale(2);
@@ -93,6 +94,66 @@
         ?>
             <div class="alert alert-success alert-dismissible fade show d-flex align-items-center justify-content-center rounded-0" role="alert">
                 <span><?php echo $_GET['success'], "Your booking has been save successfully!"; ?></span>
+                <a href="#">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </a>
+            </div>
+        <?php
+        }
+        if (isset($_GET['invalid_email'])) {
+        ?>
+            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center rounded-0" role="alert">
+                <span><?php echo $_GET['invalid_email'], "Your email is invalid. Please try again!"; ?></span>
+                <a href="#">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </a>
+            </div>
+        <?php
+        }
+        if (isset($_GET['too_large'])) {
+        ?>
+            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center rounded-0" role="alert">
+                <span><?php echo $_GET['too_large'], "Your file is too large. Please upload 10MB below file!"; ?></span>
+                <a href="#">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </a>
+            </div>
+        <?php
+        }
+        if (isset($_GET['schedule_error'])) {
+        ?>
+            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center rounded-0" role="alert">
+                <span><?php echo $_GET['schedule_error'], "Invalid schedule. Please try again!"; ?></span>
+                <a href="#">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </a>
+            </div>
+        <?php
+        }
+        if (isset($_GET['booking_error'])) {
+        ?>
+            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center rounded-0" role="alert">
+                <span><?php echo $_GET['booking_error'], "Booking failed. Please try again!"; ?></span>
+                <a href="#">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </a>
+            </div>
+        <?php
+        }
+        if (isset($_GET['wrong_file_type'])) {
+        ?>
+            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center rounded-0" role="alert">
+                <span><?php echo $_GET['wrong_file_type'], "Your file is not a .png .jpeg or jpg. Please try again!"; ?></span>
+                <a href="#">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </a>
+            </div>
+        <?php
+        }
+        if (isset($_GET['upload_error'])) {
+        ?>
+            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center rounded-0" role="alert">
+                <span><?php echo $_GET['upload_error'], "Error when uploading. Please try again!"; ?></span>
                 <a href="#">
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </a>
@@ -179,7 +240,7 @@
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#qrModal">View QR Code</a>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="evidence"><span class="text-danger me-1">*</span>Evidence</label>
+                                    <label for="evidence"><span class="text-danger me-1">*</span>Payment evidence</label>
                                     <input type="file" class="form-control" id="evidence" name="evidence" required>
                                 </div>
                                 <div class="col-md-12 text-center">
@@ -201,6 +262,7 @@
                     <div class="modal-body">
                         <div class="text-center">
                             <img src="assets/img/qr.png" width="300" alt="QR Code" id="qrCode">
+                            <p class="mt-5"><i>Note: To proceed, our services required 500 pesos downpayment for legitimate transaction. Thank you for your understanding!</i></p>
                         </div>
                     </div>
                     <div class="modal-footer">

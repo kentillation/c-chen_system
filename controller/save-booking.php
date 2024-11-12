@@ -34,8 +34,8 @@ if (
 
     // Check if the evidence file was uploaded without errors
     if ($evidence['error'] === 0) {
-        // Check file size (limit to 1MB)
-        if ($evidence['size'] > 1000000) {
+        // Check file size (limit to 10MB)
+        if ($evidence['size'] > 10000000) {
             header("Location:../booking.php?too_large");
             exit();
         }
