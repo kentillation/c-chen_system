@@ -1,0 +1,9 @@
+Service
+- Put checkbox
+- Section for Room Reservation
+
+Bookings
+- Put decline button
+
+Client side
+- Put updates (Email)

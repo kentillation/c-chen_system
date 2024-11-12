@@ -21,8 +21,18 @@
     <link href="assets1/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
     <link href="assets1/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
     <link href="assets1/css/main.css" rel="stylesheet">
-
 </head>
+<style>
+    #services {
+        display: grid;
+        place-items: center;
+    }
+    #services input[type="checkbox"] {
+        transform: scale(2);
+        -webkit-transform: scale(2);
+        margin-right: 20px;
+    }
+</style>
 
 <body class="index-page">
 
@@ -111,9 +121,29 @@
                                     <label for="date_check_out"><span class="text-danger me-1">*</span>Ending Date</label>
                                     <input type="datetime-local" name="date_check_out" class="form-control" id="date_check_out" placeholder="Type here..." required>
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="date_check_out"><span class="text-danger me-1">*</span>Services</label>
+                            </div>
+                            <div id="services" class="my-5">
+                                <label for="date_check_out" class="mb-2"><span class="text-danger me-1">*</span>Services</label>
+                                <div class="d-flex">
+                                    <?php
+                                    $stmt = $conn->prepare(' SELECT * FROM tbl_services ');
+                                    $stmt->execute();
+                                    $result = $stmt->get_result();
+                                    while ($rows = $result->fetch_assoc()) {
+                                        $service_id = $rows['service_id'];
+                                        $service_name = $rows['service_name'];
+                                    ?>
+                                        <div class="form-check">
+                                            <label for="service_id<?= $service_id ?>" class="form-check-label me-5"><?= $service_name ?></label>
+                                            <input type="checkbox" name="service_id[]" id="service_id<?= $service_id ?>" value="<?= $service_id ?>" class="form-check-input">
+                                        </div>
+                                    <?php
+                                    }
+                                    ?>
                                 </div>
+                                <div id="available-rooms"></div>
+                            </div>
+                            <div class="row gy-4">
                                 <div class="col-md-6">
                                     <label for="fullname"><span class="text-danger me-1">*</span>Full name</label>
                                     <input type="text" name="fullname" id="fullname" class="form-control" placeholder="Type here..." required>
@@ -127,29 +157,8 @@
                                     <input type="text" name="phone_number" class="form-control" id="phone_number" placeholder="Type here..." required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="telephone_number">Telephone number (optional)</label>
-                                    <input type="text" name="telephone_number" class="form-control" id="telephone_number" placeholder="Type here..." required>
-                                </div>
-                                <!-- <div class="col-md-6">
-                                    <label for="service_id"><span class="text-danger me-1">*</span>Service</label>
-                                    <select class="form-control" name="service_id" id="service_id" required>
-                                        <?php
-                                        // $stmt = $conn->prepare(' SELECT * FROM tbl_services ');
-                                        // $stmt->execute();
-                                        // $result = $stmt->get_result();
-                                        // while ($rows = $result->fetch_assoc()) {
-                                        //     $service_id = $rows['service_id'];
-                                        //     $service_name = $rows['service_name'];
-                                        //     echo "
-                                        //     <option value='$service_id'>$service_name</option>
-                                        // ";
-                                        // }
-                                        ?>
-                                    </select>
-                                </div> -->
-                                <div class="col-md-6">
                                     <label for="message">Message (optional)</label>
-                                    <input type="text" class="form-control" id="message" name="message" placeholder="Type here..." required>
+                                    <input type="text" class="form-control" id="message" name="message" placeholder="Type here...">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="mode_of_payment_id"><span class="text-danger me-1">*</span>Mode of Payment</label>
@@ -241,7 +250,8 @@
         const date_check_in = document.getElementById("date_check_in");
         const date_check_out = document.getElementById("date_check_out");
         const currentDate = new Date();
-        
+        const availableRooms = document.getElementById("available-rooms");
+
         currentDate.setMinutes(0, 0, 0);
         date_check_in.min = currentDate.toISOString().slice(0, -8);
         date_check_out.min = currentDate.toISOString().slice(0, -8);

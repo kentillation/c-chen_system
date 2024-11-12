@@ -68,10 +68,10 @@ if (isset($_SESSION['id'])) {
                                             <?php
                                             $stmt = $conn->prepare(' SELECT
                                             tbl_bookings.id,
+                                            tbl_bookings.reference_number,
                                             tbl_bookings.fullname,
                                             tbl_bookings.email,
                                             tbl_bookings.phone_number,
-                                            tbl_bookings.telephone_number,
                                             tbl_bookings.date_check_in,
                                             tbl_bookings.date_check_out,
                                             tbl_services.service_name,
@@ -83,6 +83,7 @@ if (isset($_SESSION['id'])) {
                                             FROM tbl_bookings
                                             INNER JOIN tbl_services ON tbl_bookings.service_id = tbl_services.service_id
                                             INNER JOIN tbl_mode_of_payment ON tbl_bookings.mode_of_payment_id = tbl_mode_of_payment.mode_of_payment_id
+                                            GROUP BY tbl_bookings.reference_number
                                             ORDER BY tbl_bookings.created_at ASC');
                                             $stmt->execute();
                                             $result = $stmt->get_result();
@@ -91,7 +92,6 @@ if (isset($_SESSION['id'])) {
                                                 $fullname = $row['fullname'];
                                                 $email = $row['email'];
                                                 $phone_number = $row['phone_number'];
-                                                $telephone_number = $row['telephone_number'];
                                                 $date_check_in = $row['date_check_in'];
                                                 $date_check_out = $row['date_check_out'];
                                                 $service_name = $row['service_name'];
@@ -148,10 +148,6 @@ if (isset($_SESSION['id'])) {
                                                                             <p><?=$phone_number?></p>
                                                                         </div>
                                                                         <div class="mt-2 col-12 col-lg-3 col-md-4 col-sm-12">
-                                                                            <h6 class="text-secondary">Telephone number</h6>
-                                                                            <p><?=$telephone_number?></p>
-                                                                        </div>
-                                                                        <div class="mt-2 col-12 col-lg-3 col-md-4 col-sm-12">
                                                                             <h6 class="text-secondary">Date check-in</h6>
                                                                             <p><?=$date_check_in?></p>
                                                                         </div>
@@ -181,7 +177,7 @@ if (isset($_SESSION['id'])) {
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button class="btn btn-sm btn-danger" data-bs-dismiss="modal">
+                                                                    <button class="btn btn-sm btn-danger" type="button" data-bs-dismiss="modal">
                                                                         <i class="bi bi-x"></i>&nbsp; Close
                                                                     </button>
                                                                     <button class="btn btn-sm btn-primary" type="submit">

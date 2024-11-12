@@ -22,12 +22,12 @@
             </a>
         </li>
 
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a class="nav-link collapsed" href="../admin/services">
                 <i class="bi bi-life-preserver"></i>
                 <span>Services</span>
             </a>
-        </li>
+        </li> -->
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="../admin/profile">
