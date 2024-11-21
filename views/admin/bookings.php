@@ -32,18 +32,18 @@ if (isset($_SESSION['id'])) {
             <section class="section dashboard mb-5">
                 <div class="row">
                     <div class="col-lg-12">
-                    <?php
-                            if (isset($_GET['updated'])) {
-                            ?>
-                                <div class="alert alert-success alert-dismissible fade show d-flex align-items-center justify-content-center" role="alert">
-                                    <span><?php echo $_GET['updated'], "Booking has been confirmed successfully!"; ?></span>
-                                    <a href="#">
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </a>
-                                </div>
-                            <?php
-                            }
-                            ?>
+                        <?php
+                        if (isset($_GET['updated'])) {
+                        ?>
+                            <div class="alert alert-success alert-dismissible fade show d-flex align-items-center justify-content-center" role="alert">
+                                <span><?php echo $_GET['updated'], "Booking has been confirmed successfully!"; ?></span>
+                                <a href="#">
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </a>
+                            </div>
+                        <?php
+                        }
+                        ?>
                         <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive mt-4">
@@ -87,7 +87,7 @@ if (isset($_SESSION['id'])) {
                                             ORDER BY tbl_bookings.created_at ASC');
                                             $stmt->execute();
                                             $result = $stmt->get_result();
-                                            while($row = $result->fetch_assoc()) {
+                                            while ($row = $result->fetch_assoc()) {
                                                 $id = $row['id'];
                                                 $fullname = $row['fullname'];
                                                 $email = $row['email'];
@@ -124,10 +124,10 @@ if (isset($_SESSION['id'])) {
                                                     </td>
                                                 </tr>
                                                 ";
-                                                ?>
-                                                <div class="modal fade" tabindex="-1" data-bs-backdrop="static" id="infoModal<?=$id?>">
+                                            ?>
+                                                <div class="modal fade" tabindex="-1" data-bs-backdrop="static" id="infoModal<?= $id ?>">
                                                     <div class="modal-dialog modal-lg modal-dialog-centered">
-                                                        <form action="../../controller/admin/confirm-booking.php?booking_id=<?=$id?>" method="post">
+                                                        <form action="../../controller/admin/confirm-booking.php?booking_id=<?= $id ?>" method="post">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title">Customer details</h5>
@@ -137,42 +137,46 @@ if (isset($_SESSION['id'])) {
                                                                     <div class="row">
                                                                         <div class="mt-2 col-12 col-lg-3 col-md-4 col-sm-12">
                                                                             <h6 class="text-secondary">Full name</h6>
-                                                                            <p><?=$fullname?></p>
+                                                                            <p><?= $fullname ?></p>
                                                                         </div>
                                                                         <div class="mt-2 col-12 col-lg-3 col-md-4 col-sm-12">
                                                                             <h6 class="text-secondary">Email</h6>
-                                                                            <p><?=$email?></p>
+                                                                            <p><?= $email ?></p>
                                                                         </div>
                                                                         <div class="mt-2 col-12 col-lg-3 col-md-4 col-sm-12">
                                                                             <h6 class="text-secondary">Phone number</h6>
-                                                                            <p><?=$phone_number?></p>
+                                                                            <p><?= $phone_number ?></p>
                                                                         </div>
                                                                         <div class="mt-2 col-12 col-lg-3 col-md-4 col-sm-12">
                                                                             <h6 class="text-secondary">Date check-in</h6>
-                                                                            <p><?=$date_check_in?></p>
+                                                                            <p><?= $date_check_in ?></p>
                                                                         </div>
                                                                         <div class="mt-2 col-12 col-lg-3 col-md-4 col-sm-12">
                                                                             <h6 class="text-secondary">Date check-out</h6>
-                                                                            <p><?=$date_check_out?></p>
+                                                                            <p><?= $date_check_out ?></p>
                                                                         </div>
                                                                         <div class="mt-2 col-12 col-lg-3 col-md-4 col-sm-12">
                                                                             <h6 class="text-secondary">Service</h6>
-                                                                            <p><?=$service_name?></p>
+                                                                            <p><?= $service_name ?></p>
                                                                         </div>
                                                                         <div class="mt-2 col-12 col-lg-3 col-md-4 col-sm-12">
                                                                             <h6 class="text-secondary">Mode of payment</h6>
-                                                                            <p><?=$mode_of_payment?></p>
+                                                                            <p><?= $mode_of_payment ?></p>
                                                                         </div>
-                                                                        <div class="mt-2 col-12 col-lg-6 col-md-6 col-sm-12">
-                                                                            <h6 class="text-secondary">Evidence (mode of payment)</h6>
-                                                                            <img src="../../evidence/<?=$evidence?>" width="250" alt="Evidence">
-                                                                        </div>
-                                                                        <div class="mt-2 col-12 col-lg-6 col-md-6 col-sm-12">
-                                                                            <h6 class="text-secondary">Message</h6>
-                                                                            <textarea cols="30" row="10" class="form-control"><?=$message?></textarea>
+                                                                        <div class="mt-2 col-12">
+                                                                            <div class="row">
+                                                                                <div class="col-12 col-lg-6 col-md-6 col-sm-12">
+                                                                                    <h6 class="text-secondary">Evidence (mode of payment)</h6>
+                                                                                    <img src="../../evidence/<?= $evidence ?>" width="250" alt="Evidence">
+                                                                                </div>
+                                                                                <div class="col-12 col-lg-6 col-md-6 col-sm-12">
+                                                                                    <h6 class="text-secondary">Message</h6>
+                                                                                    <textarea cols="30" row="10" class="form-control"><?= $message ?></textarea>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                         <div class="mt-2 text-end">
-                                                                            <h6><span class="text-secondary">Status: </span><span <?=$style?>><?=$status?></span></h6>
+                                                                            <h6><span class="text-secondary">Status: </span><span <?= $style ?>><?= $status ?></span></h6>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -188,7 +192,7 @@ if (isset($_SESSION['id'])) {
                                                         </form>
                                                     </div>
                                                 </div>
-                                                <?php
+                                            <?php
                                             }
                                             ?>
                                         </tbody>
