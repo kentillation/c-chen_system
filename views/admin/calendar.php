@@ -101,7 +101,7 @@ if (isset($_SESSION['id'])) {
 <?php
 
 } else {
-    header('Location: ../../');
+    header('Location: ../../signout.php');
     exit();
 }
 ?>

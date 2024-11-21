@@ -41,11 +41,10 @@ if (isset($_SESSION['id'])) {
           </ol>
         </nav>
       </div>
-
+      
       <section class="section profile mb-5">
         <div class="row">
           <div class="col-xl-4">
-
             <div class="card">
               <form action="../../controller/admin/update-pp-check.php" method="post" enctype="multipart/form-data">
                 <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
@@ -68,7 +67,6 @@ if (isset($_SESSION['id'])) {
           </div>
 
           <div class="col-xl-8">
-
             <div class="card">
               <div class="card-body pt-3">
                 <ul class="nav nav-tabs nav-tabs-bordered">
@@ -362,7 +360,7 @@ if (isset($_SESSION['id'])) {
 
     <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../assets/js/main.js"></script>
-    <script>
+    <script> 
       document.addEventListener('DOMContentLoaded', function(e) {
         (function() {
           let accountUserImage = document.getElementById('uploadedImg');
@@ -496,7 +494,7 @@ if (isset($_SESSION['id'])) {
   </html>
 <?php
 } else {
-  header('Location: ../../signout');
+  header('Location: ../../signout.php');
   exit();
 }
 ?>

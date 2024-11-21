@@ -50,7 +50,7 @@ if (isset($_SESSION['id'])) {
             $subject = "C-chen Paradise Beach Resort | Announcement [Removed]";
             $message = "The announcement below is already removed. \n \n";
             $message .= "$announcement \n \n \n";
-            $message .= "Note: This is a system-generated email. Please do not reply!.";
+            $message .= "Note: This is a system-generated email. Please do not reply!";
             $mail->setFrom('christianschool.main@gmail.com', "C-chen Paradise Beach Resort");
             $mail->addAddress($email);
             $mail->Subject = $subject;

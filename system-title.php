@@ -1,1 +1,1 @@
-C-Chen Paradise Beach Resort
+C-Chen Beach Resort

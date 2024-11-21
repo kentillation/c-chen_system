@@ -1,6 +1,12 @@
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
         <li class="nav-heading">Menu</li>
+        <!-- <li class="nav-item">
+            <a class="nav-link collapsed" href="../admin/dashboard">
+                <i class="bi bi-speedometer"></i>
+                <span>Dashboard</span>
+            </a>
+        </li> -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="../admin/bookings">
                 <i class="bi bi-book"></i>

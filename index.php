@@ -7,7 +7,7 @@
     <title><?php include './system-title.php' ?></title>
     <meta name="description" content="">
     <meta name="keywords" content="">
-    <!-- <link href="assets1/img/logo.png" rel="icon"> -->
+    <link href="assets/img/logo.jpg" rel="icon">
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
     <link
@@ -27,12 +27,10 @@
 
     <header id="header" class="header d-flex align-items-center fixed-top">
         <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
-
             <a href="index.php" class="logo d-flex align-items-center">
-                <!-- <img src="assets1/img/logo.png" alt="Logo"> -->
+                <img src="assets/img/logo.jpg" width="40" height="100" style="border-radius: 8px;" alt="Logo">
                 <h1 class="sitename"><?php include './system-title.php' ?></h1>
             </a>
-
             <nav id="navmenu" class="navmenu">
                 <ul>
                     <li><a href="#hero" class="active">Home</a></li>
@@ -58,7 +56,6 @@
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
-
         </div>
     </header>
 
@@ -346,7 +343,7 @@
 
                         <div class="swiper-slide">
                             <div class="testimonial-item">
-                                <img src="assets1/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
+                                <img src="assets1/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="Image">
                                 <h3>Saul Goodman</h3>
                                 <h4>Ceo &amp; Founder</h4>
                                 <div class="stars">
@@ -442,7 +439,7 @@
 
         </section><!-- /Testimonials Section -->
 
-        <!-- Faq Section -->
+        <!-- FREQUENTLY ASKED QUESTIONS Section -->
         <section id="faq" class="faq section">
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
@@ -723,6 +720,7 @@
 
     </main>
 
+    <!-- Footer -->
     <footer id="footer" class="footer dark-background">
         <div class="container">
             <h3 class="sitename"><?php include './system-title.php' ?></h3>

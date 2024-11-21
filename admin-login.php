@@ -33,7 +33,7 @@
                             <div class="card mb-3">
                                 <div class="card-body">
                                     <h5 class="card-title text-center fs-2">A D M I N</h5>
-                                    <form action="controller/admin/admin-login-check.php" method="post" class="row g-3" novalidate>
+                                    <form action="controller/admin/admin-login-check.php" method="post" class="row g-3">
                                         <div class="col-12 mb-3">
                                             <label for="user_name" class="">Username</label>
                                             <?php if (isset($_GET['user_name'])) { ?>
@@ -63,7 +63,7 @@
                                         </div>
                                         <div class="col-12">
                                             <div class="d-flex align-items-center flex-column">
-                                                <button class="btn-starter w-50 d-flex align-items-center justify-content-center rounded-5 mb-3" id="submitBtn" type="submit" onclick="submitFn()">
+                                                <button type="submit" class="btn-starter w-50 d-flex align-items-center justify-content-center rounded-5 mb-3" id="submitBtn" onclick="submitFn()">
                                                     <span id="login">Sign-in</span>
                                                     <div class="d-flex justify-content-center" style="padding: 4px;">
                                                         <div class="spinner-border spinner-border-sm" id="loading" role="status"></div>

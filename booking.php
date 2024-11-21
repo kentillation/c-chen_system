@@ -8,7 +8,7 @@
     <title><?php include './system-title.php' ?></title>
     <meta name="description" content="">
     <meta name="keywords" content="">
-    <!-- <link href="assets1/img/logo.png" rel="icon"> -->
+    <link href="assets/img/logo.jpg" rel="icon">
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
     <link
@@ -77,6 +77,7 @@
 
     <main class="main">
 
+        <!-- Page Title -->
         <div class="page-title dark-background">
             <div class="container position-relative">
                 <h1>Bookings</h1>
@@ -160,6 +161,16 @@
             </div>
         <?php
         }
+        if (isset($_GET['missing_data'])) {
+            ?>
+                <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center rounded-0" role="alert">
+                    <span><?php echo $_GET['missing_data'], "Missing data. Please try again!"; ?></span>
+                    <a href="#">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </a>
+                </div>
+            <?php
+            }
         ?>
 
         <section class="contact section">
@@ -170,7 +181,8 @@
             <div class="container" data-aos="fade" data-aos-delay="100">
                 <div class="row gy-4 mx-auto">
                     <div class="col-lg-12">
-                        <form action="./controller/save-booking.php" method="post" enctype="multipart/form-data" id="schedule-form" class="php-email-form" data-aos="fade-up"
+                        <!-- Saving form to database -->
+                        <form action="./controller/save-booking.php" method="POST" enctype="multipart/form-data" id="schedule-form" class="php-email-form" data-aos="fade-up"
                             data-aos-delay="200">
                             <input type="hidden" name="id" value="">
                             <div class="row gy-4">
@@ -187,6 +199,7 @@
                                 <label for="date_check_out" class="mb-2"><span class="text-danger me-1">*</span>Services</label>
                                 <div class="d-flex">
                                     <?php
+                                    // Fetching data from database
                                     $stmt = $conn->prepare(' SELECT * FROM tbl_services ');
                                     $stmt->execute();
                                     $result = $stmt->get_result();
@@ -244,7 +257,25 @@
                                     <input type="file" class="form-control" id="evidence" name="evidence" required>
                                 </div>
                                 <div class="col-md-12 text-center">
-                                    <button type="submit" class="mt-3 w-50">Submit &nbsp;<i class="bi bi-telegram"></i></button>
+                                    <button type="button" class="btn btn-primary rounded-5 p-3 mt-3 w-50" data-bs-toggle="modal" data-bs-target="#submitModal">Submit &nbsp;<i class="bi bi-telegram"></i></button>
+                                </div>
+                                <div class="modal fade" id="submitModal" tabindex="-1" aria-labelledby="requestedModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <form action="" method="post" enctype="multipart/form-data" class="row p-2">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="requestedModalLabel">Confirmation</h5>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p class="d-flex align-items-center justify-content-center">Do you want to book with Rooms?</p>
+                                                </div>
+                                                <div class="d-flex align-items-center justify-content-end m-3">
+                                                    <button type="submit" class="btn btn-danger py-2 px-4" data-bs-dismiss="modal"><i class="bi bi-exclamation-circle"></i>&nbsp; No</button>
+                                                    <button type="submit" class="btn-custom py-2 px-4 ms-1"><i class="bi bi-check"></i>&nbsp; Yes</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </form>

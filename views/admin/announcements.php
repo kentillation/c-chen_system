@@ -342,7 +342,7 @@ if (isset($_SESSION['id'])) {
   </html>
 <?php
 } else {
-  header('Location: ../../');
+  header('Location: ../../signout.php');
   exit();
 }
 ?>
