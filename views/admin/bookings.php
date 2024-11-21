@@ -105,9 +105,11 @@ if (isset($_SESSION['id'])) {
                                                 if ($booking_status_id == 1) {
                                                     $status = "Pending";
                                                     $style = "class='text-danger'";
+                                                    $visibility = "flex;";
                                                 } else if ($booking_status_id == 2) {
                                                     $status = "Confirmed";
                                                     $style = "class='text-primary'";
+                                                    $visibility = "none;";
                                                 } else {
                                                     $status = "Decline";
                                                     $style = "class='text-warning'";
@@ -213,7 +215,7 @@ if (isset($_SESSION['id'])) {
                                                                     <button class="btn btn-sm btn-danger" type="button" data-bs-dismiss="modal">
                                                                         <i class="bi bi-x"></i>&nbsp; Close
                                                                     </button>
-                                                                    <button class="btn btn-sm btn-primary" type="submit">
+                                                                    <button class="btn btn-sm btn-primary" type="submit" id="confirmBtn" style="display: <?= $visibility ?>">
                                                                         <i class="bi bi-check"></i>&nbsp; Confirm
                                                                     </button>
                                                                 </div>
