@@ -46,6 +46,10 @@ if (isset($_SESSION['id'])) {
     $stmt->bind_param('is', $confirm, $reference_number);
     $stmt->execute();
 
+    $stmt = $conn->prepare(" UPDATE tbl_booking_room SET booking_status_id = ? WHERE reference_number = ? ");
+    $stmt->bind_param('is', $confirm, $reference_number);
+    $stmt->execute();
+
     $mail = new PHPMailer(true);
     try {
         // SMTP configuration

@@ -28,6 +28,7 @@
         place-items: center;
     }
 
+    #room_numbers1 input[type="checkbox"],
     #services input[type="checkbox"] {
         transform: scale(2);
         -webkit-transform: scale(2);
@@ -162,15 +163,15 @@
         <?php
         }
         if (isset($_GET['missing_data'])) {
-            ?>
-                <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center rounded-0" role="alert">
-                    <span><?php echo $_GET['missing_data'], "Missing data. Please try again!"; ?></span>
-                    <a href="#">
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </a>
-                </div>
-            <?php
-            }
+        ?>
+            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center rounded-0" role="alert">
+                <span><?php echo $_GET['missing_data'], "Missing data. Please try again!"; ?></span>
+                <a href="#">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </a>
+            </div>
+        <?php
+        }
         ?>
 
         <section class="contact section">
@@ -185,7 +186,7 @@
                         <form action="./controller/save-booking.php" method="POST" enctype="multipart/form-data" id="schedule-form" class="php-email-form" data-aos="fade-up"
                             data-aos-delay="200">
                             <input type="hidden" name="id" value="">
-                            <div class="row gy-4">
+                            <div class="row mb-5">
                                 <div class="col-md-6">
                                     <label for="date_check_in"><span class="text-danger me-1">*</span>Starting Date</label>
                                     <input type="datetime-local" name="date_check_in" class="form-control" id="date_check_in" placeholder="Type here..." required>
@@ -195,8 +196,66 @@
                                     <input type="datetime-local" name="date_check_out" class="form-control" id="date_check_out" placeholder="Type here..." required>
                                 </div>
                             </div>
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="d-flex">
+                                        <img src="rooms/single.jpg" width="250" height="250" style="border-radius: 8px;" alt="">
+                                        <div id="room_numbers1" class="d-flex flex-column">
+                                            <h5 class="ms-3">Available Rooms:</h5>
+                                            <?php
+                                            // Fetching data from database
+                                            $category_id = 1;
+                                            $stmt = $conn->prepare(' SELECT * FROM tbl_room_number WHERE room_category_id = ? ');
+                                            $stmt->bind_param('i', $category_id);
+                                            $stmt->execute();
+                                            $result = $stmt->get_result();
+                                            while ($rows = $result->fetch_assoc()) {
+                                                $room_number_id = $rows['room_number_id'];
+                                                $room_number = $rows['room_number'];
+                                            ?>
+                                                <div class="d-flex flex-column ms-3 mt-4">
+                                                    <div class="form-check">
+                                                        <label for="room_number_id<?= $room_number_id ?>" class="form-check-label me-5 fs-5"><?= $room_number ?></label>
+                                                        <input type="checkbox" name="room_number_id[]" id="room_number_id<?= $room_number_id ?>" value="<?= $room_number_id ?>" class="form-check-input mt-1">
+                                                    </div>
+                                                </div>
+                                            <?php
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex">
+                                        <img src="rooms/single.jpg" width="250" height="250" style="border-radius: 8px;" alt="">
+                                        <div id="room_numbers1" class="d-flex flex-column">
+                                            <h5 class="ms-3">Available Rooms:</h5>
+                                            <?php
+                                            // Fetching data from database
+                                            $category_id = 2;
+                                            $stmt = $conn->prepare(' SELECT * FROM tbl_room_number WHERE room_category_id = ? ');
+                                            $stmt->bind_param('i', $category_id);
+                                            $stmt->execute();
+                                            $result = $stmt->get_result();
+                                            while ($rows = $result->fetch_assoc()) {
+                                                $room_number_id = $rows['room_number_id'];
+                                                $room_number = $rows['room_number'];
+                                            ?>
+                                                <div class="d-flex flex-column ms-3 mt-4">
+                                                    <div class="form-check">
+                                                        <label for="room_number_id<?= $room_number_id ?>" class="form-check-label me-5 fs-5"><?= $room_number ?></label>
+                                                        <input type="checkbox" name="room_number_id[]" id="room_number_id<?= $room_number_id ?>" value="<?= $room_number_id ?>" class="form-check-input mt-1">
+                                                    </div>
+                                                </div>
+                                            <?php
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div id="services" class="my-5">
-                                <label for="date_check_out" class="mb-2"><span class="text-danger me-1">*</span>Services</label>
+                                <label for="" class="mb-2"><span class="text-danger me-1">*</span>Services</label>
                                 <div class="d-flex">
                                     <?php
                                     // Fetching data from database
@@ -257,25 +316,7 @@
                                     <input type="file" class="form-control" id="evidence" name="evidence" required>
                                 </div>
                                 <div class="col-md-12 text-center">
-                                    <button type="button" class="btn btn-primary rounded-5 p-3 mt-3 w-50" data-bs-toggle="modal" data-bs-target="#submitModal">Submit &nbsp;<i class="bi bi-telegram"></i></button>
-                                </div>
-                                <div class="modal fade" id="submitModal" tabindex="-1" aria-labelledby="requestedModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <form action="" method="post" enctype="multipart/form-data" class="row p-2">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="requestedModalLabel">Confirmation</h5>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p class="d-flex align-items-center justify-content-center">Do you want to book with Rooms?</p>
-                                                </div>
-                                                <div class="d-flex align-items-center justify-content-end m-3">
-                                                    <button type="submit" class="btn btn-danger py-2 px-4" data-bs-dismiss="modal"><i class="bi bi-exclamation-circle"></i>&nbsp; No</button>
-                                                    <button type="submit" class="btn-custom py-2 px-4 ms-1"><i class="bi bi-check"></i>&nbsp; Yes</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
+                                    <button type="submit" class="btn btn-primary rounded-5 p-3 mt-3 w-50">Submit &nbsp;<i class="bi bi-telegram"></i></button>
                                 </div>
                             </div>
                         </form>

@@ -3,6 +3,7 @@ include '../config.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 if (
+    isset($_POST['room_number_id']) &&
     isset($_FILES['evidence']) && isset($_POST['fullname']) && isset($_POST['email']) &&
     isset($_POST['phone_number']) && isset($_POST['date_check_in']) &&
     isset($_POST['date_check_out']) && isset($_POST['service_id']) &&
@@ -44,6 +45,7 @@ if (
             $img_upload_path = '../evidence/' . $new_evidence;
             move_uploaded_file($evidence['tmp_name'], $img_upload_path);
             // Check if service_id is an array and insert each service as a separate row
+            $room_number_ids = is_array($_POST['room_number_id']) ? $_POST['room_number_id'] : [$_POST['room_number_id']];
             $service_ids = is_array($_POST['service_id']) ? $_POST['service_id'] : [$_POST['service_id']];
             $success = true;
             function generateReferenceNumber($length = 10)
@@ -67,7 +69,23 @@ if (
                     break;
                 }
             }
+
+            foreach ($room_number_ids as $room_number_id) {
+                $room_number_id = validate($room_number_id);
+                $booking_status_id = 1;
+                // Insert each service into `tbl_bookings`
+                $stmt = $conn->prepare('INSERT INTO tbl_booking_room (room_number_id, reference_number, booking_status_id) VALUES (?, ?, ?)');
+                $stmt->bind_param('isi', $room_number_id, $referenceNumber, $booking_status_id);
+
+                if (!$stmt->execute()) {
+                    $success = false;
+                    break;
+                }
+            }
+
+            
             if ($success) {
+                
                 // Insert data into `tbl_schedule` once after all services are successfully booked
                 $stmt_schedule = $conn->prepare('INSERT INTO tbl_schedule (fullname, description, start_datetime, end_datetime) VALUES (?, ?, ?, ?)');
                 $stmt_schedule->bind_param('ssss', $fullname, $message, $date_check_in, $date_check_out);
