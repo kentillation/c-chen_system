@@ -50,6 +50,23 @@ if (isset($_SESSION['id'])) {
     $stmt->bind_param('is', $confirm, $reference_number);
     $stmt->execute();
 
+    $stmtRoomBooking = $conn->prepare(" SELECT 
+    tbl_booking_room.room_number_id,
+    tbl_booking_room.reference_number,
+    tbl_room_number.room_number
+    FROM tbl_booking_room
+    INNER JOIN tbl_room_number ON tbl_booking_room.room_number_id = tbl_room_number.room_number_id
+    WHERE tbl_booking_room.reference_number = ? ");
+    $stmtRoomBooking->bind_param('s', $reference_number);
+    $stmtRoomBooking->execute();
+    $resultRoomBooking = $stmtRoomBooking->get_result();
+    $room_numbers = []; // Initialize an array to store room numbers
+    while ($rowsRoomBooking = $resultRoomBooking->fetch_assoc()) {
+        $room_numbers[] = $rowsRoomBooking['room_number']; // Add each room number to the array
+    }
+    $room_number = implode(", ", $room_numbers); // Convert the array to a comma-separated string
+
+
     $mail = new PHPMailer(true);
     try {
         // SMTP configuration
@@ -70,10 +87,11 @@ if (isset($_SESSION['id'])) {
         $message .= "Refence #: $reference_number \n";
         $message .= "Name: $fullname \n";
         $message .= "Phone #: $phone_number \n";
-        $message .= "Date started: $date_check_in \n";
-        $message .= "Date ended: $date_check_out \n";
+        $message .= "Date check-in: $date_check_in \n";
+        $message .= "Date check-out: $date_check_out \n";
+        $message .= "Rooms numbers: $room_number \n";
         $message .= "Services: $service_name \n";
-        $message .= "Modeof payment: $mode_of_payment \n\n";
+        $message .= "Mode of payment: $mode_of_payment \n\n";
         $message .= "Note: This is a system-generated email. Please do not reply!";
         $mail->setFrom('christianschool.main@gmail.com', 'C-chen Beach Resort');
         $mail->addAddress($email);
