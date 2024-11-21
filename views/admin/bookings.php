@@ -100,6 +100,8 @@ if (isset($_SESSION['id'])) {
                                                 $evidence = $row['evidence'];
                                                 $booking_status_id = $row['booking_status_id'];
                                                 $created_at = $row['created_at'];
+                                                $reference_number = $row['reference_number'];
+
                                                 if ($booking_status_id == 1) {
                                                     $status = "Pending";
                                                     $style = "class='text-danger'";
@@ -170,8 +172,35 @@ if (isset($_SESSION['id'])) {
                                                                                     <img src="../../evidence/<?= $evidence ?>" width="250" alt="Evidence">
                                                                                 </div>
                                                                                 <div class="col-12 col-lg-6 col-md-6 col-sm-12">
-                                                                                    <h6 class="text-secondary">Message</h6>
-                                                                                    <textarea cols="30" row="10" class="form-control"><?= $message ?></textarea>
+                                                                                    <div class="row">
+                                                                                        <div class="col-12">
+                                                                                            <h6 class="text-secondary">Message</h6>
+                                                                                            <textarea cols="30" row="10" class="form-control"><?= $message ?></textarea>
+                                                                                        </div>
+                                                                                        <div class="col-12">
+                                                                                            <h6 class="text-secondary">Room Numbers</h6>
+                                                                                            <div class="d-flex">
+                                                                                                <?php
+                                                                                                $stmt_booking_room = $conn->prepare('SELECT 
+                                                                                            tbl_booking_room.room_number_id,
+                                                                                            tbl_booking_room.reference_number,
+                                                                                            tbl_room_number.room_number
+                                                                                            FROM tbl_booking_room
+                                                                                            INNER JOIN tbl_room_number ON tbl_booking_room.room_number_id = tbl_room_number.room_number_id
+                                                                                            WHERE tbl_booking_room.reference_number = ? ');
+                                                                                                $stmt_booking_room->bind_param('s', $reference_number);
+                                                                                                $stmt_booking_room->execute();
+                                                                                                $result_booking_room = $stmt_booking_room->get_result();
+                                                                                                while ($row_booking_room = $result_booking_room->fetch_assoc()) {
+                                                                                                    $room_number = $row_booking_room['room_number'];
+                                                                                                ?>
+                                                                                                    <p><?= $room_number ?>, &nbsp;</p>
+                                                                                                <?php
+                                                                                                }
+                                                                                                ?>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
