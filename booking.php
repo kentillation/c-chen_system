@@ -23,6 +23,10 @@
     <link href="assets1/css/main.css" rel="stylesheet">
 </head>
 <style>
+    .form-check {
+        padding-left: 0 !important;
+    }
+
     #services {
         display: grid;
         place-items: center;
@@ -33,6 +37,36 @@
         transform: scale(2);
         -webkit-transform: scale(2);
         margin-right: 20px;
+    }
+
+    #room_numbers1 img {
+        margin: 30px;
+        border-radius: 8px;
+    }
+
+    #room_numbers1 input[type="checkbox"]:checked+label,
+    #room_numbers1 input[type="checkbox"]:hover+label {
+        cursor: pointer;
+        border: 2px solid #2c5f77;
+        box-shadow: 0px 0px 20px rgba(1, 80, 126, 0.356);
+        border-radius: 8px;
+        background: linear-gradient(to right, #008672bd, #0583aaea);
+        transition: all ease-in-out .5s;
+    }
+
+    #room_numbers1 input[type="checkbox"]:active+label {
+        cursor: pointer;
+        box-shadow: 0px 0px 20px rgba(1, 80, 126, 0.356);
+        background: linear-gradient(to right, #0583aaea, #008672bd);
+    }
+
+    #room_numbers1 input[type="checkbox"] {
+        display: none;
+    }
+
+    #room_numbers1 h3,
+    #room_numbers1 h5 {
+        font-family: 'Poppins';
     }
 </style>
 
@@ -189,34 +223,44 @@
                             <div class="row mb-5">
                                 <div class="col-md-6">
                                     <label for="date_check_in"><span class="text-danger me-1">*</span>Starting Date</label>
-                                    <input type="datetime-local" name="date_check_in" class="form-control" id="date_check_in" placeholder="Type here..." required>
+                                    <input type="date" name="date_check_in" class="form-control" id="date_check_in" placeholder="Type here..." required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="date_check_out"><span class="text-danger me-1">*</span>Ending Date</label>
-                                    <input type="datetime-local" name="date_check_out" class="form-control" id="date_check_out" placeholder="Type here..." required>
+                                    <input type="date" name="date_check_out" class="form-control" id="date_check_out" placeholder="Type here..." required disabled>
                                 </div>
                             </div>
                             <div class="row mb-4">
-                                <div class="col-md-6">
-                                    <div class="d-flex">
-                                        <img src="rooms/single.jpg" width="250" height="250" style="border-radius: 8px;" alt="">
-                                        <div id="room_numbers1" class="d-flex flex-column">
-                                            <h5 class="ms-3">Available Rooms:</h5>
+                                <div class="col-md-12">
+                                    <div id="room_numbers1">
+                                        <div class="row mt-4">
                                             <?php
-                                            // Fetching data from database
-                                            $category_id = 1;
-                                            $stmt = $conn->prepare(' SELECT * FROM tbl_room_number WHERE room_category_id = ? ');
-                                            $stmt->bind_param('i', $category_id);
+                                            $stmt = $conn->prepare(' SELECT * FROM tbl_room_category ');
                                             $stmt->execute();
                                             $result = $stmt->get_result();
                                             while ($rows = $result->fetch_assoc()) {
-                                                $room_number_id = $rows['room_number_id'];
-                                                $room_number = $rows['room_number'];
+                                                $room_category_id = $rows['room_category_id'];
+                                                $room_category_name = $rows['room_category_name'];
+                                                $room_category_price = $rows['room_category_price'];
+                                                $room_capacity = $rows['room_capacity'];
+                                                $img_url = $rows['img_url'];
                                             ?>
-                                                <div class="d-flex flex-column ms-3 mt-4">
-                                                    <div class="form-check">
-                                                        <label for="room_number_id<?= $room_number_id ?>" class="form-check-label me-5 fs-5"><?= $room_number ?></label>
-                                                        <input type="checkbox" name="room_number_id[]" id="room_number_id<?= $room_number_id ?>" value="<?= $room_number_id ?>" class="form-check-input mt-1">
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                                    <h5><strong><?= $room_category_name ?></strong></h5>
+                                                    <div class="d-flex">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="room_category_id<?= $room_category_id ?>" id="room_category_id<?= $room_category_id ?>" value="<?= $room_category_id ?>" required>
+                                                            <label class="form-check-label border-0" for="room_category_id<?= $room_category_id ?>">
+                                                                <img src="rooms/<?= $img_url ?>" width="250" height="250" id="room_category_id<?= $room_category_id ?>" alt="">
+                                                            </label>
+                                                        </div>
+                                                        <div class="mt-5 ms-2">
+                                                            <h3><?= $room_category_price ?> for 1 night</h3>
+                                                            <p><i class="bi bi-people"></i>&nbsp; <?= $room_capacity ?> pax</p>
+                                                            <p><i class="bi bi-wifi"></i>&nbsp; Free Wifi</p>
+                                                            <p><i class="bi bi-droplet"></i>&nbsp; Free toiletries</p>
+                                                            <p><i class="bi bi-snow2"></i>&nbsp; Air-conditioning</p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             <?php
@@ -224,34 +268,7 @@
                                             ?>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="d-flex">
-                                        <img src="rooms/single.jpg" width="250" height="250" style="border-radius: 8px;" alt="">
-                                        <div id="room_numbers1" class="d-flex flex-column">
-                                            <h5 class="ms-3">Available Rooms:</h5>
-                                            <?php
-                                            // Fetching data from database
-                                            $category_id = 2;
-                                            $stmt = $conn->prepare(' SELECT * FROM tbl_room_number WHERE room_category_id = ? ');
-                                            $stmt->bind_param('i', $category_id);
-                                            $stmt->execute();
-                                            $result = $stmt->get_result();
-                                            while ($rows = $result->fetch_assoc()) {
-                                                $room_number_id = $rows['room_number_id'];
-                                                $room_number = $rows['room_number'];
-                                            ?>
-                                                <div class="d-flex flex-column ms-3 mt-4">
-                                                    <div class="form-check">
-                                                        <label for="room_number_id<?= $room_number_id ?>" class="form-check-label me-5 fs-5"><?= $room_number ?></label>
-                                                        <input type="checkbox" name="room_number_id[]" id="room_number_id<?= $room_number_id ?>" value="<?= $room_number_id ?>" class="form-check-input mt-1">
-                                                    </div>
-                                                </div>
-                                            <?php
-                                            }
-                                            ?>
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
                             <div id="services" class="my-5">
@@ -383,28 +400,31 @@
     <script>
         const date_check_in = document.getElementById("date_check_in");
         const date_check_out = document.getElementById("date_check_out");
-        const currentDate = new Date();
-        const availableRooms = document.getElementById("available-rooms");
 
-        currentDate.setMinutes(0, 0, 0);
-        date_check_in.min = currentDate.toISOString().slice(0, -8);
-        date_check_out.min = currentDate.toISOString().slice(0, -8);
-
-        date_check_in.addEventListener('change', function() {
-            const checkInDate = new Date(this.value);
-            const checkOutDate = new Date(checkInDate);
-            checkOutDate.setDate(checkOutDate.getDate() + 1);
-            checkOutDate.setHours(24, 0, 0, 0);
-            checkInDate.setMinutes(0, 0, 0);
-            checkOutDate.setMinutes(0, 0, 0);
-            date_check_out.value = checkOutDate.toISOString().slice(0, -8);
-            date_check_out.min = date_check_out.value;
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateCheckIn = document.getElementById('date_check_in');
+            const dateCheckOut = document.getElementById('date_check_out');
+            const today = new Date().toISOString().split('T')[0];
+            dateCheckIn.setAttribute('min', today);
+            dateCheckIn.addEventListener('change', function() {
+                const selectedDate = dateCheckIn.value;
+                if (selectedDate) {
+                    const nextDay = new Date(selectedDate);
+                    nextDay.setDate(nextDay.getDate() + 1);
+                    const nextDayISO = nextDay.toISOString().split('T')[0];
+                    dateCheckOut.removeAttribute('disabled');
+                    dateCheckOut.setAttribute('min', nextDayISO);
+                } else {
+                    dateCheckOut.value = '';
+                    dateCheckOut.setAttribute('disabled', true);
+                }
+            });
         });
 
-        date_check_in.addEventListener('click', function() {
+        document.getElementById("date_check_in").addEventListener('click', function() {
             this.showPicker();
         });
-        date_check_out.addEventListener('click', function() {
+        document.getElementById("date_check_out").addEventListener('click', function() {
             this.showPicker();
         });
 

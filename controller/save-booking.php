@@ -45,7 +45,8 @@ if (
             $img_upload_path = '../evidence/' . $new_evidence;
             move_uploaded_file($evidence['tmp_name'], $img_upload_path);
             // Check if service_id is an array and insert each service as a separate row
-            $room_number_ids = is_array($_POST['room_number_id']) ? $_POST['room_number_id'] : [$_POST['room_number_id']];
+            // $room_number_ids = is_array($_POST['room_number_id']) ? $_POST['room_number_id'] : [$_POST['room_number_id']];
+            $room_number_id = validate($_POST['room_number_id']);
             $service_ids = is_array($_POST['service_id']) ? $_POST['service_id'] : [$_POST['service_id']];
             $success = true;
             function generateReferenceNumber($length = 10)
@@ -70,18 +71,21 @@ if (
                 }
             }
 
-            foreach ($room_number_ids as $room_number_id) {
-                $room_number_id = validate($room_number_id);
-                $booking_status_id = 1;
-                // Insert each service into `tbl_bookings`
-                $stmt = $conn->prepare('INSERT INTO tbl_booking_room (room_number_id, reference_number, booking_status_id) VALUES (?, ?, ?)');
-                $stmt->bind_param('isi', $room_number_id, $referenceNumber, $booking_status_id);
+            $stmt = $conn->prepare('INSERT INTO tbl_booking_room (room_number_id, reference_number, booking_status_id) VALUES (?, ?, ?)');
+            $stmt->bind_param('isi', $room_number_id, $referenceNumber, $booking_status_id);
 
-                if (!$stmt->execute()) {
-                    $success = false;
-                    break;
-                }
-            }
+            // foreach ($room_number_ids as $room_number_id) {
+            //     $room_number_id = validate($room_number_id);
+            //     $booking_status_id = 1;
+            //     // Insert each service into `tbl_bookings`
+            //     $stmt = $conn->prepare('INSERT INTO tbl_booking_room (room_number_id, reference_number, booking_status_id) VALUES (?, ?, ?)');
+            //     $stmt->bind_param('isi', $room_number_id, $referenceNumber, $booking_status_id);
+
+            //     if (!$stmt->execute()) {
+            //         $success = false;
+            //         break;
+            //     }
+            // }
 
             
             if ($success) {
