@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Nov 21, 2024 at 10:26 PM
+-- Generation Time: Dec 01, 2024 at 02:38 PM
 -- Server version: 8.0.31
 -- PHP Version: 8.2.0
 
@@ -73,30 +73,36 @@ CREATE TABLE IF NOT EXISTS `tbl_announcements` (
 
 DROP TABLE IF EXISTS `tbl_bookings`;
 CREATE TABLE IF NOT EXISTS `tbl_bookings` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `booking_id` int NOT NULL AUTO_INCREMENT,
   `reference_number` varchar(50) NOT NULL,
   `fullname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `phone_number` varchar(50) NOT NULL,
-  `date_check_in` datetime NOT NULL,
-  `date_check_out` datetime NOT NULL,
-  `service_id` int NOT NULL,
+  `date_check_in` date NOT NULL,
+  `date_check_out` date NOT NULL,
   `message` text NOT NULL,
   `mode_of_payment_id` int NOT NULL,
   `evidence` varchar(255) NOT NULL,
   `booking_status_id` int NOT NULL,
   `created_at` timestamp NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`booking_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `tbl_bookings`
+-- Table structure for table `tbl_booking_cottage`
 --
 
-INSERT INTO `tbl_bookings` (`id`, `reference_number`, `fullname`, `email`, `phone_number`, `date_check_in`, `date_check_out`, `service_id`, `message`, `mode_of_payment_id`, `evidence`, `booking_status_id`, `created_at`) VALUES
-(48, '7303760386', 'qwertyu', 'test@gmail.com', '1234567', '2024-11-23 06:11:00', '2024-11-24 16:00:00', 1, '', 1, 'IMG-673fb026a1c1f9.01371080.png', 1, '0000-00-00 00:00:00'),
-(46, '2193604345', 'qwertyuiop', 'qwert@gmail.com', '1234567890', '2024-11-23 15:12:00', '2024-11-24 16:00:00', 1, '', 1, 'IMG-673edd97b96954.31582849.jpg', 2, '0000-00-00 00:00:00'),
-(47, '2193604345', 'qwertyuiop', 'qwert@gmail.com', '1234567890', '2024-11-23 15:12:00', '2024-11-24 16:00:00', 3, '', 1, 'IMG-673edd97b96954.31582849.jpg', 2, '0000-00-00 00:00:00');
+DROP TABLE IF EXISTS `tbl_booking_cottage`;
+CREATE TABLE IF NOT EXISTS `tbl_booking_cottage` (
+  `booking_cottage_id` int NOT NULL AUTO_INCREMENT,
+  `booking_id` int NOT NULL,
+  `cottage_id` int NOT NULL,
+  `reference_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`booking_cottage_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -107,20 +113,54 @@ INSERT INTO `tbl_bookings` (`id`, `reference_number`, `fullname`, `email`, `phon
 DROP TABLE IF EXISTS `tbl_booking_room`;
 CREATE TABLE IF NOT EXISTS `tbl_booking_room` (
   `booking_room_id` int NOT NULL AUTO_INCREMENT,
-  `room_number_id` int NOT NULL,
+  `booking_id` int NOT NULL,
+  `pax` int NOT NULL,
+  `room_category_id` int NOT NULL,
   `reference_number` varchar(50) NOT NULL,
-  `booking_status_id` int NOT NULL,
+  `created_at` datetime NOT NULL,
   PRIMARY KEY (`booking_room_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `tbl_booking_room`
+-- Table structure for table `tbl_booking_service`
 --
 
-INSERT INTO `tbl_booking_room` (`booking_room_id`, `room_number_id`, `reference_number`, `booking_status_id`) VALUES
-(10, 2, '7303760386', 1),
-(9, 4, '2193604345', 2),
-(8, 1, '2193604345', 2);
+DROP TABLE IF EXISTS `tbl_booking_service`;
+CREATE TABLE IF NOT EXISTS `tbl_booking_service` (
+  `booking_service_id` int NOT NULL AUTO_INCREMENT,
+  `booking_id` int NOT NULL,
+  `service_id` int NOT NULL,
+  `reference_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`booking_service_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_cottages`
+--
+
+DROP TABLE IF EXISTS `tbl_cottages`;
+CREATE TABLE IF NOT EXISTS `tbl_cottages` (
+  `cottage_id` int NOT NULL AUTO_INCREMENT,
+  `cottage_name` varchar(50) NOT NULL,
+  `cottage_price` varchar(50) NOT NULL,
+  `cottage_image` varchar(50) NOT NULL,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`cottage_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `tbl_cottages`
+--
+
+INSERT INTO `tbl_cottages` (`cottage_id`, `cottage_name`, `cottage_price`, `cottage_image`, `created_at`) VALUES
+(1, 'Cottage A', '500', 'Price-500a.jpg', '2024-11-30 02:07:39'),
+(2, 'Cottage B', '500', 'Price-500b.jpg', '2024-11-30 02:07:39'),
+(3, 'Cottage C', '800', 'Price-800.jpg', '2024-11-30 02:07:39');
 
 -- --------------------------------------------------------
 
@@ -147,43 +187,6 @@ INSERT INTO `tbl_mode_of_payment` (`mode_of_payment_id`, `mode_of_payment`) VALU
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_price`
---
-
-DROP TABLE IF EXISTS `tbl_price`;
-CREATE TABLE IF NOT EXISTS `tbl_price` (
-  `price_id` int NOT NULL AUTO_INCREMENT,
-  `price` varchar(20) NOT NULL,
-  `price_range_id` int NOT NULL,
-  PRIMARY KEY (`price_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_price_range`
---
-
-DROP TABLE IF EXISTS `tbl_price_range`;
-CREATE TABLE IF NOT EXISTS `tbl_price_range` (
-  `price_range_id` int NOT NULL AUTO_INCREMENT,
-  `price_range` varchar(20) NOT NULL,
-  PRIMARY KEY (`price_range_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `tbl_price_range`
---
-
-INSERT INTO `tbl_price_range` (`price_range_id`, `price_range`) VALUES
-(1, '300-1000'),
-(2, '50-100'),
-(3, '5000-10000'),
-(4, '500-2000');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `tbl_room_category`
 --
 
@@ -203,8 +206,8 @@ CREATE TABLE IF NOT EXISTS `tbl_room_category` (
 --
 
 INSERT INTO `tbl_room_category` (`room_category_id`, `room_category_name`, `room_category_price`, `room_capacity`, `room_details`, `img_url`) VALUES
-(1, 'Single Room', '990', 2, 'This is a Standard Room', 'Standard Room.jpg'),
-(2, 'Family Room', '1090', 10, 'This is a Twin Room', 'Twin Room.jpg');
+(1, 'Single Room', '990', 2, 'This is a Standard Room', 'single.jpg'),
+(2, 'Family Room', '1090', 10, 'This is a Twin Room', 'family.jpg');
 
 -- --------------------------------------------------------
 
@@ -240,21 +243,14 @@ INSERT INTO `tbl_room_number` (`room_number_id`, `room_number`, `room_category_i
 DROP TABLE IF EXISTS `tbl_schedule`;
 CREATE TABLE IF NOT EXISTS `tbl_schedule` (
   `id` int NOT NULL AUTO_INCREMENT,
+  `booking_id` int NOT NULL,
   `fullname` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `description` text NOT NULL,
-  `start_datetime` datetime NOT NULL,
-  `end_datetime` datetime DEFAULT NULL,
+  `start_datetime` date NOT NULL,
+  `end_datetime` date DEFAULT NULL,
   `created_at` timestamp NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `tbl_schedule`
---
-
-INSERT INTO `tbl_schedule` (`id`, `fullname`, `description`, `start_datetime`, `end_datetime`, `created_at`) VALUES
-(28, 'qwertyu', '', '2024-11-23 06:11:00', '2024-11-24 16:00:00', '0000-00-00 00:00:00'),
-(27, 'qwertyuiop', '', '2024-11-23 15:12:00', '2024-11-24 16:00:00', '0000-00-00 00:00:00');
+) ENGINE=MyISAM AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -266,20 +262,20 @@ DROP TABLE IF EXISTS `tbl_services`;
 CREATE TABLE IF NOT EXISTS `tbl_services` (
   `service_id` int NOT NULL AUTO_INCREMENT,
   `service_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `description` text NOT NULL,
-  `price_id` int NOT NULL,
+  `service_price` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `service_image` varchar(50) NOT NULL,
+  `created_at` datetime NOT NULL,
   PRIMARY KEY (`service_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_services`
 --
 
-INSERT INTO `tbl_services` (`service_id`, `service_name`, `description`, `price_id`) VALUES
-(1, 'Cottage', '', 1),
-(2, 'Swimming Pool', '', 2),
-(3, 'Event Hosting', '', 3),
-(4, 'Bar and Lounge', '', 4);
+INSERT INTO `tbl_services` (`service_id`, `service_name`, `service_price`, `service_image`, `created_at`) VALUES
+(1, 'Swimming Pool (Kids)', '50', 'Swimming Pool.jpg', '2024-11-30 02:55:02'),
+(2, 'Swimming Pool (Adult)', '100', 'Swimming Pool.jpg', '2024-11-30 02:55:02'),
+(6, 'Event Hosting', '10000', 'Event Hosting.jpg', '2024-11-30 02:55:02');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

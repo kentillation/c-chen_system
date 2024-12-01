@@ -28,7 +28,7 @@ $(function() {
             var id = info.event.id
             if (!!scheds[id]) {
                 _details.find('#fullname').text(scheds[id].fullname)
-                _details.find('#description').text(scheds[id].description)
+                // _details.find('#description').text(scheds[id].description)
                 _details.find('#start').text(scheds[id].sdate)
                 _details.find('#end').text(scheds[id].edate)
                 _details.find('#edit,#delete').attr('data-id', id)

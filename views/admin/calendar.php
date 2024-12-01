@@ -42,7 +42,7 @@ if (isset($_SESSION['id'])) {
                     </div>
                 </div>
 
-                <div class="modal fade" tabindex="-1" data-bs-backdrop="static" id="event-details-modal">
+                <div class="modal fade" tabindex="-1" id="event-details-modal">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -54,11 +54,11 @@ if (isset($_SESSION['id'])) {
                                     <dl>
                                         <dt class="text-muted">Fullname</dt>
                                         <dd id="fullname" class="fw-bold fs-4"></dd>
-                                        <dt class="text-muted">Description</dt>
-                                        <dd id="description" class=""></dd>
-                                        <dt class="text-muted">Start</dt>
+                                        <!-- <dt class="text-muted">Description</dt>
+                                        <dd id="description" class=""></dd> -->
+                                        <dt class="text-muted">Check-in</dt>
                                         <dd id="start" class=""></dd>
-                                        <dt class="text-muted">End</dt>
+                                        <dt class="text-muted">Check-out</dt>
                                         <dd id="end" class=""></dd>
                                     </dl>
                                 </div>
@@ -70,8 +70,8 @@ if (isset($_SESSION['id'])) {
                 $schedules = $conn->query("SELECT * FROM tbl_schedule");
                 $sched_res = [];
                 foreach ($schedules->fetch_all(MYSQLI_ASSOC) as $row) {
-                    $row['sdate'] = date("F d, Y h:i A", strtotime($row['start_datetime']));
-                    $row['edate'] = date("F d, Y h:i A", strtotime($row['end_datetime']));
+                    $row['sdate'] = date("F d, Y", strtotime($row['start_datetime']));
+                    $row['edate'] = date("F d, Y", strtotime($row['end_datetime']));
                     $sched_res[$row['id']] = $row;
                 }
                 ?>

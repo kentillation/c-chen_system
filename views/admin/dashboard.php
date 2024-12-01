@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 if (isset($_SESSION['id'])) {
 
-    ?>
+?>
     <!DOCTYPE html>
     <html lang="en">
 
@@ -86,7 +86,7 @@ if (isset($_SESSION['id'])) {
                                         <tbody>
                                             <?php
                                             $stmt = $conn->prepare(' SELECT
-                                            tbl_bookings.id,
+                                            tbl_bookings.booking_id,
                                             tbl_bookings.reference_number,
                                             tbl_bookings.fullname,
                                             tbl_bookings.email,
@@ -107,7 +107,7 @@ if (isset($_SESSION['id'])) {
                                             $stmt->execute();
                                             $result = $stmt->get_result();
                                             while ($row = $result->fetch_assoc()) {
-                                                $id = $row['id'];
+                                                $booking_id = $row['booking_id'];
                                                 $fullname = $row['fullname'];
                                                 $email = $row['email'];
                                                 $phone_number = $row['phone_number'];
@@ -137,18 +137,18 @@ if (isset($_SESSION['id'])) {
                                                     <td>$created_at</td>
                                                     <td class='text-center'><span $style>$status</span></td>
                                                     <td class='text-center'>
-                                                        <button class='btn btn-sm btn-primary rounded-5' data-bs-toggle='modal' data-bs-target='#infoModal$id'>
+                                                        <button class='btn btn-sm btn-primary rounded-5' data-bs-toggle='modal' data-bs-target='#infoModal$booking_id'>
                                                             <i class='bi bi-eye'></i>&nbsp; <span class='to-hide'>View</span>
                                                         </button>
                                                     </td>
                                                 </tr>
                                                 ";
-                                                ?>
+                                            ?>
                                                 <div class="modal fade" tabindex="-1" data-bs-backdrop="static"
-                                                    id="infoModal<?= $id ?>">
+                                                    id="infoModal<?= $booking_id ?>">
                                                     <div class="modal-dialog modal-lg modal-dialog-centered">
                                                         <form
-                                                            action="../../controller/admin/confirm-booking.php?booking_id=<?= $id ?>"
+                                                            action="../../controller/admin/confirm-booking.php?booking_id=<?= $booking_id ?>"
                                                             method="post">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
@@ -217,7 +217,7 @@ if (isset($_SESSION['id'])) {
                                                         </form>
                                                     </div>
                                                 </div>
-                                                <?php
+                                            <?php
                                             }
                                             ?>
                                         </tbody>
@@ -239,7 +239,7 @@ if (isset($_SESSION['id'])) {
         <script src="../../assets/js/main.js"></script>
         <script src="../../js/script.js"></script>
         <script>
-            $(document).ready(function () {
+            $(document).ready(function() {
                 $('#paginateAllBookings').DataTable({
                     "lengthMenu": [10, 25, 50, 100],
                     "pagingType": "full_numbers",
@@ -260,7 +260,7 @@ if (isset($_SESSION['id'])) {
 
     </html>
 
-    <?php
+<?php
 } else {
     header("Location: ../signout.php");
 }

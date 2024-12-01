@@ -27,45 +27,45 @@
         padding-left: 0 !important;
     }
 
-    #services {
+    /* #services {
         display: grid;
         place-items: center;
-    }
+    } */
 
-    #room_numbers1 input[type="checkbox"],
+    #checkboxInfo input[type="checkbox"],
     #services input[type="checkbox"] {
         transform: scale(2);
         -webkit-transform: scale(2);
-        margin-right: 20px;
+        margin-right: 15px;
     }
 
-    #room_numbers1 img {
+    #checkboxInfo img {
         margin: 30px;
         border-radius: 8px;
     }
 
-    #room_numbers1 input[type="checkbox"]:checked+label,
-    #room_numbers1 input[type="checkbox"]:hover+label {
+    #checkboxInfo input[type="checkbox"]:checked+label,
+    #checkboxInfo input[type="checkbox"]:hover+label {
         cursor: pointer;
         border: 2px solid #2c5f77;
         box-shadow: 0px 0px 20px rgba(1, 80, 126, 0.356);
-        border-radius: 8px;
+        border-radius: 7px;
         background: linear-gradient(to right, #008672bd, #0583aaea);
         transition: all ease-in-out .5s;
     }
 
-    #room_numbers1 input[type="checkbox"]:active+label {
+    #checkboxInfo input[type="checkbox"]:active+label {
         cursor: pointer;
         box-shadow: 0px 0px 20px rgba(1, 80, 126, 0.356);
         background: linear-gradient(to right, #0583aaea, #008672bd);
     }
 
-    #room_numbers1 input[type="checkbox"] {
+    #checkboxInfo input[type="checkbox"] {
         display: none;
     }
 
-    #room_numbers1 h3,
-    #room_numbers1 h5 {
+    #checkboxInfo h3,
+    #checkboxInfo h5 {
         font-family: 'Poppins';
     }
 </style>
@@ -125,98 +125,63 @@
             </div>
         </div>
 
-        <?php
-        if (isset($_GET['success'])) {
-        ?>
-            <div class="alert alert-success alert-dismissible fade show d-flex align-items-center justify-content-center rounded-0" role="alert">
-                <span><?php echo $_GET['success'], "Your booking has been save successfully!"; ?></span>
-                <a href="#">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </a>
-            </div>
-        <?php
-        }
-        if (isset($_GET['invalid_email'])) {
-        ?>
-            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center rounded-0" role="alert">
-                <span><?php echo $_GET['invalid_email'], "Your email is invalid. Please try again!"; ?></span>
-                <a href="#">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </a>
-            </div>
-        <?php
-        }
-        if (isset($_GET['too_large'])) {
-        ?>
-            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center rounded-0" role="alert">
-                <span><?php echo $_GET['too_large'], "Your file is too large. Please upload 10MB below file!"; ?></span>
-                <a href="#">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </a>
-            </div>
-        <?php
-        }
-        if (isset($_GET['schedule_error'])) {
-        ?>
-            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center rounded-0" role="alert">
-                <span><?php echo $_GET['schedule_error'], "Invalid schedule. Please try again!"; ?></span>
-                <a href="#">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </a>
-            </div>
-        <?php
-        }
-        if (isset($_GET['booking_error'])) {
-        ?>
-            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center rounded-0" role="alert">
-                <span><?php echo $_GET['booking_error'], "Booking failed. Please try again!"; ?></span>
-                <a href="#">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </a>
-            </div>
-        <?php
-        }
-        if (isset($_GET['wrong_file_type'])) {
-        ?>
-            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center rounded-0" role="alert">
-                <span><?php echo $_GET['wrong_file_type'], "Your file is not a .png .jpeg or jpg. Please try again!"; ?></span>
-                <a href="#">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </a>
-            </div>
-        <?php
-        }
-        if (isset($_GET['upload_error'])) {
-        ?>
-            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center rounded-0" role="alert">
-                <span><?php echo $_GET['upload_error'], "Error when uploading. Please try again!"; ?></span>
-                <a href="#">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </a>
-            </div>
-        <?php
-        }
-        if (isset($_GET['missing_data'])) {
-        ?>
-            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center rounded-0" role="alert">
-                <span><?php echo $_GET['missing_data'], "Missing data. Please try again!"; ?></span>
-                <a href="#">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </a>
-            </div>
-        <?php
-        }
-        ?>
-
         <section class="contact section">
-
             <div class="container section-title" data-aos="fade-up">
+                <?php
+                if (isset($_GET['success'])) {
+                ?>
+                    <div class="py-4 mb-5 alert alert-success alert-dismissible fade show d-flex align-items-center justify-content-center" role="alert">
+                        <span><?php echo $_GET['success'], "Your booking has been submitted successfully!"; ?></span>
+                        <button type="button" class="btn-close mt-2" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php
+                }
+                if (isset($_GET['invalid_email'])) {
+                ?>
+                    <div class="py-4 mb-5 alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center" role="alert">
+                        <span><?php echo $_GET['invalid_email'], "Your email is invalid. Please try again!"; ?></span>
+                        <button type="button" class="btn-close mt-2" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php
+                }
+                if (isset($_GET['wrong_file_type'])) {
+                ?>
+                    <div class="py-4 mb-5 alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center" role="alert">
+                        <span><?php echo $_GET['wrong_file_type'], "Your file is not a .png .jpeg or jpg. Please try again!"; ?></span>
+                        <button type="button" class="btn-close mt-2" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php
+                }
+                if (isset($_GET['too_large'])) {
+                ?>
+                    <div class="py-4 mb-5 alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center" role="alert">
+                        <span><?php echo $_GET['too_large'], "Your file is too large. Please upload 10MB below file!"; ?></span>
+                        <button type="button" class="btn-close mt-2" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php
+                }
+                if (isset($_GET['upload_error'])) {
+                ?>
+                    <div class="py-4 mb-5 alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center" role="alert">
+                        <span><?php echo $_GET['upload_error'], "Error when uploading file. Please try again!"; ?></span>
+                        <button type="button" class="btn-close mt-2" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php
+                }
+                if (isset($_GET['booking_error'])) {
+                ?>
+                    <div class="py-4 mb-5 alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center" role="alert">
+                        <span><?php echo $_GET['booking_error'], "Booking failed. Please try again!"; ?></span>
+                        <button type="button" class="btn-close mt-2" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php
+                }
+                ?>
                 <p>Don’t wait – book now and start your journey to relaxation and rejuvenation!</p>
             </div>
             <div class="container" data-aos="fade" data-aos-delay="100">
                 <div class="row gy-4 mx-auto">
                     <div class="col-lg-12">
-                        <!-- Saving form to database -->
                         <form action="./controller/save-booking.php" method="POST" enctype="multipart/form-data" id="schedule-form" class="php-email-form" data-aos="fade-up"
                             data-aos-delay="200">
                             <input type="hidden" name="id" value="">
@@ -230,68 +195,113 @@
                                     <input type="date" name="date_check_out" class="form-control" id="date_check_out" placeholder="Type here..." required disabled>
                                 </div>
                             </div>
-                            <div class="row mb-4">
-                                <div class="col-md-12">
-                                    <div id="room_numbers1">
-                                        <div class="row mt-4">
-                                            <?php
-                                            $stmt = $conn->prepare(' SELECT * FROM tbl_room_category ');
-                                            $stmt->execute();
-                                            $result = $stmt->get_result();
-                                            while ($rows = $result->fetch_assoc()) {
-                                                $room_category_id = $rows['room_category_id'];
-                                                $room_category_name = $rows['room_category_name'];
-                                                $room_category_price = $rows['room_category_price'];
-                                                $room_capacity = $rows['room_capacity'];
-                                                $img_url = $rows['img_url'];
-                                            ?>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                                                    <h5><strong><?= $room_category_name ?></strong></h5>
-                                                    <div class="d-flex">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="room_category_id<?= $room_category_id ?>" id="room_category_id<?= $room_category_id ?>" value="<?= $room_category_id ?>" required>
-                                                            <label class="form-check-label border-0" for="room_category_id<?= $room_category_id ?>">
-                                                                <img src="rooms/<?= $img_url ?>" width="250" height="250" id="room_category_id<?= $room_category_id ?>" alt="">
-                                                            </label>
-                                                        </div>
-                                                        <div class="mt-5 ms-2">
-                                                            <h3><?= $room_category_price ?> for 1 night</h3>
-                                                            <p><i class="bi bi-people"></i>&nbsp; <?= $room_capacity ?> pax</p>
-                                                            <p><i class="bi bi-wifi"></i>&nbsp; Free Wifi</p>
-                                                            <p><i class="bi bi-droplet"></i>&nbsp; Free toiletries</p>
-                                                            <p><i class="bi bi-snow2"></i>&nbsp; Air-conditioning</p>
+                            <div class="row my-4 p-3 border rounded-2" id="checkboxInfo">
+                                <?php
+                                $stmt = $conn->prepare(' SELECT * FROM tbl_room_category ');
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+                                while ($rows = $result->fetch_assoc()) {
+                                    $room_category_id = $rows['room_category_id'];
+                                    $room_category_name = $rows['room_category_name'];
+                                    $room_category_price = $rows['room_category_price'];
+                                    $room_capacity = $rows['room_capacity'];
+                                    $img_url = $rows['img_url'];
+                                ?>
+                                    <div class="col-lg-6 col-md-12 col-sm-12 col-12">
+                                        <h5><strong><?= $room_category_name ?></strong></h5>
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="room_category_id[]" id="room_category_id<?= $room_category_id ?>" value="<?= $room_category_id ?>">
+                                                    <label class="form-check-label border-0" for="room_category_id<?= $room_category_id ?>">
+                                                        <img src="rooms/<?= $img_url ?>" width="250" height="250" id="room_category_id<?= $room_category_id ?>" alt="">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                                <div class="inclusions mt-2 ms-2">
+                                                    <h3>₱ <?= number_format($room_category_price) ?> for 1 night</h3>
+                                                    <p><i class="bi bi-people"></i>&nbsp; <?= $room_capacity ?> pax</p>
+                                                    <p><i class="bi bi-wifi"></i>&nbsp; Free Wifi</p>
+                                                    <p><i class="bi bi-droplet"></i>&nbsp; Free toiletries</p>
+                                                    <p><i class="bi bi-snow2"></i>&nbsp; Air-conditioning</p>
+                                                    <div class="mt-3" id="loaders<?= $room_category_id ?>" style="display: none;">
+                                                        <div class="progress mb-3 rounded-0" style="height: 25px;">
+                                                            <div class="progress-bar bg-secondary progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
                                                         </div>
                                                     </div>
+                                                    <h5 class="my-2"><span id="availableRoom<?= $room_category_id ?>"></span></h5>
+                                                    <div class="d-flex mt-3">
+                                                        <button class="btn btn-sm btn-danger py-0 px-1 minusBtn" data-category-id="<?= $room_category_id ?>" type="button">
+                                                            <i class="bi bi-dash"></i>
+                                                        </button>
+                                                        <input type="number" name="pax" id="pax<?= $room_category_id ?>" class="text-center w-25 ms-2" value="0" style="outline: none; border: none;" readonly />
+                                                        <button class="btn btn-sm btn-success py-0 px-1 plusBtn" data-category-id="<?= $room_category_id ?>" type="button">
+                                                            <i class="bi bi-plus-lg"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            <?php
-                                            }
-                                            ?>
+                                            </div>
                                         </div>
+                                        <hr>
                                     </div>
-
+                                <?php
+                                }
+                                ?>
+                            </div>
+                            <div class="row mb-4 p-3 border rounded-2" id="checkboxInfo">
+                                <div class="row mt-4">
+                                    <?php
+                                    $stmt = $conn->prepare(' SELECT * FROM tbl_cottages ');
+                                    $stmt->execute();
+                                    $result = $stmt->get_result();
+                                    while ($rows = $result->fetch_assoc()) {
+                                        $cottage_id = $rows['cottage_id'];
+                                        $cottage_name = $rows['cottage_name'];
+                                        $cottage_price = $rows['cottage_price'];
+                                        $cottage_image = $rows['cottage_image'];
+                                    ?>
+                                        <div class="col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <h5><strong><?= $cottage_name ?></strong> - ₱<?= number_format($cottage_price, 2) ?></h5>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="cottage_id[]" id="cottage_id<?= $cottage_id ?>" value="<?= $cottage_id ?>">
+                                                <label class="form-check-label border-0" for="cottage_id<?= $cottage_id ?>">
+                                                    <img src="cottages/<?= $cottage_image ?>" width="250" height="250" id="cottage_id<?= $cottage_id ?>" alt="">
+                                                </label>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    <?php
+                                    }
+                                    ?>
                                 </div>
                             </div>
-                            <div id="services" class="my-5">
-                                <label for="" class="mb-2"><span class="text-danger me-1">*</span>Services</label>
-                                <div class="d-flex">
+                            <div class="row mb-4 p-3 border rounded-2" id="checkboxInfo">
+                                <div class="row mt-4">
                                     <?php
-                                    // Fetching data from database
                                     $stmt = $conn->prepare(' SELECT * FROM tbl_services ');
                                     $stmt->execute();
                                     $result = $stmt->get_result();
                                     while ($rows = $result->fetch_assoc()) {
                                         $service_id = $rows['service_id'];
                                         $service_name = $rows['service_name'];
+                                        $service_price = $rows['service_price'];
+                                        $service_image = $rows['service_image'];
                                     ?>
-                                        <div class="form-check">
-                                            <label for="service_id<?= $service_id ?>" class="form-check-label me-5"><?= $service_name ?></label>
-                                            <input type="checkbox" name="service_id[]" id="service_id<?= $service_id ?>" value="<?= $service_id ?>" class="form-check-input">
+                                        <div class="col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <h5><strong><?= $service_name ?></strong> - ₱<?= number_format($service_price, 2) ?></h5>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="service_id[]" id="service_id<?= $service_id ?>" value="<?= $service_id ?>">
+                                                <label class="form-check-label border-0" for="service_id<?= $service_id ?>">
+                                                    <img src="services/<?= $service_image ?>" width="250" height="250" id="service_id<?= $service_id ?>" alt="">
+                                                </label>
+                                            </div>
+                                            <hr>
                                         </div>
                                     <?php
                                     }
                                     ?>
                                 </div>
-                                <div id="available-rooms"></div>
                             </div>
                             <div class="row gy-4">
                                 <div class="col-md-6">
@@ -311,7 +321,7 @@
                                     <input type="text" class="form-control" id="message" name="message" placeholder="Type here...">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="mode_of_payment_id"><span class="text-danger me-1">*</span>Mode of Payment</label>
+                                    <label for="mode_of_payment_id">Mode of Payment</label>
                                     <select class="form-control" id="mode_of_payment_id" name="mode_of_payment_id" required>
                                         <?php
                                         $stmt = $conn->prepare(' SELECT * FROM tbl_mode_of_payment ');
@@ -351,7 +361,7 @@
                     <div class="modal-body">
                         <div class="text-center">
                             <img src="assets/img/qr.png" width="300" alt="QR Code" id="qrCode">
-                            <p class="mt-5"><i>Note: To proceed, our services required 500 pesos downpayment for legitimate transaction. Thank you for your understanding!</i></p>
+                            <p class="mt-5"><i>Note: To proceed, our services requires ₱500 downpayment for legitimate transaction. Thank you for your understanding!</i></p>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -398,6 +408,68 @@
     <script src="assets1/js/main.js"></script>
 
     <script>
+        let pax = document.getElementById('pax');
+        let defaultValue = 1;
+        document.getElementById('date_check_in').addEventListener('change', function() {
+            const dateCheckIn = this.value;
+            const roomCategoryIds = document.querySelectorAll('input[name="room_category_id[]"]');
+            roomCategoryIds.forEach(input => {
+                const roomCategoryId = input.value;
+                fetch('./get-available-rooms.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: `date_check_in=${encodeURIComponent(dateCheckIn)}&room_category_id=${roomCategoryId}`
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        const availableRoomsElement = document.getElementById(`availableRoom${roomCategoryId}`);
+                        const loaders = document.getElementById(`loaders${roomCategoryId}`);
+                        if (availableRoomsElement) {
+                            availableRoomsElement.style.display = "none";
+                            loaders.style.display = "block";
+                            setTimeout(() => {
+                                loaders.style.display = "none";
+                                availableRoomsElement.style.display = "block";
+                                availableRoomsElement.textContent = data.available_rooms;
+                            }, 1000)
+                        }
+                    })
+                    .catch(error => console.error('Error fetching available rooms:', error));
+            });
+        });
+
+        document.addEventListener('click', (event) => {
+            if (event.target.closest('.plusBtn')) {
+                const button = event.target.closest('.plusBtn');
+                const categoryId = button.getAttribute('data-category-id');
+                const paxInput = document.getElementById(`pax${categoryId}`);
+                const parentContainer = event.target.closest('.inclusions');
+                const availableRoomsElement = parentContainer.querySelector('[id^="availableRoom"]');
+                let currentPax = parseInt(paxInput.value) || 0;
+                let availableRooms = parseInt(availableRoomsElement?.textContent) || 0;
+                if (currentPax < availableRooms) {
+                    paxInput.value = currentPax + 1;
+                }
+            }
+
+            if (event.target.closest('.minusBtn')) {
+                const button = event.target.closest('.minusBtn');
+                const categoryId = button.getAttribute('data-category-id');
+                const parentContainer = event.target.closest('.inclusions');
+                const paxInput = document.getElementById(`pax${categoryId}`);
+                const availableRoomsElement = parentContainer.querySelector('[id^="availableRoom"]');
+                let currentPax = parseInt(paxInput.value) || 0;
+                let availableRooms = parseInt(availableRoomsElement?.textContent) || 0;
+                if (currentPax > 0) {
+                    paxInput.value = currentPax - 1;
+                }
+            }
+        });
+    </script>
+
+    <script>
         const date_check_in = document.getElementById("date_check_in");
         const date_check_out = document.getElementById("date_check_out");
 
@@ -420,11 +492,10 @@
                 }
             });
         });
-
-        document.getElementById("date_check_in").addEventListener('click', function() {
+        date_check_in.addEventListener('click', function() {
             this.showPicker();
         });
-        document.getElementById("date_check_out").addEventListener('click', function() {
+        date_check_out.addEventListener('click', function() {
             this.showPicker();
         });
 
