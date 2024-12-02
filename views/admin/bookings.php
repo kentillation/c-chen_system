@@ -135,14 +135,16 @@ if (isset($_SESSION['id'])) {
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <div class="row">
-                                                                        <div class="mt-2 col-12 col-lg-6 col-md-6 col-sm-6">
+                                                                        <div class="mt-2 col-12 col-lg-4 col-md-6 col-sm-6">
                                                                             <h6 class="text-secondary">Date check-in: </h6>
                                                                             <p><?= $date_check_in ?></p>
                                                                         </div>
-                                                                        <div class="mt-2 col-12 col-lg-6 col-md-6 col-sm-6">
+                                                                        <div class="mt-2 col-12 col-lg-4 col-md-6 col-sm-6">
                                                                             <h6 class="text-secondary">Date check-out: </h6>
                                                                             <p><?= $date_check_out ?></p>
                                                                         </div>
+                                                                    </div>
+                                                                    <div class="row">
                                                                         <div class="mt-2 col-12 col-lg-4 col-md-4 col-sm-6">
                                                                             <h6 class="text-secondary">Customer name: </h6>
                                                                             <p><?= $fullname ?></p>
@@ -242,13 +244,22 @@ if (isset($_SESSION['id'])) {
                                                                             <h6><span class="text-secondary">Status: </span><span <?= $style ?>><?= $status ?></span></h6>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="modal-footer">
-                                                                        <button class="btn btn-sm btn-danger" type="button" data-bs-dismiss="modal">
-                                                                            <i class="bi bi-x"></i>&nbsp; Close
-                                                                        </button>
-                                                                        <button class="btn btn-sm btn-primary" type="submit" id="confirmBtn" style="display: <?= $visibility ?>">
-                                                                            <i class="bi bi-check"></i>&nbsp; Confirm
-                                                                        </button>
+                                                                    <div class="modal-footer d-flex justify-content-between">
+                                                                        <div>
+                                                                            <a href="room-assignment.php?bookind_id=<?= $booking_id ?>">
+                                                                                <button class="btn btn-sm btn-primary px-3 rounded-5" type="button">
+                                                                                    <i class="bi bi-pin"></i>&nbsp; Assign Room
+                                                                                </button>
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="d-flex">
+                                                                            <button class="btn btn-sm btn-danger px-3 rounded-5" type="button" data-bs-dismiss="modal">
+                                                                                <i class="bi bi-x"></i>&nbsp; Close
+                                                                            </button>
+                                                                            <button class="btn btn-sm btn-success px-3 rounded-5 ms-1" type="submit" id="confirmBtn" style="display: <?= $visibility ?>">
+                                                                                <i class="bi bi-check"></i>&nbsp; Confirm
+                                                                            </button>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                         </form>

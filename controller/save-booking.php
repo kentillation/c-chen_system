@@ -25,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $date_check_out = validate($_POST['date_check_out']);
     $message = validate($_POST['message']);
     $mode_of_payment_id = validate($_POST['mode_of_payment_id']);
-    $pax = validate($_POST['pax']);
     $evidence = $_FILES['evidence'];
     date_default_timezone_set('Asia/Manila');
     $created_at = date("Y-m-d h:i:s");
@@ -68,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $cottage_ids = isset($_POST['cottage_id']) ? (array)$_POST['cottage_id'] : [];
     $room_category_ids = isset($_POST['room_category_id']) ? (array)$_POST['room_category_id'] : [];
+    $pax_values = isset($_POST['pax']) ? (array)$_POST['pax'] : [];
     $service_ids = isset($_POST['service_id']) ? (array)$_POST['service_id'] : [];
     $referenceNumber = generateReferenceNumber();
 
@@ -90,16 +90,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmtCottage->execute();
         }
 
-        foreach ($room_category_ids as $room_category_id) {
-            $room_category_id = validate($room_category_id);
-            $stmtRooms = $conn->prepare('INSERT INTO tbl_booking_room (booking_id, pax, room_category_id, reference_number, created_at) VALUES (?, ?, ?, ?, ?)');
-            $stmtRooms->bind_param('iiiss', $booking_id, $pax, $room_category_id, $referenceNumber, $created_at);
-            if (!$stmtRooms->execute()) {
-                $success = false;
-                break;
+        $constantPax = 1;
+        foreach ($room_category_ids as $index => $room_category_id) {
+            $pax = validate($pax_values[$index]);
+            for ($i = 1; $i <= $pax; $i++) {
+                $stmtRooms = $conn->prepare('INSERT INTO tbl_booking_room (booking_id, pax, room_category_id, reference_number, created_at) VALUES (?, ?, ?, ?, ?)');
+                $stmtRooms->bind_param('iiiss', $booking_id, $constantPax, $room_category_id, $referenceNumber, $created_at);
+                if (!$stmtRooms->execute()) {
+                    $success = false;
+                    break;
+                }
             }
         }
-
+        
         foreach ($service_ids as $service_id) {
             $service_id = validate($service_id);
             $stmtOthers = $conn->prepare('INSERT INTO tbl_booking_service (booking_id, service_id, reference_number, created_at) VALUES (?, ?, ?, ?)');

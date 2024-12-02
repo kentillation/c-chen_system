@@ -235,7 +235,7 @@
                                                         <button class="btn btn-sm btn-danger py-0 px-1 minusBtn" data-category-id="<?= $room_category_id ?>" type="button">
                                                             <i class="bi bi-dash"></i>
                                                         </button>
-                                                        <input type="number" name="pax" id="pax<?= $room_category_id ?>" class="text-center w-25 ms-2" value="0" style="outline: none; border: none;" readonly />
+                                                        <input type="number" name="pax[]" id="pax<?= $room_category_id ?>" class="text-center w-25 ms-2" value="0" style="outline: none; border: none;" readonly />
                                                         <button class="btn btn-sm btn-success py-0 px-1 plusBtn" data-category-id="<?= $room_category_id ?>" type="button">
                                                             <i class="bi bi-plus-lg"></i>
                                                         </button>
