@@ -170,7 +170,7 @@ if (isset($_SESSION['id'])) {
                                                                             <textarea cols="30" row="30" class="form-control"><?= $message ?></textarea>
                                                                         </div>
                                                                         <div class="row">
-                                                                            <div class="mt-2 col-12 col-lg-4 col-md-6 col-sm-12">
+                                                                            <div class="mt-2 col-12 col-lg-4 col-md-6 col-sm-6">
                                                                                 <h6 class="text-secondary">Cottages: </h6>
                                                                                 <div class="d-flex flex-column">
                                                                                     <?php
@@ -187,36 +187,40 @@ if (isset($_SESSION['id'])) {
                                                                                     while ($rowCottage = $resultCottage->fetch_assoc()) {
                                                                                         $cottage_name = $rowCottage['cottage_name'];
                                                                                     ?>
-                                                                                        <span><i class="bi bi-check"></i>&nbsp; <?= $cottage_name ?></span>
+                                                                                        <span><?= $cottage_name ?></span>
                                                                                     <?php
                                                                                     }
                                                                                     ?>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="mt-2 col-12 col-lg-4 col-md-6 col-sm-12">
+                                                                            <div class="mt-2 col-12 col-lg-4 col-md-6 col-sm-6">
                                                                                 <h6 class="text-secondary">Rooms: </h6>
                                                                                 <div class="d-flex flex-column">
                                                                                     <?php
                                                                                     $stmtRooms = $conn->prepare('SELECT 
                                                                                         tbl_booking_room.booking_id,
+                                                                                        tbl_booking_room.room_category_id,
+                                                                                        COUNT(tbl_booking_room.room_category_id) AS occupied_room,
                                                                                         tbl_room_category.room_category_name
                                                                                         FROM tbl_booking_room
                                                                                         INNER JOIN tbl_room_category ON tbl_booking_room.room_category_id = tbl_room_category.room_category_id
                                                                                         WHERE tbl_booking_room.booking_id = ?
+                                                                                        GROUP BY tbl_booking_room.booking_id, tbl_booking_room.room_category_id
                                                                                         ORDER BY tbl_booking_room.booking_id ');
                                                                                     $stmtRooms->bind_param('i', $booking_id);
                                                                                     $stmtRooms->execute();
                                                                                     $resultRooms = $stmtRooms->get_result();
                                                                                     while ($rowRooms = $resultRooms->fetch_assoc()) {
                                                                                         $room_category_name = $rowRooms['room_category_name'];
+                                                                                        $occupied_room = $rowRooms['occupied_room'];
                                                                                     ?>
-                                                                                        <span><i class="bi bi-check"></i>&nbsp; <?= $room_category_name ?></span>
+                                                                                        <span><?= $occupied_room . "&nbsp;" . $room_category_name ?></span>
                                                                                     <?php
                                                                                     }
                                                                                     ?>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="mt-2 col-12 col-lg-4 col-md-6 col-sm-12">
+                                                                            <div class="mt-2 col-12 col-lg-4 col-md-6 col-sm-6">
                                                                                 <h6 class="text-secondary">Other services: </h6>
                                                                                 <div class="d-flex flex-column">
                                                                                     <?php
@@ -233,7 +237,7 @@ if (isset($_SESSION['id'])) {
                                                                                     while ($rowOthers = $resultOthers->fetch_assoc()) {
                                                                                         $service_name = $rowOthers['service_name'];
                                                                                     ?>
-                                                                                        <span><i class="bi bi-check"></i>&nbsp; <?= $service_name ?></span>
+                                                                                        <span><?= $service_name ?></span>
                                                                                     <?php
                                                                                     }
                                                                                     ?>
@@ -246,7 +250,7 @@ if (isset($_SESSION['id'])) {
                                                                     </div>
                                                                     <div class="modal-footer d-flex justify-content-between">
                                                                         <div>
-                                                                            <a href="room-assignment.php?bookind_id=<?= $booking_id ?>">
+                                                                            <a href="room-assignment.php?booking_id=<?= $booking_id ?>">
                                                                                 <button class="btn btn-sm btn-primary px-3 rounded-5" type="button">
                                                                                     <i class="bi bi-pin"></i>&nbsp; Assign Room
                                                                                 </button>
