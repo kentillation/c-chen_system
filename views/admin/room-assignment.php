@@ -65,6 +65,7 @@ if (isset($_SESSION['id'])) {
                           tbl_booking_room.booking_id,
                           tbl_booking_room.booking_room_id,
                           tbl_booking_room.pax,
+                          tbl_booking_room.room_number,
                           tbl_room_category.room_category_id,
                           tbl_room_category.room_category_name
                           FROM tbl_booking_room
@@ -78,23 +79,31 @@ if (isset($_SESSION['id'])) {
                           while ($rowBookingRooms = $resultBookingRooms->fetch_assoc()) {
                             $room_category_name = $rowBookingRooms['room_category_name'];
                             $pax = $rowBookingRooms['pax'];
+                            $rm_nmbr = $rowBookingRooms['room_number'];
                             $room_category_id = $rowBookingRooms['room_category_id'];
                             for ($i = 1; $i <= $pax; $i++) {
+                              $stmtRoomsCategory = $conn->prepare('SELECT * FROM tbl_room_number WHERE room_category_id = ?');
+                              $stmtRoomsCategory->bind_param('i', $room_category_id);
+                              $stmtRoomsCategory->execute();
+                              $resultRoomsCategory = $stmtRoomsCategory->get_result();
                           ?>
                               <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                                   <p class="w-100 mt-2"><?= $x++ ?>.) &nbsp; <?= htmlspecialchars($room_category_name) ?>: </p>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                                  <!-- Add index to room number name -->
                                   <input type="hidden" name="room_category_id[]" value="<?= $room_category_id ?>">
                                   <select name="room_number[<?= $room_category_id ?>][]" class="form-select">
-                                    <option selected disabled>-select room #-</option>
                                     <?php
-                                    $stmtRoomsCategory = $conn->prepare('SELECT * FROM tbl_room_number WHERE room_category_id = ?');
-                                    $stmtRoomsCategory->bind_param('i', $room_category_id);
-                                    $stmtRoomsCategory->execute();
-                                    $resultRoomsCategory = $stmtRoomsCategory->get_result();
+                                    if (!empty($rm_nmbr)) {
+                                      ?>
+                                      <option value="<?= htmlspecialchars($rm_nmbr) ?>"><?= htmlspecialchars($rm_nmbr) ?></option>
+                                      <?php
+                                    } else {
+                                      ?>
+                                        <option selected disabled>-select room #-</option>
+                                      <?php
+                                    }
                                     while ($rowRoomsCategory = $resultRoomsCategory->fetch_assoc()) {
                                       $room_number = $rowRoomsCategory['room_number'];
                                     ?>
