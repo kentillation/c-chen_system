@@ -310,11 +310,11 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="email"><span class="text-danger me-1">*</span>Email</label>
-                                    <input type="email" name="email" class="form-control" id="email" placeholder="Type here..." required>
+                                    <input type="email" name="email" class="form-control" id="email" placeholder="Type here..." pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="phone_number"><span class="text-danger me-1">*</span>Phone number</label>
-                                    <input type="text" name="phone_number" class="form-control" id="phone_number" placeholder="Type here..." required>
+                                    <input type="text" name="phone_number" class="form-control" id="phone_number" placeholder="Type here..." pattern="\d{1,11}" maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '');" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="message">Message (optional)</label>
@@ -343,7 +343,7 @@
                                     <input type="file" class="form-control" id="evidence" name="evidence" required>
                                 </div>
                                 <div class="col-md-12 text-center">
-                                    <button type="submit" class="btn btn-primary rounded-5 p-3 mt-3 w-50">Submit &nbsp;<i class="bi bi-telegram"></i></button>
+                                    <button type="submit" id="submitButton" class="btn btn-primary rounded-5 p-3 mt-3 w-50">Submit &nbsp;<i class="bi bi-telegram"></i></button>
                                 </div>
                             </div>
                         </form>
@@ -408,8 +408,43 @@
     <script src="assets1/js/main.js"></script>
 
     <script>
-        let pax = document.getElementById('pax');
+        document.addEventListener("DOMContentLoaded", function () {
+            const requiredFields = [
+                document.getElementById("date_check_in"),
+                document.getElementById("date_check_out"),
+                document.getElementById("fullname"),
+                document.getElementById("email"),
+                document.getElementById("phone_number")
+            ];
+            const submitButton = document.getElementById("submitButton");
+            function validateForm() {
+                const allFieldsFilled = requiredFields.every(field => field.value.trim() !== "");
+                submitButton.disabled = !allFieldsFilled;
+            }
+            requiredFields.forEach(field => {
+                field.addEventListener("input", validateForm);
+            });
+            validateForm();
+        });
+    </script>
 
+    <script>
+        const phoneNumberInput = document.getElementById('phone_number');
+        const emailInput = document.getElementById('email');
+        const submitButton = document.getElementById('submit_button');
+        function validateInputs() {
+            const phoneNumberPattern = /^\d{11}$/;
+            const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+            const isPhoneNumberValid = phoneNumberPattern.test(phoneNumberInput.value);
+            const isEmailValid = emailPattern.test(emailInput.value);
+            submitButton.disabled = !(isPhoneNumberValid && isEmailValid);
+        }
+        phoneNumberInput.addEventListener('input', validateInputs);
+        emailInput.addEventListener('input', validateInputs);
+    </script>
+
+    <script>
+        let pax = document.getElementById('pax');
         document.getElementById('date_check_in').addEventListener('change', function() {
             const dateCheckIn = new Date(this.value);
             dateCheckIn.setDate(dateCheckIn.getDate() + 1);
@@ -481,8 +516,6 @@
             }
         }
     </script>
-
-
     <script>
         const date_check_in = document.getElementById("date_check_in");
         const date_check_out = document.getElementById("date_check_out");
