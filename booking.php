@@ -212,8 +212,8 @@
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="room_category_id[]" id="room_category_id<?= $room_category_id ?>" value="<?= $room_category_id ?>">
-                                                    <label class="form-check-label border-0" for="room_category_id<?= $room_category_id ?>">
+                                                    <input class="form-check-input" type="checkbox" name="room_category_id[]" id="room_category_id<?= $room_category_id ?>" value="<?= $room_category_id ?>" data-category-id="<?= $room_category_id ?>">
+                                                    <label class="form-check-label border-0" for="room_category_id<?= $room_category_id ?>" data-category-id="<?= $room_category_id ?>">
                                                         <img src="rooms/<?= $img_url ?>" width="250" height="250" id="room_category_id<?= $room_category_id ?>" alt="">
                                                     </label>
                                                 </div>
@@ -409,9 +409,12 @@
 
     <script>
         let pax = document.getElementById('pax');
-        let defaultValue = 1;
+
         document.getElementById('date_check_in').addEventListener('change', function() {
-            const dateCheckIn = this.value;
+            const dateCheckIn = new Date(this.value);
+            dateCheckIn.setDate(dateCheckIn.getDate() + 1);
+            const formattedDateCheckOut = dateCheckIn.toISOString().split('T')[0];
+            document.getElementById('date_check_out').value = formattedDateCheckOut;
             const roomCategoryIds = document.querySelectorAll('input[name="room_category_id[]"]');
             roomCategoryIds.forEach(input => {
                 const roomCategoryId = input.value;
@@ -420,7 +423,7 @@
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'
                         },
-                        body: `date_check_in=${encodeURIComponent(dateCheckIn)}&room_category_id=${roomCategoryId}`
+                        body: `date_check_in=${encodeURIComponent(this.value)}&room_category_id=${roomCategoryId}`
                     })
                     .then(response => response.json())
                     .then(data => {
@@ -439,7 +442,6 @@
                     .catch(error => console.error('Error fetching available rooms:', error));
             });
         });
-
         document.addEventListener('click', (event) => {
             if (event.target.closest('.plusBtn')) {
                 const button = event.target.closest('.plusBtn');
@@ -452,8 +454,8 @@
                 if (currentPax < availableRooms) {
                     paxInput.value = currentPax + 1;
                 }
+                updateCheckboxState(categoryId);
             }
-
             if (event.target.closest('.minusBtn')) {
                 const button = event.target.closest('.minusBtn');
                 const categoryId = button.getAttribute('data-category-id');
@@ -465,9 +467,21 @@
                 if (currentPax > 0) {
                     paxInput.value = currentPax - 1;
                 }
+                updateCheckboxState(categoryId);
             }
         });
+
+        function updateCheckboxState(categoryId) {
+            const paxInput = document.getElementById(`pax${categoryId}`);
+            const checkbox = document.querySelector(`input[name="room_category_id[]"][value="${categoryId}"]`);
+            if (parseInt(paxInput.value) > 0) {
+                checkbox.checked = true;
+            } else {
+                checkbox.checked = false;
+            }
+        }
     </script>
+
 
     <script>
         const date_check_in = document.getElementById("date_check_in");
