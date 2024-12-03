@@ -36,7 +36,7 @@ if (isset($_SESSION['id'])) {
                         if (isset($_GET['updated'])) {
                         ?>
                             <div class="alert alert-success alert-dismissible fade show d-flex align-items-center justify-content-center" role="alert">
-                                <span><?php echo $_GET['updated'], "Booking has been confirmed successfully!"; ?></span>
+                                <span><?php echo $_GET['updated'], "Booking has been updated successfully!"; ?></span>
                                 <a href="#">
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </a>
@@ -75,6 +75,7 @@ if (isset($_SESSION['id'])) {
                                             tbl_bookings.date_check_in,
                                             tbl_bookings.date_check_out,
                                             tbl_bookings.message,
+                                            tbl_bookings.reason_for_cancellation,
                                             tbl_mode_of_payment.mode_of_payment,
                                             tbl_bookings.evidence,
                                             tbl_bookings.booking_status_id,
@@ -97,18 +98,32 @@ if (isset($_SESSION['id'])) {
                                                 $booking_status_id = $row['booking_status_id'];
                                                 $created_at = $row['created_at'];
                                                 $reference_number = $row['reference_number'];
+                                                $reason_for_cancellation = $row['reason_for_cancellation'];
 
                                                 if ($booking_status_id == 1) {
                                                     $status = "Pending";
-                                                    $style = "class='text-danger'";
-                                                    $visibility = "flex;";
+                                                    $style = "class='text-warning'";
+                                                    $cnfrmBtn = "flex;";
+                                                    $cnclCnfrmtnBtn = "none;";
+                                                    $reason = "none";
                                                 } else if ($booking_status_id == 2) {
                                                     $status = "Confirmed";
-                                                    $style = "class='text-primary'";
-                                                    $visibility = "none;";
-                                                } else {
+                                                    $style = "class='text-success'";
+                                                    $cnfrmBtn = "none;";
+                                                    $cnclCnfrmtnBtn = "flex;";
+                                                    $reason = "none";
+                                                } else if ($booking_status_id == 3) {
                                                     $status = "Decline";
+                                                    $style = "class='text-danger'";
+                                                    $cnfrmBtn = "none;";
+                                                    $cnclCnfrmtnBtn = "none;";
+                                                    $reason = "none";
+                                                } else if ($booking_status_id == 4) {
+                                                    $status = "Cancelled";
                                                     $style = "class='text-warning'";
+                                                    $cnfrmBtn = "flex;";
+                                                    $cnclCnfrmtnBtn = "none;";
+                                                    $reason = "block";
                                                 }
                                                 echo "
                                                 <tr>
@@ -125,7 +140,7 @@ if (isset($_SESSION['id'])) {
                                                 </tr>
                                                 ";
                                             ?>
-                                                <div class="modal fade" tabindex="-1" id="infoModal<?= $booking_id ?>">
+                                                <div class="modal fade" id="infoModal<?= $booking_id ?>" aria-hidden="true" tabindex="-1">
                                                     <div class="modal-dialog modal-xl modal-dialog-centered">
                                                         <form action="../../controller/admin/confirm-booking.php?booking_id=<?= $booking_id ?>" method="post">
                                                             <div class="modal-content">
@@ -246,26 +261,42 @@ if (isset($_SESSION['id'])) {
                                                                         </div>
                                                                         <div class="mt-3 text-end">
                                                                             <h6><span class="text-secondary">Status: </span><span <?= $style ?>><?= $status ?></span></h6>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer d-flex justify-content-between">
-                                                                        <div>
-                                                                            <a href="room-assignment.php?booking_id=<?= $booking_id ?>">
-                                                                                <button class="btn btn-sm btn-primary px-3 rounded-5" type="button">
-                                                                                    <i class="bi bi-pin"></i>&nbsp; Assign Room
-                                                                                </button>
-                                                                            </a>
-                                                                        </div>
-                                                                        <div class="d-flex">
-                                                                            <button class="btn btn-sm btn-danger px-3 rounded-5" type="button" data-bs-dismiss="modal">
-                                                                                <i class="bi bi-x"></i>&nbsp; Close
-                                                                            </button>
-                                                                            <button class="btn btn-sm btn-success px-3 rounded-5 ms-1" type="submit" id="confirmBtn" style="display: <?= $visibility ?>">
-                                                                                <i class="bi bi-check"></i>&nbsp; Confirm
-                                                                            </button>
+                                                                            <h6 style="display: <?=$reason?>;"><span class="text-secondary">Reason: <br /></span><?= $reason_for_cancellation ?></h6>
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                <div class="modal-footer d-flex justify-content-between">
+                                                                    <div>
+                                                                        <?php
+                                                                        $stmt = $conn->prepare("SELECT * FROM tbl_booking_room WHERE booking_id = ?");
+                                                                        $stmt->bind_param('i', $booking_id);
+                                                                        $stmt->execute();
+                                                                        $result = $stmt->get_result();
+                                                                        if ($result->num_rows > 0) {
+                                                                            $assignRmBtn = "flex;";
+                                                                        } else {
+                                                                            $assignRmBtn = "none;";
+                                                                        }
+                                                                        ?>
+                                                                        <a href="room-assignment.php?booking_id=<?= $booking_id ?>" style="display: <?= $assignRmBtn ?>">
+                                                                            <button class="btn btn-sm btn-primary px-3 rounded-5" type="button">
+                                                                                <i class="bi bi-pin"></i>&nbsp; Assign Room
+                                                                            </button>
+                                                                        </a>
+                                                                        <button style="display: <?= $cnclCnfrmtnBtn ?>" onclick="redirectToCancel()" class="btn btn-sm btn-primary px-3 rounded-5" type="button">
+                                                                            <i class="bi bi-exclamation-triangle"></i>&nbsp; Want to cancel confirmation?
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="d-flex">
+                                                                        <button class="btn btn-sm btn-danger px-3 rounded-5" type="button" data-bs-dismiss="modal" aria-label="Close">
+                                                                            <i class="bi bi-x"></i>&nbsp; Close
+                                                                        </button>
+                                                                        <button class="btn btn-sm btn-success px-3 rounded-5 ms-1" type="submit" style="display: <?= $cnfrmBtn ?>">
+                                                                            <i class="bi bi-check"></i>&nbsp; Confirm
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -289,6 +320,14 @@ if (isset($_SESSION['id'])) {
 
         <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="../../assets/js/main.js"></script>
+        <script>
+        function redirectToCancel() {
+            const bookingId = <?= json_encode($booking_id) ?>;
+            const url = `cancel-confirmed-booking.php?booking_id=${bookingId}`;
+            window.location.href = url;
+        }
+        </script>
+
     </body>
 
     </html>
