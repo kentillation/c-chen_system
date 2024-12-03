@@ -81,6 +81,7 @@ CREATE TABLE IF NOT EXISTS `tbl_bookings` (
   `date_check_in` date NOT NULL,
   `date_check_out` date NOT NULL,
   `message` text NOT NULL,
+  `reason_for_cancellation` text NOT NULL,
   `mode_of_payment_id` int NOT NULL,
   `evidence` varchar(255) NOT NULL,
   `booking_status_id` int NOT NULL,
