@@ -221,8 +221,8 @@
                                                 <div class="inclusions mt-2 ms-2">
                                                     <h3>₱ <?= number_format($room_category_price) ?> for 1 night</h3>
                                                     <p><i class="bi bi-people"></i>&nbsp; <?= $room_capacity ?> pax</p>
-                                                    <p><i class="bi bi-wifi"></i>&nbsp; Free Wifi</p>
-                                                    <p><i class="bi bi-droplet"></i>&nbsp; Free toiletries</p>
+                                                    <p><i class="bi bi-egg-fried"></i>&nbsp; Free Breakfast</p>
+                                                    <p><i class="bi bi-tsunami"></i>&nbsp; Free Swimming Pool</p>
                                                     <p><i class="bi bi-snow2"></i>&nbsp; Air-conditioning</p>
                                                     <div class="mt-3" id="loaders<?= $room_category_id ?>" style="display: none;">
                                                         <div class="progress mb-3 rounded-0" style="height: 25px;">
