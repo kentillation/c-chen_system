@@ -31,12 +31,12 @@ DROP TABLE IF EXISTS `tbl_admin`;
 CREATE TABLE IF NOT EXISTS `tbl_admin` (
   `id` int NOT NULL AUTO_INCREMENT,
   `email` varchar(50) NOT NULL,
-  `user_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `user_name` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   `firstname` varchar(50) NOT NULL,
   `middlename` varchar(50) NOT NULL,
   `lastname` varchar(50) NOT NULL,
-  `img_url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `img_url` text NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -75,8 +75,8 @@ DROP TABLE IF EXISTS `tbl_bookings`;
 CREATE TABLE IF NOT EXISTS `tbl_bookings` (
   `booking_id` int NOT NULL AUTO_INCREMENT,
   `reference_number` varchar(50) NOT NULL,
-  `fullname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `fullname` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
   `phone_number` varchar(50) NOT NULL,
   `date_check_in` date NOT NULL,
   `date_check_out` date NOT NULL,
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `tbl_booking_cottage` (
   `booking_cottage_id` int NOT NULL AUTO_INCREMENT,
   `booking_id` int NOT NULL,
   `cottage_id` int NOT NULL,
-  `reference_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `reference_number` varchar(50) NOT NULL,
   `created_at` datetime NOT NULL,
   PRIMARY KEY (`booking_cottage_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -130,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `tbl_booking_room` (
   `booking_room_id` int NOT NULL AUTO_INCREMENT,
   `booking_id` int NOT NULL,
   `pax` int NOT NULL,
-  `room_number` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `room_number` varchar(20) DEFAULT NULL,
   `room_category_id` int NOT NULL,
   `reference_number` varchar(50) NOT NULL,
   `created_at` datetime NOT NULL,
@@ -158,7 +158,7 @@ CREATE TABLE IF NOT EXISTS `tbl_booking_service` (
   `booking_service_id` int NOT NULL AUTO_INCREMENT,
   `booking_id` int NOT NULL,
   `service_id` int NOT NULL,
-  `reference_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `reference_number` varchar(50) NOT NULL,
   `created_at` datetime NOT NULL,
   PRIMARY KEY (`booking_service_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -277,7 +277,7 @@ DROP TABLE IF EXISTS `tbl_schedule`;
 CREATE TABLE IF NOT EXISTS `tbl_schedule` (
   `id` int NOT NULL AUTO_INCREMENT,
   `booking_id` int NOT NULL,
-  `fullname` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `fullname` text NOT NULL,
   `description` text NOT NULL,
   `start_datetime` date NOT NULL,
   `end_datetime` date DEFAULT NULL,
@@ -301,8 +301,8 @@ INSERT INTO `tbl_schedule` (`id`, `booking_id`, `fullname`, `description`, `star
 DROP TABLE IF EXISTS `tbl_services`;
 CREATE TABLE IF NOT EXISTS `tbl_services` (
   `service_id` int NOT NULL AUTO_INCREMENT,
-  `service_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `service_price` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `service_name` varchar(50) NOT NULL,
+  `service_price` varchar(50) NOT NULL,
   `service_image` varchar(50) NOT NULL,
   `created_at` datetime NOT NULL,
   PRIMARY KEY (`service_id`)

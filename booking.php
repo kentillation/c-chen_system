@@ -86,7 +86,6 @@
                     <li><a href="index.php?#hero">Home</a></li>
                     <li><a href="index.php?#about">About</a></li>
                     <li><a href="index.php?#features">Services</a></li>
-                    <li><a href="index.php?#team">Team</a></li>
                     <li><a href="index.php?#contact">Contact</a></li>
                     <li class="dropdown"><a href="#"><span>More</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                         <ul>
