@@ -35,7 +35,7 @@ if (isset($_SESSION['id'])) {
           <i class="bi bi-arrow-left"></i>&nbsp; Back
         </a>
         <div class="row">
-          <div class="col-lg-6">
+          <div class="col-lg-8">
             <div class="card">
               <div class="card-body">
                 <?php
@@ -54,8 +54,7 @@ if (isset($_SESSION['id'])) {
                   <form action="../../controller/admin/confirm-with-rooms-booking.php?booking_id=<?= $booking_id ?>" method="post" class="container p-4">
                     <div class="row">
                       <div class="mt-2 col-12 col-lg-6 col-md-4 col-sm-6">
-                        <h6 class="text-secondary">Reference #: </h6>
-                        <p><?= $reference_number ?></p>
+                        <h6 class="text-secondary">Booking #: <span class="text-dark"><?= $reference_number ?></span></h6>
                       </div>
                       <div class="mt-4 col-12 col-lg-12 col-md-12 col-sm-12">
                         <h6 class="text-secondary">Rooms: </h6>
@@ -75,7 +74,6 @@ if (isset($_SESSION['id'])) {
                           $stmtBookingRooms->bind_param('i', $booking_id);
                           $stmtBookingRooms->execute();
                           $resultBookingRooms = $stmtBookingRooms->get_result();
-                          $x = 1;
                           while ($rowBookingRooms = $resultBookingRooms->fetch_assoc()) {
                             $room_category_name = $rowBookingRooms['room_category_name'];
                             $pax = $rowBookingRooms['pax'];
@@ -89,20 +87,20 @@ if (isset($_SESSION['id'])) {
                           ?>
                               <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                                  <p class="w-100 mt-2"><?= $x++ ?>.) &nbsp; <?= htmlspecialchars($room_category_name) ?>: </p>
+                                  <p class="w-100 mt-2"><?= htmlspecialchars($room_category_name) ?>: </p>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                                   <input type="hidden" name="room_category_id[]" value="<?= $room_category_id ?>">
                                   <select name="room_number[<?= $room_category_id ?>][]" class="form-select">
                                     <?php
                                     if (!empty($rm_nmbr)) {
-                                      ?>
+                                    ?>
                                       <option value="<?= htmlspecialchars($rm_nmbr) ?>"><?= htmlspecialchars($rm_nmbr) ?></option>
-                                      <?php
+                                    <?php
                                     } else {
-                                      ?>
-                                        <option selected disabled>-select room #-</option>
-                                      <?php
+                                    ?>
+                                      <option selected disabled>-select room #-</option>
+                                    <?php
                                     }
                                     while ($rowRoomsCategory = $resultRoomsCategory->fetch_assoc()) {
                                       $room_number = $rowRoomsCategory['room_number'];
@@ -113,7 +111,7 @@ if (isset($_SESSION['id'])) {
                                     ?>
                                   </select>
                                 </div>
-                                <hr class="mt-2">
+                                <div class="mt-3"></div>
                               </div>
                           <?php
                             }
@@ -122,7 +120,7 @@ if (isset($_SESSION['id'])) {
                         </div>
                       </div>
                     </div>
-                    <button class="btn btn-sm btn-success mt-4 px-3 py-2 rounded-5 ms-1" type="submit" id="confirmBtn">
+                    <button class="btn btn-sm btn-primary mt-4 px-3 py-2 rounded-5 ms-1" type="submit" id="confirmBtn">
                       <i class="bi bi-check"></i>&nbsp; Save and Confirm
                     </button>
                   </form>

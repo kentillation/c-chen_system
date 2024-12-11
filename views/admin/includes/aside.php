@@ -28,17 +28,19 @@
             </a>
         </li>
 
-        <!-- <li class="nav-item">
-            <a class="nav-link collapsed" href="../admin/services">
-                <i class="bi bi-life-preserver"></i>
-                <span>Services</span>
-            </a>
-        </li> -->
-
         <li class="nav-item">
             <a class="nav-link collapsed" href="../admin/profile">
                 <i class="bi bi-person-circle"></i>
                 <span>Profile</span>
+            </a>
+        </li>
+
+        <li class="nav-heading">Reports</li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="../admin/all-bookings">
+                <i class="bi bi-person-book"></i>
+                <span>All Bookings</span>
             </a>
         </li>
 

@@ -11,6 +11,7 @@
 <link href="../../assets/css/style.css" rel="stylesheet">
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 <link rel="stylesheet" href="../../fullcalendar/lib/main.min.css">
+<link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css" type="text/css" rel="stylesheet">
 <script src="../../js/jquery-3.6.0.min.js"></script>
 <script src="../../js/bootstrap.min.js"></script>
 <script src="../../fullcalendar/lib/main.min.js"></script>

@@ -258,10 +258,12 @@
                                         $cottage_id = $rows['cottage_id'];
                                         $cottage_name = $rows['cottage_name'];
                                         $cottage_price = $rows['cottage_price'];
+                                        $cottage_capacity = $rows['cottage_capacity'];
                                         $cottage_image = $rows['cottage_image'];
                                     ?>
                                         <div class="col-lg-4 col-md-12 col-sm-12 col-12">
                                             <h5><strong><?= $cottage_name ?></strong> - ₱<?= number_format($cottage_price, 2) ?></h5>
+                                            <h5><strong><?= $cottage_capacity ?></strong></h5>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" name="cottage_id[]" id="cottage_id<?= $cottage_id ?>" value="<?= $cottage_id ?>">
                                                 <label class="form-check-label border-0" for="cottage_id<?= $cottage_id ?>">
@@ -407,7 +409,7 @@
     <script src="assets1/js/main.js"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const requiredFields = [
                 document.getElementById("date_check_in"),
                 document.getElementById("date_check_out"),
@@ -416,6 +418,7 @@
                 document.getElementById("phone_number")
             ];
             const submitButton = document.getElementById("submitButton");
+
             function validateForm() {
                 const allFieldsFilled = requiredFields.every(field => field.value.trim() !== "");
                 submitButton.disabled = !allFieldsFilled;
@@ -431,6 +434,7 @@
         const phoneNumberInput = document.getElementById('phone_number');
         const emailInput = document.getElementById('email');
         const submitButton = document.getElementById('submit_button');
+
         function validateInputs() {
             const phoneNumberPattern = /^\d{11}$/;
             const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;

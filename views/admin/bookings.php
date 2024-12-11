@@ -46,93 +46,76 @@ if (isset($_SESSION['id'])) {
                         ?>
                         <div class="card">
                             <div class="card-body">
-                                <div class="table-responsive mt-4">
-                                    <table class="table" id="paginateAllOrders">
-                                        <col width="20%">
-                                        <col width="20%">
-                                        <col width="15%">
-                                        <col width="20%">
-                                        <col width="15%">
-                                        <col width="10%">
+                                <div class="table-responsive mt-4" id="data-table">
+                                    <table class="table" id="paginateAllReservations">
+                                        <col width="25%">
+                                        <col width="25%">
+                                        <col width="25%">
+                                        <col width="25%">
                                         <thead>
                                             <tr>
                                                 <th>Customer name</th>
-                                                <th>Email</th>
-                                                <th>Phone #</th>
                                                 <th>Booking date</th>
-                                                <th class="text-center">Status</th>
-                                                <th class="text-center">Action</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
                                             $stmtBookings = $conn->prepare(' SELECT
-                                            tbl_bookings.booking_id,
-                                            tbl_bookings.reference_number,
-                                            tbl_bookings.fullname,
-                                            tbl_bookings.email,
-                                            tbl_bookings.phone_number,
-                                            tbl_bookings.date_check_in,
-                                            tbl_bookings.date_check_out,
-                                            tbl_bookings.message,
-                                            tbl_bookings.reason_for_cancellation,
-                                            tbl_mode_of_payment.mode_of_payment,
-                                            tbl_bookings.evidence,
-                                            tbl_bookings.booking_status_id,
-                                            tbl_bookings.created_at
+                                            tbl_bookings.*,
+                                            tbl_mode_of_payment.mode_of_payment
                                             FROM tbl_bookings
                                             INNER JOIN tbl_mode_of_payment ON tbl_bookings.mode_of_payment_id = tbl_mode_of_payment.mode_of_payment_id
                                             ORDER BY tbl_bookings.created_at ASC');
                                             $stmtBookings->execute();
                                             $resultBookings = $stmtBookings->get_result();
-                                            if($resultBookings->num_rows > 0) {
+                                            if ($resultBookings->num_rows > 0) {
                                                 while ($rowBookings = $resultBookings->fetch_assoc()) {
                                                     $booking_id = $rowBookings['booking_id'];
                                                     $fullname = $rowBookings['fullname'];
                                                     $email = $rowBookings['email'];
                                                     $phone_number = $rowBookings['phone_number'];
-                                                    $date_check_in = $rowBookings['date_check_in'];
-                                                    $date_check_out = $rowBookings['date_check_out'];
+                                                    $date_check_in = (new DateTime($rowBookings['date_check_in']))->format("F j, Y");
+                                                    $date_check_out = (new DateTime($rowBookings['date_check_out']))->format("F j, Y");
                                                     $message = $rowBookings['message'];
                                                     $mode_of_payment = $rowBookings['mode_of_payment'];
                                                     $evidence = $rowBookings['evidence'];
                                                     $booking_status_id = $rowBookings['booking_status_id'];
-                                                    $created_at = $rowBookings['created_at'];
+                                                    $created_at = (new DateTime($rowBookings['created_at']))->format("F j, Y");
                                                     $reference_number = $rowBookings['reference_number'];
                                                     $reason_for_cancellation = $rowBookings['reason_for_cancellation'];
 
                                                     if ($booking_status_id == 1) {
                                                         $status = "Pending";
+                                                        $badge = "class='badge bg-warning'";
                                                         $style = "class='text-warning'";
                                                         $cnfrmBtn = "flex;";
-                                                        $cnclCnfrmtnBtn = "none;";
                                                         $reason = "none";
                                                     } else if ($booking_status_id == 2) {
                                                         $status = "Confirmed";
+                                                        $badge = "class='badge bg-success'";
                                                         $style = "class='text-success'";
                                                         $cnfrmBtn = "none;";
-                                                        $cnclCnfrmtnBtn = "flex;";
                                                         $reason = "none";
                                                     } else if ($booking_status_id == 3) {
                                                         $status = "Decline";
+                                                        $badge = "class='badge bg-danger'";
                                                         $style = "class='text-danger'";
                                                         $cnfrmBtn = "none;";
-                                                        $cnclCnfrmtnBtn = "none;";
                                                         $reason = "none";
                                                     } else if ($booking_status_id == 4) {
                                                         $status = "Cancelled";
+                                                        $badge = "class='badge bg-warning'";
                                                         $style = "class='text-warning'";
                                                         $cnfrmBtn = "flex;";
-                                                        $cnclCnfrmtnBtn = "none;";
                                                         $reason = "block";
                                                     }
                                                     echo "
                                                     <tr>
-                                                        <td>$fullname</td>
-                                                        <td>$email</td>
-                                                        <td>$phone_number</td>
-                                                        <td>$created_at</td>
-                                                        <td class='text-center'><span $style>$status</span></td>
+                                                        <td class='text-center'>$fullname</td>
+                                                        <td class='text-center'>$created_at</td>
+                                                        <td class='text-center'><span $badge>$status</span></td>
                                                         <td class='text-center'>
                                                             <button class='btn btn-sm btn-primary rounded-5' data-bs-toggle='modal' data-bs-target='#infoModal$booking_id'>
                                                                 <i class='bi bi-eye'></i>&nbsp; <span class='to-hide'>View</span>
@@ -140,7 +123,7 @@ if (isset($_SESSION['id'])) {
                                                         </td>
                                                     </tr>
                                                     ";
-                                                ?>
+                                            ?>
                                                     <div class="modal fade" id="infoModal<?= $booking_id ?>" aria-hidden="true" tabindex="-1">
                                                         <div class="modal-dialog modal-xl modal-dialog-centered">
                                                             <form action="../../controller/admin/confirm-booking.php?booking_id=<?= $booking_id ?>" method="post">
@@ -262,7 +245,7 @@ if (isset($_SESSION['id'])) {
                                                                             </div>
                                                                             <div class="mt-3 text-end">
                                                                                 <h6><span class="text-secondary">Status: </span><span <?= $style ?>><?= $status ?></span></h6>
-                                                                                <h6 style="display: <?=$reason?>;"><span class="text-secondary">Reason: <br /></span><?= $reason_for_cancellation ?></h6>
+                                                                                <h6 style="display: <?= $reason ?>;"><span class="text-secondary">Reason: <br /></span><?= $reason_for_cancellation ?></h6>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -279,11 +262,8 @@ if (isset($_SESSION['id'])) {
                                                                                 $assignRmBtn = "none;";
                                                                             }
                                                                             ?>
-                                                                            <button style="display: <?= $assignRmBtn ?>"  onclick="redirectToAssignRoom()" class="btn btn-sm btn-primary px-3 rounded-5" type="button">
+                                                                            <button style="display: <?= $assignRmBtn ?>" onclick="redirectToAssignRoom()" class="btn btn-sm btn-primary px-3 rounded-5" type="button">
                                                                                 <i class="bi bi-pin"></i>&nbsp; Assign Room
-                                                                            </button>
-                                                                            <button style="display: <?= $cnclCnfrmtnBtn ?>" onclick="redirectToCancel()" class="btn btn-sm btn-warning px-3 ms-2 rounded-5" type="button">
-                                                                                <i class="bi bi-exclamation-triangle"></i>&nbsp; Want to cancel confirmation?
                                                                             </button>
                                                                         </div>
                                                                         <div class="d-flex">
@@ -299,7 +279,7 @@ if (isset($_SESSION['id'])) {
                                                             </form>
                                                         </div>
                                                     </div>
-                                                <?php
+                                            <?php
                                                 }
                                             }
                                             ?>
@@ -320,15 +300,29 @@ if (isset($_SESSION['id'])) {
 
         <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="../../assets/js/main.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
+            $(document).ready(function() {
+                $('#paginateAllReservations').DataTable({
+                    "lengthMenu": [10, 25, 50, 100],
+                    "pagingType": "full_numbers",
+                    "searching": true,
+                    "language": {
+                        "paginate": {
+                            "first": "Begin",
+                            "last": "End",
+                            "next": "Next",
+                            "previous": "Previous"
+                        }
+                    }
+                });
+            });
+
             function redirectToAssignRoom() {
                 const bookingId = <?= json_encode($booking_id) ?>;
                 const url = `room-assignment.php?booking_id=${bookingId}`;
-                window.location.href = url;
-            }
-            function redirectToCancel() {
-                const bookingId = <?= json_encode($booking_id) ?>;
-                const url = `cancel-confirmed-booking.php?booking_id=${bookingId}`;
                 window.location.href = url;
             }
         </script>

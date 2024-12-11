@@ -34,7 +34,7 @@ if (isset($_POST['user_name']) && isset($_POST['password'])) {
                 $_SESSION['id'] = $row['id'];
 
                 //Redirection
-                header("Location: ../../views/admin/bookings.php");
+                header("Location: ../../views/admin/dashboard.php");
                 exit();
             } else {
                 header("Location: ../../admin-login.php?invalid$user_data");
