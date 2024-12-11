@@ -38,12 +38,12 @@ if (isset($_SESSION['id'])) {
                     <div class="col-12 col-lg-3 col-md-6 col-sm-6">
                         <div class="card info-card small-card">
                             <div class="filter">
-                                <a class="icon me-2 p-0" href="#" data-bs-toggle="dropdown"><i class="bi bi-filter fs-4"></i></a>
+                                <a class="icon me-2 p-0" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots fs-4"></i></a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow bg-dark">
                                     <li class="dropdown-header text-start">
                                         <h6>DATE Filter</h6>
                                     </li>
-                                    <li><a class="dropdown-item sales" style="color: #af8d02 !important;" href="#" id="sales_today">Today</a></li>
+                                    <li><a class="dropdown-item sales" style="color: #af8d02 !important;" href="#" id="sales_today">This Day</a></li>
                                     <li><a class="dropdown-item sales" style="color: #af8d02 !important;" href="#" id="sales_thismonth">This Month</a></li>
                                     <li><a class="dropdown-item sales" style="color: #af8d02 !important;" href="#" id="sales_thisyear">This Year</a></li>
                                 </ul>
@@ -63,24 +63,23 @@ if (isset($_SESSION['id'])) {
                     <div class="col-12 col-lg-3 col-md-6 col-sm-6">
                         <div class="card info-card small-card">
                             <div class="filter">
-                                <a class="icon me-2 p-0" href="#" data-bs-toggle="dropdown"><i class="bi bi-filter fs-4"></i></a>
+                                <a class="icon me-2 p-0" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots fs-4"></i></a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow bg-dark">
                                     <li class="dropdown-header text-start">
                                         <h6>DATE Filter</h6>
                                     </li>
-                                    <li><a class="dropdown-item res_history" style="color: #af8d02 !important;" href="#" id="res_history_today">Today</a></li>
+                                    <li><a class="dropdown-item res_history" style="color: #af8d02 !important;" href="#" id="res_history_today">This Day</a></li>
                                     <li><a class="dropdown-item res_history" style="color: #af8d02 !important;" href="#" id="res_history_thismonth">This Month</a></li>
                                     <li><a class="dropdown-item res_history" style="color: #af8d02 !important;" href="#" id="res_history_thisyear">This Year</a></li>
                                 </ul>
                             </div>
                             <div class="card-body">
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h5 class="card-title">Booking History</h5>
+                                    <h5 class="card-title">Bookings</h5>
                                     <span id="history-text" class="me-3" style="font-size: 13px;"></span>
                                 </div>
-                                <div class="d-flex align-items-center justify-content-center mt-3">
-                                    <h4 class='me-3'><span id="total_history"></span></h4>
-                                    <a href='bookings'><button class='btn btn-sm btn-primary rounded-5 px-3 py-1'>View</button></a>
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <h2 class='py-1'><span id="total_history"></span></h2>
                                 </div>
                             </div>
                         </div>
@@ -464,7 +463,7 @@ if (isset($_SESSION['id'])) {
                             console.log(data);
                             if (filter === "sales_today") {
                                 $("#sales_revenue").html("₱ " + (data.today_sales_revenue || 0));
-                                $("#sales-text").html("Today");
+                                $("#sales-text").html("This Day");
                             } else if (filter === "sales_thismonth") {
                                 $("#sales_revenue").html("₱ " + (data.month_sales_revenue || 0));
                                 $("#sales-text").html("This Month");
@@ -498,7 +497,7 @@ if (isset($_SESSION['id'])) {
                             console.log(data);
                             if (filter === "res_history_today") {
                                 $("#total_history").html((data.today_total_history || 0));
-                                $("#history-text").html("Today");
+                                $("#history-text").html("This Day");
                             } else if (filter === "res_history_thismonth") {
                                 $("#total_history").html((data.month_total_history || 0));
                                 $("#history-text").html("This Month");
