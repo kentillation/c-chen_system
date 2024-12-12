@@ -264,10 +264,11 @@
                                         <div class="col-lg-4 col-md-12 col-sm-12 col-12">
                                             <h5><strong><?= $cottage_name ?></strong> - ₱<?= number_format($cottage_price, 2) ?></h5>
                                             <h5><strong><?= $cottage_capacity ?></strong></h5>
+                                            <h5 id="availableCottage<?= $cottage_id ?>" style="position: absolute; display:none; z-index: 9999; margin-top: 150px; margin-left: 100px;">Unavailable</h5>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" name="cottage_id[]" id="cottage_id<?= $cottage_id ?>" value="<?= $cottage_id ?>">
                                                 <label class="form-check-label border-0" for="cottage_id<?= $cottage_id ?>">
-                                                    <img src="cottages/<?= $cottage_image ?>" width="250" height="250" id="cottage_id<?= $cottage_id ?>" alt="">
+                                                    <img src="cottages/<?= $cottage_image ?>" width="250" height="250" id="cottage_image<?= $cottage_id ?>" alt="">
                                                 </label>
                                             </div>
                                             <hr>
@@ -291,10 +292,11 @@
                                     ?>
                                         <div class="col-lg-4 col-md-12 col-sm-12 col-12">
                                             <h5><strong><?= $service_name ?></strong> - ₱<?= number_format($service_price, 2) ?></h5>
+                                            <h5 id="availableService<?= $service_id ?>" style="position: absolute; display:none; z-index: 9999; margin-top: 150px; margin-left: 100px;">Unavailable</h5>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" name="service_id[]" id="service_id<?= $service_id ?>" value="<?= $service_id ?>">
                                                 <label class="form-check-label border-0" for="service_id<?= $service_id ?>">
-                                                    <img src="services/<?= $service_image ?>" width="250" height="250" id="service_id<?= $service_id ?>" alt="">
+                                                    <img src="services/<?= $service_image ?>" width="250" height="250" id="service_img<?= $service_id ?>" alt="">
                                                 </label>
                                             </div>
                                             <hr>
@@ -450,6 +452,7 @@
         let pax = document.getElementById('pax');
         document.getElementById('date_check_in').addEventListener('change', function() {
             const dateCheckIn = new Date(this.value);
+            const cottageId = document.querySelector('input[name="cottage_id[]"]:checked')?.value;
             dateCheckIn.setDate(dateCheckIn.getDate() + 1);
             const formattedDateCheckOut = dateCheckIn.toISOString().split('T')[0];
             document.getElementById('date_check_out').value = formattedDateCheckOut;
@@ -478,6 +481,62 @@
                         }
                     })
                     .catch(error => console.error('Error fetching available rooms:', error));
+            });
+
+            // Checking available cottage
+            const cottageIds = document.querySelectorAll('input[name="cottage_id[]"]');
+            cottageIds.forEach(input => {
+                const cottageId = input.value;
+                fetch('./get-available-cottages.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: `date_check_in=${encodeURIComponent(this.value)}&cottage_id=${cottageId}`
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        const c_ID_image = document.querySelector(`#cottage_image${cottageId}`);
+                        const availableCottagesElement = document.getElementById(`availableCottage${cottageId}`);
+                        if (c_ID_image) {
+                            c_ID_image.style.opacity = data.available_cottages ? "1" : "0.5";
+                        }
+                        if (availableCottagesElement) {
+                            availableCottagesElement.style.display = "block";
+                            availableCottagesElement.textContent = data.available_cottages || "Unavailable";
+                        }
+                    })
+                    .catch(error => console.error('Error fetching available cottage:', error));
+            });
+
+            const serviceIds = document.querySelectorAll('input[name="service_id[]"]');
+            serviceIds.forEach(input => {
+                const serviceId = input.value;
+                fetch('./get-available-services.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: `date_check_in=${encodeURIComponent(this.value)}&service_id=${serviceId}`
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        const service_img = document.querySelector(`#service_img${serviceId}`);
+                        const availableServicesElement = document.getElementById(`availableService${serviceId}`);
+                        if (service_img) {
+                            service_img.style.opacity = data.available_service ? "1" : "0.5";
+                        }
+                        if (availableServicesElement) {
+                            availableServicesElement.style.display = "block";
+                            if (data.available_service > 0) {
+                                availableServicesElement.textContent = ``;
+                            } else {
+                                availableServicesElement.textContent = "Unavailable";
+                            }
+                        }
+
+                    })
+                    .catch(error => console.error('Error fetching available service:', error));
             });
         });
         document.addEventListener('click', (event) => {

@@ -22,6 +22,20 @@
         </li>
 
         <li class="nav-item">
+            <a class="nav-link collapsed" href="../admin/rooms">
+                <i class="bi bi-door-open"></i>
+                <span>Rooms</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="../admin/cottages">
+                <i class="bi bi-house"></i>
+                <span>Cottages</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
             <a class="nav-link collapsed" href="../admin/announcements">
                 <i class="bi bi-megaphone"></i>
                 <span>Announcements</span>
