@@ -5,8 +5,7 @@ session_start();
 if (isset($_SESSION['id'])) {
     $id = $_SESSION['id'];
     if (
-        isset($_POST['room_number']) && isset($_POST['room_category_id']) &&
-        isset($_POST['room_capacity'])
+        isset($_POST['room_number']) && isset($_POST['room_category_id'])
     ) {
         function validate($data)
         {
@@ -15,30 +14,32 @@ if (isset($_SESSION['id'])) {
             $data = htmlspecialchars($data);
             return $data;
         }
-        $room_number_id = validate($_GET['room_number_id']);
         $room_number = validate($_POST['room_number']);
         $room_category_id = validate($_POST['room_category_id']);
-        $room_capacity = validate($_POST['room_capacity']);
-        $room_availability_id = 1;
+        $img_url = $_FILES['img_url'];
         date_default_timezone_set('Asia/Manila');
         $createdDate = date("Y-m-d H:i:s");
-
-        $stmt = $conn->prepare(" SELECT * FROM tbl_room_number WHERE room_number = ? AND room_category_id = ? AND room_availability_id = ?");
-        $stmt->bind_param("sii", $room_number, $room_category_id, $room_availability_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if (mysqli_num_rows($result) > 0) {
-            header("Location: ../../views/admin/add-room.php?existed");
-            exit();
-        } else {
-
-            $stmt = $conn->prepare(" INSERT INTO tbl_room_number
-            (room_number, room_category_id, room_capacity, room_availability_id, updated_at) VALUES (?, ?, ?, ?, ?) ");
-            $stmt->bind_param('iiiis', $room_number, $room_category_id, $room_capacity, $room_availability_id, $createdDate);
+        try {
+            $stmt = $conn->prepare(" SELECT * FROM tbl_room_number WHERE room_number = ? AND room_category_id = ?");
+            $stmt->bind_param("ii", $room_number, $room_category_id);
             $stmt->execute();
-
-            header("Location: ../../views/admin/add-room.php?success");
+            $result = $stmt->get_result();
+            if (mysqli_num_rows($result) > 0) {
+                header("Location: ../../views/admin/add-room.php?existed");
+                exit();
+            } else {
+                $availability = 1;
+                $stmt = $conn->prepare(
+                    " INSERT INTO tbl_room_number (room_number, room_category_id, room_availability_id, updated_at) VALUES (?, ?, ?, ?) "
+                );
+                $stmt->bind_param('siis', $room_number, $room_category_id, $availability, $createdDate);
+                $stmt->execute();
+                header("Location: ../../views/admin/add-room.php?success");
+                exit();
+            }
+        } catch (Exception $e) {
+            $conn->rollback();
+            header("Location:../../views/admin/add-room?booking_error");
             exit();
         }
     } else {

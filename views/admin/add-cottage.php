@@ -39,7 +39,7 @@ if (isset($_SESSION['id'])) {
                         if (isset($_GET['success'])) {
                         ?>
                             <div class="alert alert-success alert-dismissible fade show d-flex align-items-center justify-content-center" role="alert">
-                                <span><?php echo $_GET['success'], "Room has been saved successfully!"; ?></span>
+                                <span><?php echo $_GET['success'], "Cottage has been saved successfully!"; ?></span>
                                 <a href="#">
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </a>

@@ -20,17 +20,17 @@ if (isset($_SESSION['id'])) {
         <main id="main" class="main">
 
             <div class="pagetitle">
-                <h1>Add Room</h1>
+                <h1>Add Room Category</h1>
                 <nav>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">Main</li>
-                        <li class="breadcrumb-item active">Add Room</li>
+                        <li class="breadcrumb-item active">Add Room Category</li>
                     </ol>
                 </nav>
             </div>
 
             <section class="section dashboard mb-5">
-                <a href="rooms.php">
+                <a href="categories.php">
                     <i class="bi bi-arrow-left"></i>&nbsp; Back
                 </a>
                 <div class="row">
@@ -39,17 +39,27 @@ if (isset($_SESSION['id'])) {
                         if (isset($_GET['success'])) {
                         ?>
                             <div class="alert alert-success alert-dismissible fade show d-flex align-items-center justify-content-center" role="alert">
-                                <span><?php echo $_GET['success'], "Room has been saved successfully!"; ?></span>
+                                <span><?php echo $_GET['success'], "Room category has been save successfully!"; ?></span>
                                 <a href="#">
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </a>
                             </div>
                         <?php
                         }
-                        if (isset($_GET['unknown'])) {
+                        if (isset($_GET['existed'])) {
+                        ?>
+                            <div class="alert alert-warning alert-dismissible fade show d-flex align-items-center justify-content-center" role="alert">
+                                <span><?php echo $_GET['existed'], "Room category name already exist. Please try again!"; ?></span>
+                                <a href="#">
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </a>
+                            </div>
+                        <?php
+                        }
+                        if (isset($_GET['upload_error'])) {
                         ?>
                             <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center" role="alert">
-                                <span><?php echo $_GET['unknown'], "An unknown error occured. Please try again!"; ?></span>
+                                <span><?php echo $_GET['upload_error'], "An unknown error occured."; ?></span>
                                 <a href="#">
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </a>
@@ -59,29 +69,26 @@ if (isset($_SESSION['id'])) {
                         ?>
                         <div class="card">
                             <div class="card-body">
-                                <form action="../../controller/admin/add-room-check.php" method="post" enctype="multipart/form-data">
+                                <form action="../../controller/admin/add-room-category-check.php" enctype="multipart/form-data" method="post">
                                     <div class="row mt-2 p-3">
-                                        <div class="col-12">
-                                            <label for="room_number">Room number:</label>
-                                            <input type="text" name="room_number" id="room_number" class="form-control">
+                                        <div class="col-12 mt-3">
+                                            <label for="room_category_name">Category name: </label>
+                                            <input type="text" name="room_category_name" id="room_category_name" class="form-control">
                                         </div>
                                         <div class="col-12 mt-3">
-                                            <label for="room_category_id">Room category:</label>
-                                            <select name="room_category_id" id="room_category_id" class="form-select">
-                                                <option selected disabled>-select-</option>
-                                                <?php
-                                                $stmtCategory = $conn->prepare("SELECT * FROM tbl_room_category");
-                                                $stmtCategory->execute();
-                                                $resultCategory = $stmtCategory->get_result();
-                                                while ($rowCategory = $resultCategory->fetch_assoc()) {
-                                                    $roomCategoryId = $rowCategory['room_category_id'];
-                                                    $roomCategoryName = $rowCategory['room_category_name'];
-                                                    echo "
-                                                <option value='$roomCategoryId'>$roomCategoryName</option>
-                                                ";
-                                                }
-                                                ?>
-                                            </select>
+                                            <label for="room_category_price">Category price:</label>
+                                            <input type="text" name="room_category_price" id="room_category_price" class="form-control">
+                                        </div>
+                                        <div class="col-12 mt-3">
+                                            <label for="room_capacity">Category capacity:</label>
+                                            <input type="text" name="room_capacity" id="room_capacity" class="form-control">
+                                        </div>
+                                        <div class="col-12 mt-3">
+                                            <label for="room_details">Category details:</label>
+                                            <textarea name="room_details" cols="30" row="10" id="room_details" class="form-control"></textarea>
+                                        </div>
+                                        <div class="col-12 mt-3">
+                                            <input type="file" name="img_url" id="img_url" class="form-control">
                                         </div>
                                         <div class="col-12 mt-4">
                                             <button class="btn btn-primary px-5 rounded-5" type="submit">Save</button>

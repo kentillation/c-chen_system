@@ -4,7 +4,7 @@ session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 if (isset($_SESSION['id'])) {
-    $room_number_id = $_GET['room_number_id'];
+    $room_category_id = $_GET['room_category_id'];
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -21,17 +21,17 @@ if (isset($_SESSION['id'])) {
         <main id="main" class="main">
 
             <div class="pagetitle">
-                <h1>Room Details</h1>
+                <h1>Room Category Details</h1>
                 <nav>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">Main</li>
-                        <li class="breadcrumb-item active">Room Details</li>
+                        <li class="breadcrumb-item active">Room Category Details</li>
                     </ol>
                 </nav>
             </div>
 
             <section class="section dashboard mb-5">
-                <a href="rooms.php">
+                <a href="categories.php">
                     <i class="bi bi-arrow-left"></i>&nbsp; Back
                 </a>
                 <div class="row">
@@ -40,17 +40,7 @@ if (isset($_SESSION['id'])) {
                         if (isset($_GET['updated'])) {
                         ?>
                             <div class="alert alert-success alert-dismissible fade show d-flex align-items-center justify-content-center" role="alert">
-                                <span><?php echo $_GET['updated'], "Room has been updated successfully!"; ?></span>
-                                <a href="#">
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </a>
-                            </div>
-                        <?php
-                        }
-                        if (isset($_GET['unknown'])) {
-                        ?>
-                            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center" role="alert">
-                                <span><?php echo $_GET['unknown'], "An unknown error occured. Please try again!"; ?></span>
+                                <span><?php echo $_GET['updated'], "Room category has been updated successfully!"; ?></span>
                                 <a href="#">
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </a>
@@ -59,8 +49,18 @@ if (isset($_SESSION['id'])) {
                         }
                         if (isset($_GET['existed'])) {
                         ?>
+                            <div class="alert alert-warning alert-dismissible fade show d-flex align-items-center justify-content-center" role="alert">
+                                <span><?php echo $_GET['existed'], "Room category name already exist. Please try again!"; ?></span>
+                                <a href="#">
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </a>
+                            </div>
+                        <?php
+                        }
+                        if (isset($_GET['upload_error'])) {
+                        ?>
                             <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center justify-content-center" role="alert">
-                                <span><?php echo $_GET['existed'], "Room already existed. Please try again!"; ?></span>
+                                <span><?php echo $_GET['upload_error'], "An unknown error occured."; ?></span>
                                 <a href="#">
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </a>
@@ -69,67 +69,62 @@ if (isset($_SESSION['id'])) {
                         }
                         ?>
                         <?php
-                        $stmt = $conn->prepare("SELECT *,
-                        tbl_room_category.room_category_name,
-                        tbl_room_category.room_category_price,
-                        tbl_room_number.room_capacity,
-                        tbl_availability.availability
-                        FROM tbl_room_number
-                        INNER JOIN tbl_room_category ON tbl_room_number.room_category_id = tbl_room_category.room_category_id
-                        INNER JOIN tbl_availability ON tbl_room_number.room_availability_id = tbl_availability.availability_id
-                        WHERE tbl_room_number.room_number_id = ?
-                        ORDER BY tbl_room_number.room_number");
-                        $stmt->bind_param('i', $room_number_id);
+                        $stmt = $conn->prepare("SELECT * FROM tbl_room_category WHERE room_category_id = ?");
+                        $stmt->bind_param('i', $room_category_id);
                         $stmt->execute();
                         $result = $stmt->get_result();
                         $row = $result->fetch_assoc();
-                        $room_number = $row['room_number'];
-                        $room_category_id = $row['room_category_id'];
+                        // $room_category_id = $row['room_category_id'];
                         $room_category_name = $row['room_category_name'];
                         $room_category_price = $row['room_category_price'];
                         $room_capacity = $row['room_capacity'];
-                        $room_availability_id = $row['room_availability_id'];
-                        $availability = $row['availability'];
+                        $room_details = $row['room_details'];
+                        $img_url = $row['img_url'];
+                        $c_availability_id = $row['availability_id'];
+                        if ($c_availability_id == 1) {
+                            $c_availability = "Available";
+                        }
+                        if ($c_availability_id == 2) {
+                            $c_availability = "Unavailable";
+                        }
                         ?>
                         <div class="card">
                             <div class="card-body">
-                                <form action="../../controller/admin/update-room.php?room_number_id=<?= $room_number_id ?>" method="post">
+                                <form action="../../controller/admin/update-room-category.php?room_category_id=<?= $room_category_id ?>" enctype="multipart/form-data" method="post">
                                     <div class="row mt-2 p-3">
-                                        <div class="col-12">
-                                            <label for="room_number">Room number:</label>
-                                            <input type="text" name="room_number" value="<?= $room_number ?>" id="room_number" class="form-control">
+                                        <div class="col-12 mt-3">
+                                            <label for="room_category_name">Category name: </label>
+                                            <input type="text" name="room_category_name" value="<?= $room_category_name ?>" id="room_category_name" class="form-control">
                                         </div>
                                         <div class="col-12 mt-3">
-                                            <label for="room_category_id">Room category:</label>
-                                            <select name="room_category_id" id="room_category_id" class="form-select">
-                                                <option value="<?= $room_category_id ?>"><?= $room_category_name ?></option>
-                                                <?php
-                                                $stmtCategory = $conn->prepare("SELECT * FROM tbl_room_category");
-                                                $stmtCategory->execute();
-                                                $resultCategory = $stmtCategory->get_result();
-                                                while ($rowCategory = $resultCategory->fetch_assoc()) {
-                                                    $roomCategoryId = $rowCategory['room_category_id'];
-                                                    $roomCategoryName = $rowCategory['room_category_name'];
-                                                    echo "
-                                                <option value='$roomCategoryId'>$roomCategoryName</option>
-                                                ";
-                                                }
-                                                ?>
-                                            </select>
+                                            <label for="room_category_price">Category price:</label>
+                                            <input type="text" name="room_category_price" value="<?= $room_category_price ?>" id="room_category_price" class="form-control">
                                         </div>
                                         <div class="col-12 mt-3">
-                                            <label for="room_availability_id">Availability:</label>
-                                            <select name="room_availability_id" id="room_availability_id" class="form-select">
-                                                <option value="<?= $room_availability_id ?>"><?= $availability ?></option>
+                                            <label for="room_capacity">Category capacity:</label>
+                                            <input type="text" name="room_capacity" value="<?= $room_capacity ?>" id="room_capacity" class="form-control">
+                                        </div>
+                                        <div class="col-12 mt-3">
+                                            <label for="room_details">Category details:</label>
+                                            <textarea name="room_details" cols="30" row="10" id="room_details" class="form-control"><?= $room_details ?></textarea>
+                                        </div>
+                                        <div class="col-12 mt-3">
+                                            <img src="../../rooms/<?= $img_url ?>" width="150" height="150" alt="">
+                                            <input type="file" name="img_url" value="<?= $img_url ?>" id="img_url" class="form-control">
+                                        </div>
+                                        <div class="col-12 mt-3">
+                                            <label for="availability_id">Availability:</label>
+                                            <select name="availability_id" id="availability_id" class="form-select">
+                                                <option value="<?= $c_availability_id ?>"><?= $c_availability ?></option>
                                                 <?php
                                                 $stmtAvailability = $conn->prepare("SELECT * FROM tbl_availability");
                                                 $stmtAvailability->execute();
                                                 $resultAvailability = $stmtAvailability->get_result();
                                                 while ($rowAvailability = $resultAvailability->fetch_assoc()) {
-                                                    $roomAvailabilityId = $rowAvailability['availability_id'];
-                                                    $roomAvailability = $rowAvailability['availability'];
+                                                    $availabilityId = $rowAvailability['availability_id'];
+                                                    $availability = $rowAvailability['availability'];
                                                     echo "
-                                                <option value='$roomAvailabilityId'>$roomAvailability</option>
+                                                <option value='$availabilityId'>$availability</option>
                                                 ";
                                                 }
                                                 ?>

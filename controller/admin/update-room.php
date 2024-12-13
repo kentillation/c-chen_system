@@ -5,8 +5,7 @@ session_start();
 if (isset($_SESSION['id'])) {
     $id = $_SESSION['id'];
     if (
-        isset($_POST['room_number']) && isset($_POST['room_category_id']) &&
-        isset($_POST['room_capacity']) && isset($_POST['room_availability_id'])
+        isset($_POST['room_number']) && isset($_POST['room_category_id']) && isset($_POST['room_availability_id'])
     ) {
         function validate($data)
         {
@@ -18,8 +17,6 @@ if (isset($_SESSION['id'])) {
         $room_number_id = validate($_GET['room_number_id']);
         $room_number = validate($_POST['room_number']);
         $room_category_id = validate($_POST['room_category_id']);
-        $room_capacity = validate($_POST['room_capacity']);
-        $room_availability_id = validate($_POST['room_availability_id']);
         date_default_timezone_set('Asia/Manila');
         $createdDate = date("Y-m-d H:i:s");
 
@@ -33,8 +30,8 @@ if (isset($_SESSION['id'])) {
             exit();
         } else {
 
-            $stmt = $conn->prepare(" UPDATE tbl_room_number SET room_number = ?, room_category_id = ?, room_capacity = ?, room_availability_id = ?, created_at = ?, updated_at = ? WHERE room_number_id = ? ");
-            $stmt->bind_param('siiissi', $room_number, $room_category_id, $room_capacity, $room_availability_id, $createdDate, $createdDate, $room_number_id);
+            $stmt = $conn->prepare(" UPDATE tbl_room_number SET room_number = ?, room_category_id = ?, room_availability_id = ?, created_at = ?, updated_at = ? WHERE room_number_id = ? ");
+            $stmt->bind_param('siissi', $room_number, $room_category_id, $room_availability_id, $createdDate, $createdDate, $room_number_id);
             $stmt->execute();
 
             header("Location: ../../views/admin/room-details?room_number_id=$room_number_id&updated");

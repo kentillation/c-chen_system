@@ -29,6 +29,13 @@
         </li>
 
         <li class="nav-item">
+            <a class="nav-link collapsed" href="../admin/categories">
+                <i class="bi bi-biezer2"></i>
+                <span>Categories</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
             <a class="nav-link collapsed" href="../admin/cottages">
                 <i class="bi bi-house"></i>
                 <span>Cottages</span>
