@@ -11,12 +11,12 @@ if (isset($_POST['date_check_in'])) {
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
     $availService = $row['booked_service'] ?? 0;
-    $totalRoomsStmt = $conn->prepare(" SELECT COUNT(*) as total_service FROM tbl_services WHERE service_id = ? ");
-    $totalRoomsStmt->bind_param('i', $service_id);
-    $totalRoomsStmt->execute();
-    $totalRoomsResult = $totalRoomsStmt->get_result();
-    $totalRoomsRow = $totalRoomsResult->fetch_assoc();
-    $totalRooms = $totalRoomsRow['total_service'] ?? 0;
-    $availableService = $totalRooms - $availService;
+    $totalServiceStmt = $conn->prepare(" SELECT COUNT(*) as total_service FROM tbl_services WHERE service_id = ? ");
+    $totalServiceStmt->bind_param('i', $service_id);
+    $totalServiceStmt->execute();
+    $totalServiceResult = $totalServiceStmt->get_result();
+    $totalServiceRow = $totalServiceResult->fetch_assoc();
+    $totalService = $totalServiceRow['total_service'] ?? 0;
+    $availableService = $totalService - $availService;
     echo json_encode(['available_service' => $availableService]);
 }

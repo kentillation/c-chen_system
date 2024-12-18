@@ -46,7 +46,7 @@
 
     #checkboxInfo input[type="checkbox"]:checked+label,
     #checkboxInfo input[type="checkbox"]:hover+label {
-        cursor: pointer;
+        /* cursor: pointer; */
         border: 2px solid #2c5f77;
         box-shadow: 0px 0px 20px rgba(1, 80, 126, 0.356);
         border-radius: 7px;
@@ -87,20 +87,6 @@
                     <li><a href="index.php?#about">About</a></li>
                     <li><a href="index.php?#features">Services</a></li>
                     <li><a href="index.php?#contact">Contact</a></li>
-                    <li class="dropdown"><a href="#"><span>More</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                        <ul>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Terms and Conditions</a></li>
-                            <li class="dropdown"><a href="#"><span>Others</span> <i
-                                        class="bi bi-chevron-down toggle-dropdown"></i></a>
-                                <ul>
-                                    <li><a href="#">Menu 1</a></li>
-                                    <li><a href="#">Menu 2</a></li>
-                                    <li><a href="#">Menu 3</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
                     <li><a href="#booking" class="custom-button">Book now!</a>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
@@ -187,11 +173,11 @@
                             <div class="row mb-5">
                                 <div class="col-md-6">
                                     <label for="date_check_in"><span class="text-danger me-1">*</span>Starting Date</label>
-                                    <input type="date" name="date_check_in" class="form-control" id="date_check_in" placeholder="Type here..." required>
+                                    <input type="date" name="date_check_in" class="form-control p-3" style="cursor: pointer;" id="date_check_in" placeholder="Type here..." required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="date_check_out"><span class="text-danger me-1">*</span>Ending Date</label>
-                                    <input type="date" name="date_check_out" class="form-control" id="date_check_out" placeholder="Type here..." required disabled>
+                                    <input type="date" name="date_check_out" class="form-control p-3" style="cursor: pointer;" id="date_check_out" placeholder="Type here..." required disabled>
                                 </div>
                             </div>
                             <div class="row my-4 p-3 border rounded-2" id="checkboxInfo">
@@ -266,7 +252,7 @@
                                         <div class="col-lg-4 col-md-12 col-sm-12 col-12">
                                             <h5><strong><?= $cottage_name ?></strong> - ₱<?= number_format($cottage_price, 2) ?></h5>
                                             <h5><strong><?= $cottage_capacity ?></strong></h5>
-                                            <h5 id="availableCottage<?= $cottage_id ?>" style="position: absolute; display:none; z-index: 9999; margin-top: 150px; margin-left: 100px;">Unavailable</h5>
+                                            <h5 id="availableCottage<?= $cottage_id ?>" style="position: absolute; display:none; z-index: 9999; margin-top: 150px; margin-left: 100px; color: blue;"></h5>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" name="cottage_id[]" id="cottage_id<?= $cottage_id ?>" value="<?= $cottage_id ?>">
                                                 <label class="form-check-label border-0" for="cottage_id<?= $cottage_id ?>">
@@ -291,15 +277,29 @@
                                         $service_name = $rows['service_name'];
                                         $service_price = $rows['service_price'];
                                         $service_image = $rows['service_image'];
+                                        $service_availability_id = $rows['service_availability_id'];
+                                        if ($service_availability_id == 2) {
+                                            $addStyle = "opacity: 0.5;";
+                                            $form_check = "pointer-events: none;";
+                                            $undrmntnce = "d-flex position-absolute mt-5 ms-5 text-white";
+                                        }
+                                        if ($service_availability_id == 1) {
+                                            $addStyle = "";
+                                            $undrmntnce = "d-none";
+                                        }
+
                                     ?>
                                         <div class="col-lg-4 col-md-12 col-sm-12 col-12">
                                             <h5><strong><?= $service_name ?></strong> - ₱<?= number_format($service_price, 2) ?></h5>
-                                            <h5 id="availableService<?= $service_id ?>" style="position: absolute; display:none; z-index: 9999; margin-top: 150px; margin-left: 100px;">Unavailable</h5>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="service_id[]" id="service_id<?= $service_id ?>" value="<?= $service_id ?>">
-                                                <label class="form-check-label border-0" for="service_id<?= $service_id ?>">
-                                                    <img src="services/<?= $service_image ?>" width="250" height="250" id="service_img<?= $service_id ?>" alt="">
-                                                </label>
+                                            <h5 id="availableService<?= $service_id ?>" style="position: absolute; display: block; margin-top: 150px; margin-left: 100px; color: blue;"></h5>
+                                            <div class="form-check" style="<?= $form_check ?>">
+                                                <div class="container rounded-2" style="<?= $addStyle ?>">
+                                                    <h5 class="<?= $undrmntnce ?>">Undermaintenance</h5>
+                                                    <input class="form-check-input" type="checkbox" name="service_id[]" id="service_id<?= $service_id ?>" value="<?= $service_id ?>" readonly>
+                                                    <label class="form-check-label border-0" for="service_id<?= $service_id ?>">
+                                                        <img src="services/<?= $service_image ?>" width="250" height="250" id="service_image<?= $service_id ?>" alt="">
+                                                    </label>
+                                                </div>
                                             </div>
                                             <hr>
                                         </div>
@@ -500,46 +500,41 @@
                     .then(data => {
                         const c_ID_image = document.querySelector(`#cottage_image${cottageId}`);
                         const availableCottagesElement = document.getElementById(`availableCottage${cottageId}`);
-                        if (c_ID_image) {
-                            c_ID_image.style.opacity = data.available_cottages ? "1" : "0.5";
-                        }
-                        if (availableCottagesElement) {
-                            availableCottagesElement.style.display = "block";
-                            availableCottagesElement.textContent = data.available_cottages || "Occupied";
-                        }
+                        c_ID_image.style.opacity = data.available_cottages ? "1" : "0.5";
+                        availableCottagesElement.style.display = "block";
+                        availableCottagesElement.textContent = data.available_cottages ? "" : "Occupied";
                     })
                     .catch(error => console.error('Error fetching available cottage:', error));
             });
 
-            const serviceIds = document.querySelectorAll('input[name="service_id[]"]');
-            serviceIds.forEach(input => {
-                const serviceId = input.value;
-                fetch('./get-available-services.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        },
-                        body: `date_check_in=${encodeURIComponent(this.value)}&service_id=${serviceId}`
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        const service_img = document.querySelector(`#service_img${serviceId}`);
-                        const availableServicesElement = document.getElementById(`availableService${serviceId}`);
-                        if (service_img) {
-                            service_img.style.opacity = data.available_service ? "1" : "0.5";
-                        }
-                        if (availableServicesElement) {
-                            availableServicesElement.style.display = "block";
-                            if (data.available_service > 0) {
-                                availableServicesElement.textContent = ``;
-                            } else {
-                                availableServicesElement.textContent = "Occupied";
-                            }
-                        }
+            // const serviceIds = document.querySelectorAll('input[name="service_id[]"]');
+            // serviceIds.forEach(input => {
+            //     const serviceId = input.value;
+            //     fetch('./get-available-services.php', {
+            //             method: 'POST',
+            //             headers: {
+            //                 'Content-Type': 'application/x-www-form-urlencoded'
+            //             },
+            //             body: `date_check_in=${encodeURIComponent(this.value)}&service_id=${serviceId}`
+            //         })
+            //         .then(response => response.json())
+            //         .then(data => {
+            //             const service_Image = document.querySelector(`#service_image${serviceId}`);
+            //             const availableServicesElement = document.getElementById(`availableService${serviceId}`);
 
-                    })
-                    .catch(error => console.error('Error fetching available service:', error));
-            });
+            //             if (service_Image) {
+            //                 // Set opacity based on service availability
+            //                 service_Image.style.opacity = data.available_service ? "1" : "0.5";
+            //             }
+
+            //             if (availableServicesElement) {
+            //                 availableServicesElement.style.display = "block";
+            //                 availableServicesElement.textContent = data.available_service ? "" : "Occupied";
+            //             }
+            //         })
+            //         .catch(error => console.error('Error fetching available service:', error));
+            // });
+
         });
         document.addEventListener('click', (event) => {
             if (event.target.closest('.plusBtn')) {

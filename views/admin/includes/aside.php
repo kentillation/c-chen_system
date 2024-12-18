@@ -29,8 +29,15 @@
         </li>
 
         <li class="nav-item">
+            <a class="nav-link collapsed" href="../admin/services">
+                <i class="bi bi-bezier"></i>
+                <span>Services</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
             <a class="nav-link collapsed" href="../admin/categories">
-                <i class="bi bi-biezer2"></i>
+                <i class="bi bi-diagram-3"></i>
                 <span>Categories</span>
             </a>
         </li>

@@ -37,20 +37,6 @@
                     <li><a href="#about">About</a></li>
                     <li><a href="#features">Services</a></li>
                     <li><a href="#contact">Contact</a></li>
-                    <li class="dropdown"><a href="#"><span>More</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                        <ul>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Terms and Conditions</a></li>
-                            <li class="dropdown"><a href="#"><span>Others</span> <i
-                                        class="bi bi-chevron-down toggle-dropdown"></i></a>
-                                <ul>
-                                    <li><a href="#">Menu 1</a></li>
-                                    <li><a href="#">Menu 2</a></li>
-                                    <li><a href="#">Menu 3</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
                     <li><a href="booking.php" class="custom-button">Book now!</a>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
