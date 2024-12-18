@@ -262,9 +262,11 @@ if (isset($_SESSION['id'])) {
                                                                                 $assignRmBtn = "none;";
                                                                             }
                                                                             ?>
-                                                                            <button style="display: <?= $assignRmBtn ?>" onclick="redirectToAssignRoom()" class="btn btn-sm btn-primary px-3 rounded-5" type="button">
-                                                                                <i class="bi bi-pin"></i>&nbsp; Assign Room
-                                                                            </button>
+                                                                            <a href="room-assignment.php?booking_id=<?= $booking_id ?>">
+                                                                                <button style="display: <?= $assignRmBtn ?>" class="btn btn-sm btn-primary px-3 rounded-5" type="button">
+                                                                                    <i class="bi bi-pin"></i>&nbsp; Assign Room
+                                                                                </button>
+                                                                            </a>
                                                                         </div>
                                                                         <div class="d-flex">
                                                                             <button class="btn btn-sm btn-danger px-3 rounded-5" type="button" data-bs-dismiss="modal" aria-label="Close">
@@ -320,11 +322,11 @@ if (isset($_SESSION['id'])) {
                 });
             });
 
-            function redirectToAssignRoom() {
-                const bookingId = <?= json_encode($booking_id) ?>;
-                const url = `room-assignment.php?booking_id=${bookingId}`;
-                window.location.href = url;
-            }
+            // function redirectToAssignRoom() {
+            //     const bookingId = <?= json_encode($booking_id) ?>;
+            //     const url = `room-assignment.php?booking_id=${bookingId}`;
+            //     window.location.href = url;
+            // }
         </script>
 
     </body>

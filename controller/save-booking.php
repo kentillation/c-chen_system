@@ -4,13 +4,13 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Send email using PHPMailer library
-// require '../email-plugin/PHPMailer.php';
-// require '../email-plugin/SMTP.php';
-// require '../email-plugin/Exception.php';
+require '../email-plugin/PHPMailer.php';
+require '../email-plugin/SMTP.php';
+require '../email-plugin/Exception.php';
 
-// use PHPMailer\PHPMailer\PHPMailer;
-// use PHPMailer\PHPMailer\SMTP;
-// use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     function validate($data)
@@ -117,116 +117,116 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        // $stmtBookingCottage = $conn->prepare(" SELECT 
-        // tbl_booking_cottage.cottage_id,
-        // tbl_booking_cottage.reference_number,
-        // tbl_cottages.cottage_name
-        // FROM tbl_booking_cottage
-        // INNER JOIN tbl_cottages ON tbl_booking_cottage.cottage_id = tbl_cottages.cottage_id
-        // WHERE tbl_booking_cottage.reference_number = ? ");
-        // $stmtBookingCottage->bind_param('s', $referenceNumber);
-        // $stmtBookingCottage->execute();
-        // $resultBookingCottage = $stmtBookingCottage->get_result();
-        // $cottage_names = [];
-        // while ($rowsBookingCottage = $resultBookingCottage->fetch_assoc()) {
-        //     $cottage_names[] = $rowsBookingCottage['cottage_name'];
-        // }
-        // $cottage_name = implode(", ", $cottage_names);
+        $stmtBookingCottage = $conn->prepare(" SELECT 
+        tbl_booking_cottage.cottage_id,
+        tbl_booking_cottage.reference_number,
+        tbl_cottages.cottage_name
+        FROM tbl_booking_cottage
+        INNER JOIN tbl_cottages ON tbl_booking_cottage.cottage_id = tbl_cottages.cottage_id
+        WHERE tbl_booking_cottage.reference_number = ? ");
+        $stmtBookingCottage->bind_param('s', $referenceNumber);
+        $stmtBookingCottage->execute();
+        $resultBookingCottage = $stmtBookingCottage->get_result();
+        $cottage_names = [];
+        while ($rowsBookingCottage = $resultBookingCottage->fetch_assoc()) {
+            $cottage_names[] = $rowsBookingCottage['cottage_name'];
+        }
+        $cottage_name = implode(", ", $cottage_names);
 
-        // $stmtBookingroom = $conn->prepare(" SELECT 
-        // tbl_booking_room.room_category_id,
-        // tbl_booking_room.reference_number,
-        // tbl_room_category.room_category_name
-        // FROM tbl_booking_room
-        // INNER JOIN tbl_room_category ON tbl_booking_room.room_category_id = tbl_room_category.room_category_id
-        // WHERE tbl_booking_room.reference_number = ? ");
-        // $stmtBookingroom->bind_param('s', $referenceNumber);
-        // $stmtBookingroom->execute();
-        // $resultRoomBooking = $stmtBookingroom->get_result();
-        // $room_category_names = [];
-        // while ($rowsRoomBooking = $resultRoomBooking->fetch_assoc()) {
-        //     $room_category_names[] = $rowsRoomBooking['room_category_name'];
-        // }
-        // $room_category_name = implode(", ", $room_category_names);
+        $stmtBookingroom = $conn->prepare(" SELECT 
+        tbl_booking_room.room_category_id,
+        tbl_booking_room.reference_number,
+        tbl_room_category.room_category_name
+        FROM tbl_booking_room
+        INNER JOIN tbl_room_category ON tbl_booking_room.room_category_id = tbl_room_category.room_category_id
+        WHERE tbl_booking_room.reference_number = ? ");
+        $stmtBookingroom->bind_param('s', $referenceNumber);
+        $stmtBookingroom->execute();
+        $resultRoomBooking = $stmtBookingroom->get_result();
+        $room_category_names = [];
+        while ($rowsRoomBooking = $resultRoomBooking->fetch_assoc()) {
+            $room_category_names[] = $rowsRoomBooking['room_category_name'];
+        }
+        $room_category_name = implode(", ", $room_category_names);
 
-        // $stmtBookingroom = $conn->prepare(" SELECT 
-        // tbl_booking_service.service_id,
-        // tbl_booking_service.reference_number,
-        // tbl_services.service_name
-        // FROM tbl_booking_service
-        // INNER JOIN tbl_services ON tbl_booking_service.service_id = tbl_services.service_id
-        // WHERE tbl_booking_service.reference_number = ? ");
-        // $stmtBookingroom->bind_param('s', $referenceNumber);
-        // $stmtBookingroom->execute();
-        // $resultRoomBooking = $stmtBookingroom->get_result();
-        // $service_names = [];
-        // while ($rowsRoomBooking = $resultRoomBooking->fetch_assoc()) {
-        //     $service_names[] = $rowsRoomBooking['service_name'];
-        // }
-        // $service_name = implode(", ", $service_names);
+        $stmtBookingroom = $conn->prepare(" SELECT 
+        tbl_booking_service.service_id,
+        tbl_booking_service.reference_number,
+        tbl_services.service_name
+        FROM tbl_booking_service
+        INNER JOIN tbl_services ON tbl_booking_service.service_id = tbl_services.service_id
+        WHERE tbl_booking_service.reference_number = ? ");
+        $stmtBookingroom->bind_param('s', $referenceNumber);
+        $stmtBookingroom->execute();
+        $resultRoomBooking = $stmtBookingroom->get_result();
+        $service_names = [];
+        while ($rowsRoomBooking = $resultRoomBooking->fetch_assoc()) {
+            $service_names[] = $rowsRoomBooking['service_name'];
+        }
+        $service_name = implode(", ", $service_names);
 
-        // $stmt = $conn->prepare(
-        //     " SELECT 
-        // tbl_bookings.booking_id,
-        // tbl_bookings.reference_number,
-        // tbl_bookings.fullname,
-        // tbl_bookings.email,
-        // tbl_bookings.phone_number,
-        // tbl_bookings.date_check_in,
-        // tbl_bookings.date_check_out,
-        // tbl_mode_of_payment.mode_of_payment
-        // FROM tbl_bookings 
-        // INNER JOIN tbl_mode_of_payment ON tbl_bookings.mode_of_payment_id = tbl_mode_of_payment.mode_of_payment_id
-        // WHERE tbl_bookings.booking_id = ? "
-        // );
-        // $stmt->bind_param('i', $booking_id);
-        // $stmt->execute();
-        // $result = $stmt->get_result();
-        // $row = $result->fetch_assoc();
-        // $reference_number = $row['reference_number'];
-        // $fullname = $row['fullname'];
-        // $email = $row['email'];
-        // $phone_number = $row['phone_number'];
-        // $date_check_in = $row['date_check_in'];
-        // $date_check_out = $row['date_check_out'];
-        // $mode_of_payment = $row['mode_of_payment'];
+        $stmt = $conn->prepare(
+            " SELECT 
+        tbl_bookings.booking_id,
+        tbl_bookings.reference_number,
+        tbl_bookings.fullname,
+        tbl_bookings.email,
+        tbl_bookings.phone_number,
+        tbl_bookings.date_check_in,
+        tbl_bookings.date_check_out,
+        tbl_mode_of_payment.mode_of_payment
+        FROM tbl_bookings 
+        INNER JOIN tbl_mode_of_payment ON tbl_bookings.mode_of_payment_id = tbl_mode_of_payment.mode_of_payment_id
+        WHERE tbl_bookings.booking_id = ? "
+        );
+        $stmt->bind_param('i', $booking_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $reference_number = $row['reference_number'];
+        $fullname = $row['fullname'];
+        $email = $row['email'];
+        $phone_number = $row['phone_number'];
+        $date_check_in = $row['date_check_in'];
+        $date_check_out = $row['date_check_out'];
+        $mode_of_payment = $row['mode_of_payment'];
 
-        // $mail = new PHPMailer(true);
-        // try {
-        //     // SMTP configuration
-        //     $mail->isSMTP();
-        //     $mail->Host = 'smtp.gmail.com';
-        //     $mail->SMTPAuth = true;
-        //     $mail->Username = 'christianschool.main@gmail.com';
-        //     $mail->Password = 'lhkvevgaglyugygu';
-        //     $mail->SMTPSecure = 'tls';
-        //     $mail->Port = 587;
+        $mail = new PHPMailer(true);
+        try {
+            // SMTP configuration
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'christianschool.main@gmail.com';
+            $mail->Password = 'lhkvevgaglyugygu';
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
 
-        //     // Email content
-        //     date_default_timezone_set('Asia/Manila');
-        //     $datetime = date("F j, Y - l") . " | " . date("h:i:sa");
-        //     $subject = 'C-chen Beach Resort | Booking';
-        //     $message = "Cordial greetings! \n\n";
-        //     $message .= "Good day $fullname! Your booking has been submitted successfully! \n";
-        //     $message .= "The following are your details: \n \n";
-        //     $message .= "Name: $fullname \n";
-        //     $message .= "Phone #: $phone_number \n";
-        //     $message .= "Date check-in: $date_check_in \n";
-        //     $message .= "Date check-out: $date_check_out \n";
-        //     $message .= "Cottage(s): $cottage_name \n";
-        //     $message .= "Room type(s): $room_category_name \n";
-        //     $message .= "Service(s): $service_name \n";
-        //     $message .= "Mode of payment: $mode_of_payment \n\n";
-        //     $message .= "Refence #: $reference_number \n";
-        //     $message .= "Note: This is a system-generated email. Please do not reply!";
-        //     $mail->setFrom('christianschool.main@gmail.com', 'C-chen Beach Resort');
-        //     $mail->addAddress($email);
-        //     $mail->Subject = $subject;
-        //     $mail->Body = $message;
-        //     $mail->send();
-        // } catch (Exception $e) {
-        //     echo 'Email could not be sent. Error: ', $mail->ErrorInfo;
-        // }
+            // Email content
+            date_default_timezone_set('Asia/Manila');
+            $datetime = date("F j, Y - l") . " | " . date("h:i:sa");
+            $subject = 'C-chen Beach Resort | Booking';
+            $message = "Cordial greetings! \n\n";
+            $message .= "Good day $fullname! Your booking has been submitted successfully! \n";
+            $message .= "The following are your details: \n \n";
+            $message .= "Name: $fullname \n";
+            $message .= "Phone #: $phone_number \n";
+            $message .= "Date check-in: $date_check_in \n";
+            $message .= "Date check-out: $date_check_out \n";
+            $message .= "Cottage(s): $cottage_name \n";
+            $message .= "Room type(s): $room_category_name \n";
+            $message .= "Service(s): $service_name \n";
+            $message .= "Mode of payment: $mode_of_payment \n\n";
+            $message .= "Refence #: $reference_number \n";
+            $message .= "Note: This is a system-generated email. Please do not reply!";
+            $mail->setFrom('christianschool.main@gmail.com', 'C-chen Beach Resort');
+            $mail->addAddress($email);
+            $mail->Subject = $subject;
+            $mail->Body = $message;
+            $mail->send();
+        } catch (Exception $e) {
+            echo 'Email could not be sent. Error: ', $mail->ErrorInfo;
+        }
 
         $conn->commit();
         header("Location:../booking.php?success");
