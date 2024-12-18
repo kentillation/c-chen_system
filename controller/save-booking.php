@@ -90,14 +90,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmtCottage->execute();
         }
 
-        foreach ($room_category_ids as $index => $room_category_id) {
-            $pax = validate($pax_values[$index]);
-            for ($i = 1; $i <= $pax; $i++) {
-                $stmtRooms = $conn->prepare('INSERT INTO tbl_booking_room (booking_id, pax, room_category_id, reference_number, created_at) VALUES (?, ?, ?, ?, ?)');
-                $stmtRooms->bind_param('iiiss', $booking_id, $pax, $room_category_id, $referenceNumber, $created_at);
-                if (!$stmtRooms->execute()) {
-                    $success = false;
-                    break;
+        foreach ($room_category_ids as $room_category_id) {
+            $room_category_id = validate($room_category_id); // Validate room category ID
+            foreach ($pax_values as $pax) {
+                $pax = validate($pax); // Validate pax
+                $one_pax = 1;
+                // Loop over pax values and insert rows for each pax
+                for ($i = 0; $i < $pax; $i++) { // Repeat insertion for each pax
+                    $stmtRooms = $conn->prepare('INSERT INTO tbl_booking_room (booking_id, pax, room_category_id, reference_number, created_at) VALUES (?, ?, ?, ?, ?)');
+                    $stmtRooms->bind_param('iiiss', $booking_id, $one_pax, $room_category_id, $referenceNumber, $created_at); // Set pax to 1 for each row
+                    if (!$stmtRooms->execute()) {
+                        $success = false;
+                        break 2; // Exit both loops if there's an error
+                    }
                 }
             }
         }
