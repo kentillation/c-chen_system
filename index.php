@@ -223,7 +223,7 @@
                                 </ul>
                             </div>
                             <div class="col-lg-6 order-1 order-lg-2 text-center">
-                                <img src="assets1/img/features/img1.png" alt="" width="600" class="img-fluid">
+                                <img src="assets1/img/features/img1.jpg" alt="" width="600" class="img-fluid">
                             </div>
                         </div>
                     </div><!-- End Tab Content Item -->

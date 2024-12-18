@@ -251,7 +251,9 @@
                             <div class="row mb-4 p-3 border rounded-2" id="checkboxInfo">
                                 <div class="row mt-4">
                                     <?php
-                                    $stmt = $conn->prepare(' SELECT * FROM tbl_cottages ');
+                                    $available = 1;
+                                    $stmt = $conn->prepare(' SELECT * FROM tbl_cottages WHERE cottage_availability_id = ? ');
+                                    $stmt->bind_param('i', $available);
                                     $stmt->execute();
                                     $result = $stmt->get_result();
                                     while ($rows = $result->fetch_assoc()) {
@@ -503,7 +505,7 @@
                         }
                         if (availableCottagesElement) {
                             availableCottagesElement.style.display = "block";
-                            availableCottagesElement.textContent = data.available_cottages || "Unavailable";
+                            availableCottagesElement.textContent = data.available_cottages || "Occupied";
                         }
                     })
                     .catch(error => console.error('Error fetching available cottage:', error));
@@ -531,7 +533,7 @@
                             if (data.available_service > 0) {
                                 availableServicesElement.textContent = ``;
                             } else {
-                                availableServicesElement.textContent = "Unavailable";
+                                availableServicesElement.textContent = "Occupied";
                             }
                         }
 

@@ -69,10 +69,10 @@ if (isset($_SESSION['id'])) {
                         }
                         ?>
                         <?php
-                        $stmt = $conn->prepare("SELECT *,
+    $stmt = $conn->prepare("SELECT tbl_room_number.*,
                         tbl_room_category.room_category_name,
                         tbl_room_category.room_category_price,
-                        tbl_room_number.room_capacity,
+                        tbl_room_category.room_capacity,
                         tbl_availability.availability
                         FROM tbl_room_number
                         INNER JOIN tbl_room_category ON tbl_room_number.room_category_id = tbl_room_category.room_category_id
@@ -84,10 +84,8 @@ if (isset($_SESSION['id'])) {
                         $result = $stmt->get_result();
                         $row = $result->fetch_assoc();
                         $room_number = $row['room_number'];
-                        $room_category_id = $row['room_category_id'];
-                        $room_category_name = $row['room_category_name'];
-                        $room_category_price = $row['room_category_price'];
-                        $room_capacity = $row['room_capacity'];
+    $room_category_id = $row['room_category_id'];
+    $room_category_name = $row['room_category_name'];
                         $room_availability_id = $row['room_availability_id'];
                         $availability = $row['availability'];
                         ?>

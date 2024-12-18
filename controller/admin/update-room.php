@@ -17,6 +17,7 @@ if (isset($_SESSION['id'])) {
         $room_number_id = validate($_GET['room_number_id']);
         $room_number = validate($_POST['room_number']);
         $room_category_id = validate($_POST['room_category_id']);
+        $room_availability_id = validate($_POST['room_availability_id']);
         date_default_timezone_set('Asia/Manila');
         $createdDate = date("Y-m-d H:i:s");
 

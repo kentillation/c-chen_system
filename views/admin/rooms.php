@@ -82,10 +82,10 @@ if (isset($_SESSION['id'])) {
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $stmt = $conn->prepare("SELECT *,
+    $stmt = $conn->prepare("SELECT tbl_room_number.*,
                                             tbl_room_category.room_category_name,
                                             tbl_room_category.room_category_price,
-                                            tbl_room_number.room_capacity
+                                            tbl_room_category.room_capacity
                                             FROM tbl_room_number
                                             INNER JOIN tbl_room_category ON tbl_room_number.room_category_id = tbl_room_category.room_category_id
                                             ORDER BY tbl_room_number.room_number");
