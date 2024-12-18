@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pax = validate($pax_values[$index]);
             for ($i = 1; $i <= $pax; $i++) {
                 $stmtRooms = $conn->prepare('INSERT INTO tbl_booking_room (booking_id, pax, room_category_id, reference_number, created_at) VALUES (?, ?, ?, ?, ?)');
-                $stmtRooms->bind_param('iiiss', $booking_id, $constantPax, $room_category_id, $referenceNumber, $created_at);
+                $stmtRooms->bind_param('iiiss', $booking_id, $pax, $room_category_id, $referenceNumber, $created_at);
                 if (!$stmtRooms->execute()) {
                     $success = false;
                     break;

@@ -278,14 +278,14 @@
                                         $service_price = $rows['service_price'];
                                         $service_image = $rows['service_image'];
                                         $service_availability_id = $rows['service_availability_id'];
+                                        if ($service_availability_id == 1) {
+                                            $addStyle = "";
+                                            $undrmntnce = "d-none";
+                                        }
                                         if ($service_availability_id == 2) {
                                             $addStyle = "opacity: 0.5;";
                                             $form_check = "pointer-events: none;";
                                             $undrmntnce = "d-flex position-absolute mt-5 ms-5 text-white";
-                                        }
-                                        if ($service_availability_id == 1) {
-                                            $addStyle = "";
-                                            $undrmntnce = "d-none";
                                         }
 
                                     ?>
@@ -295,7 +295,7 @@
                                             <div class="form-check" style="<?= $form_check ?>">
                                                 <div class="container rounded-2" style="<?= $addStyle ?>">
                                                     <h5 class="<?= $undrmntnce ?>">Undermaintenance</h5>
-                                                    <input class="form-check-input" type="checkbox" name="service_id[]" id="service_id<?= $service_id ?>" value="<?= $service_id ?>" readonly>
+                                                    <input class="form-check-input" type="checkbox" name="service_id[]" id="service_id<?= $service_id ?>" value="<?= $service_id ?>">
                                                     <label class="form-check-label border-0" for="service_id<?= $service_id ?>">
                                                         <img src="services/<?= $service_image ?>" width="250" height="250" id="service_image<?= $service_id ?>" alt="">
                                                     </label>
