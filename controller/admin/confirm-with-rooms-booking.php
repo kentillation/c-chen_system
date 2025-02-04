@@ -23,6 +23,7 @@ if (isset($_SESSION['id'])) {
             return htmlspecialchars(stripslashes(trim($data)));
         }
         $room_numbers = $_POST['room_number'];
+        $down_payment = $_POST['down_payment'];
         foreach ($room_numbers as $room_category_id => $room_numbers_list) {
             $room_category_id = validate($room_category_id);
             $stmt = $conn->prepare("SELECT booking_room_id FROM tbl_booking_room WHERE booking_id = ? AND room_category_id = ? ORDER BY booking_room_id ASC");
@@ -42,8 +43,8 @@ if (isset($_SESSION['id'])) {
         }
         $conn->commit();
 
-        $stmt = $conn->prepare(" UPDATE tbl_bookings SET booking_status_id = ? WHERE booking_id = ? ");
-        $stmt->bind_param('is', $confirm, $booking_id);
+        $stmt = $conn->prepare(" UPDATE tbl_bookings SET down_payment = ?, booking_status_id = ? WHERE booking_id = ? ");
+        $stmt->bind_param('iis', $down_payment, $confirm, $booking_id);
         $stmt->execute();
 
         $stmt = $conn->prepare(" SELECT * FROM tbl_bookings WHERE booking_id = ? ");
@@ -53,6 +54,9 @@ if (isset($_SESSION['id'])) {
         $row = $result->fetch_assoc();
         $email = $row['email'];
         $reference_number = $row['reference_number'];
+        $fullname = $row['fullname'];
+
+        $remaining_balance = $total_payment - $down_payment;
 
         $mail = new PHPMailer(true);
         try {
@@ -72,6 +76,12 @@ if (isset($_SESSION['id'])) {
             $message = "Cordial greetings! \n \n";
             $message .= "Good day $fullname! Your booking has been confirmed successfully with reference #: $reference_number. \n";
             $message .= "Kindly, prepare exact amount when payment arise over the counter. Thank you and see you! \n \n";
+
+            $message .= "Good day $fullname! Your booking has been confirmed successfully! \n";
+            $message .= "Total payment: $total_payment \n";
+            $message .= "Down payment: $down_payment \n";
+            $message .= "Remaining balance: $remaining_balance \n";
+            $message .= "Reference #: $reference_number \n \n";
             $message .= "Note: This is a system-generated email. Please do not reply!";
             $mail->setFrom('christianschool.main@gmail.com', 'C-chen Beach Resort');
             $mail->addAddress($email);

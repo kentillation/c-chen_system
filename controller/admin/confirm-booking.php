@@ -46,7 +46,11 @@ if (isset($_SESSION['id'])) {
         $datetime = date("F j, Y - l") . " | " . date("h:i:sa");
         $subject = 'C-chen Beach Resort | Confirmed Booking';
         $message = "Cordial greetings! \n \n";
-        $message .= "Good day $fullname! Your booking has been confirmed successfully with reference #: $reference_number. \n";
+        $message .= "Good day $fullname! Your booking has been confirmed successfully! \n";
+        $message .= "Total payment: $total_payment \n";
+        $message .= "Down payment: $down_payment \n";
+        $message .= "Remaining balance: $remaining_balance \n";
+        $message .= "Reference #: $reference_number \n \n";
         $message .= "Kindly, prepare exact amount when payment arise over the counter. Thank you and see you! \n \n";
         $message .= "Note: This is a system-generated email. Please do not reply!";
         $mail->setFrom('christianschool.main@gmail.com', 'C-chen Beach Resort');

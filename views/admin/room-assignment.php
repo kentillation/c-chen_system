@@ -41,7 +41,8 @@ if (isset($_SESSION['id'])) {
                 <?php
                 $stmt = $conn->prepare(' SELECT
                   tbl_bookings.booking_id,
-                  tbl_bookings.reference_number
+                  tbl_bookings.reference_number,
+                  tbl_bookings.evidence
                   FROM tbl_bookings
                   WHERE tbl_bookings.booking_id = ?');
                 $stmt->bind_param('i', $booking_id);
@@ -50,11 +51,21 @@ if (isset($_SESSION['id'])) {
                 if ($result->num_rows > 0) {
                   $row = $result->fetch_assoc();
                   $reference_number = $row['reference_number'];
+                  $evidence = $row['evidence'];
                 ?>
                   <form action="../../controller/admin/confirm-with-rooms-booking.php?booking_id=<?= $booking_id ?>" method="post" class="container p-4">
                     <div class="row">
                       <div class="mt-2 col-12 col-lg-6 col-md-4 col-sm-6">
-                        <h6 class="text-secondary">Booking #: <span class="text-dark"><?= $reference_number ?></span></h6>
+                        <h6 class="text-secondary">Booking #:</h6>
+                        <h6 class="text-secondary"><span class="text-dark"><?= $reference_number ?></span></h6>
+                      </div>
+                      <div class="mt-2 col-12 col-lg-6 col-md-4 col-sm-6">
+                        <h6 class="text-secondary">Payment receipt:</h6>
+                        <img src="../../evidence/<?= $evidence ?>" width="250" height="250" alt="Evidence">
+                      </div>
+                      <div class="mt-2 col-12 col-lg-6 col-md-4 col-sm-6">
+                        <h6 class="text-secondary">Down payment:</h6>
+                        <input type="number" name="down_payment" oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="form-control" placeholder="Type here..." required>
                       </div>
                       <div class="mt-4 col-12 col-lg-12 col-md-12 col-sm-12">
                         <h6 class="text-secondary">Rooms: </h6>
