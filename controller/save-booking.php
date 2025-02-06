@@ -117,53 +117,100 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        $stmtBookingCottage = $conn->prepare(" SELECT 
-        tbl_booking_cottage.cottage_id,
-        tbl_booking_cottage.reference_number,
-        tbl_cottages.cottage_name
-        FROM tbl_booking_cottage
-        INNER JOIN tbl_cottages ON tbl_booking_cottage.cottage_id = tbl_cottages.cottage_id
-        WHERE tbl_booking_cottage.reference_number = ? ");
+        // $stmtBookingCottage = $conn->prepare(
+        // " SELECT 
+        // t_bc.cottage_id,
+        // t_bc.reference_number,
+        // t_c.cottage_name
+        // FROM tbl_booking_cottage t_bc
+        // INNER JOIN tbl_cottages t_c ON t_bc.cottage_id = t_c.cottage_id
+        // WHERE t_bc.reference_number = ? ");
+        // $stmtBookingCottage->bind_param('s', $referenceNumber);
+        // $stmtBookingCottage->execute();
+        // $resultBookingCottage = $stmtBookingCottage->get_result();
+        // $cottage_names = [];
+        // while ($rowsBookingCottage = $resultBookingCottage->fetch_assoc()) {
+        //     $cottage_names[] = $rowsBookingCottage['cottage_name'];
+        // }
+        // $cottage_name = implode(", ", $cottage_names);
+        $stmtBookingCottage = $conn->prepare(
+            " SELECT 
+        t_bc.cottage_id,
+        COUNT(t_bc.cottage_id) as cottage_quantity,
+        t_bc.reference_number,
+        t_c.cottage_name
+        FROM tbl_booking_cottage t_bc
+        INNER JOIN tbl_cottages t_c ON t_bc.cottage_id = t_c.cottage_id
+        WHERE t_bc.reference_number = ? "
+        );
         $stmtBookingCottage->bind_param('s', $referenceNumber);
         $stmtBookingCottage->execute();
         $resultBookingCottage = $stmtBookingCottage->get_result();
-        $cottage_names = [];
-        while ($rowsBookingCottage = $resultBookingCottage->fetch_assoc()) {
-            $cottage_names[] = $rowsBookingCottage['cottage_name'];
-        }
-        $cottage_name = implode(", ", $cottage_names);
+        $rowsBookingCottage = $resultBookingCottage->fetch_assoc();
+        $cottage_quantity = $rowsBookingCottage['cottage_quantity'];
+        $cottage_name = $rowsBookingCottage['cottage_name'];
 
-        $stmtBookingroom = $conn->prepare(" SELECT 
-        tbl_booking_room.room_category_id,
-        tbl_booking_room.reference_number,
-        tbl_room_category.room_category_name
-        FROM tbl_booking_room
-        INNER JOIN tbl_room_category ON tbl_booking_room.room_category_id = tbl_room_category.room_category_id
-        WHERE tbl_booking_room.reference_number = ? ");
+        // $stmtBookingroom = $conn->prepare(" SELECT 
+        // t_br.room_category_id,
+        // t_br.reference_number,
+        // t_rc.room_category_name
+        // FROM tbl_booking_room t_br
+        // INNER JOIN tbl_room_category t_rc ON t_br.room_category_id = t_rc.room_category_id
+        // WHERE t_br.reference_number = ? ");
+        // $stmtBookingroom->bind_param('s', $referenceNumber);
+        // $stmtBookingroom->execute();
+        // $resultRoomBooking = $stmtBookingroom->get_result();
+        // $room_category_names = [];
+        // while ($rowsRoomBooking = $resultRoomBooking->fetch_assoc()) {
+        //     $room_category_names[] = $rowsRoomBooking['room_category_name'];
+        // }
+        // $room_category_name = implode(", ", $room_category_names);
+        $stmtBookingroom = $conn->prepare(
+            " SELECT 
+        t_br.room_category_id,
+        SUM(t_br.pax) AS room_quantity,
+        t_br.reference_number,
+        t_rc.room_category_name
+        FROM tbl_booking_room t_br
+        INNER JOIN tbl_room_category t_rc ON t_br.room_category_id = t_rc.room_category_id
+        WHERE t_br.reference_number = ? "
+        );
         $stmtBookingroom->bind_param('s', $referenceNumber);
         $stmtBookingroom->execute();
         $resultRoomBooking = $stmtBookingroom->get_result();
-        $room_category_names = [];
-        while ($rowsRoomBooking = $resultRoomBooking->fetch_assoc()) {
-            $room_category_names[] = $rowsRoomBooking['room_category_name'];
-        }
-        $room_category_name = implode(", ", $room_category_names);
+        $rowsRoomBooking = $resultRoomBooking->fetch_assoc();
+        $room_quantity = $rowsRoomBooking['room_quantity'];
+        $room_category_name = $rowsRoomBooking['room_category_name'];
 
-        $stmtBookingroom = $conn->prepare(" SELECT 
-        tbl_booking_service.service_id,
-        tbl_booking_service.reference_number,
-        tbl_services.service_name
-        FROM tbl_booking_service
-        INNER JOIN tbl_services ON tbl_booking_service.service_id = tbl_services.service_id
-        WHERE tbl_booking_service.reference_number = ? ");
-        $stmtBookingroom->bind_param('s', $referenceNumber);
-        $stmtBookingroom->execute();
-        $resultRoomBooking = $stmtBookingroom->get_result();
-        $service_names = [];
-        while ($rowsRoomBooking = $resultRoomBooking->fetch_assoc()) {
-            $service_names[] = $rowsRoomBooking['service_name'];
-        }
-        $service_name = implode(", ", $service_names);
+        // $stmtBookingroom = $conn->prepare(" SELECT 
+        // t_bs.service_id,
+        // t_bs.reference_number,
+        // t_s.service_name
+        // FROM tbl_booking_service t_bs
+        // INNER JOIN tbl_services t_s ON t_bs.service_id = t_s.service_id
+        // WHERE t_bs.reference_number = ? ");
+        // $stmtBookingroom->bind_param('s', $referenceNumber);
+        // $stmtBookingroom->execute();
+        // $resultRoomBooking = $stmtBookingroom->get_result();
+        // $service_names = [];
+        // while ($rowsRoomBooking = $resultRoomBooking->fetch_assoc()) {
+        //     $service_names[] = $rowsRoomBooking['service_name'];
+        // }
+        // $service_name = implode(", ", $service_names);
+        $stmtBookingService = $conn->prepare(" SELECT 
+        t_bs.service_id,
+        COUNT(t_bs.service_id) as service_quantity,
+        t_bs.reference_number,
+        t_s.service_name
+        FROM tbl_booking_service t_bs
+        INNER JOIN tbl_services t_s ON t_bs.service_id = t_s.service_id
+        WHERE t_bs.reference_number = ? ");
+        $stmtBookingService->bind_param('s', $referenceNumber);
+        $stmtBookingService->execute();
+        $resultBookingService = $stmtBookingService->get_result();
+        $rowsBookingService = $resultBookingService->fetch_assoc();
+        $service_quantity = $rowsBookingService['service_quantity'];
+        $service_name = $rowsBookingService['service_name'];
 
         $stmt = $conn->prepare(
             " SELECT 
@@ -187,8 +234,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fullname = $row['fullname'];
         $email = $row['email'];
         $phone_number = $row['phone_number'];
+        // date_default_timezone_set('Asia/Manila');
         $date_check_in = $row['date_check_in'];
         $date_check_out = $row['date_check_out'];
+        // $date_check_in = new DateTime($row['date_check_in']);
+        // $date_check_out = new DateTime($row['date_check_out']);
         $mode_of_payment = $row['mode_of_payment'];
 
         $mail = new PHPMailer(true);
@@ -207,17 +257,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $datetime = date("F j, Y - l") . " | " . date("h:i:sa");
             $subject = 'C-chen Beach Resort | Booking';
             $message = "Cordial greetings! \n\n";
-            $message .= "Good day $fullname! Your booking has been submitted successfully! \n";
-            $message .= "The following are your details: \n \n";
+            $message .= "Good day, $fullname! \n";
+            $message .= "Your booking has been submitted successfully! \n \n";
+            $message .= "The following are your given details:\n";
             $message .= "Name: $fullname \n";
             $message .= "Phone #: $phone_number \n";
             $message .= "Date check-in: $date_check_in \n";
             $message .= "Date check-out: $date_check_out \n";
-            $message .= "Cottage(s): $cottage_name \n";
-            $message .= "Room type(s): $room_category_name \n";
-            $message .= "Service(s): $service_name \n";
-            $message .= "Mode of payment: $mode_of_payment \n\n";
-            $message .= "Refence #: $reference_number \n";
+            $message .= "Cottage type: $cottage_name x$cottage_quantity \n";
+            $message .= "Room type: $room_category_name x$room_quantity \n";
+            $message .= "Service type: $service_name x$service_quantity \n";
+            $message .= "Mode of payment: $mode_of_payment \n";
+            $message .= "Refence #: $reference_number \n \n";
             $message .= "Note: This is a system-generated email. Please do not reply!";
             $mail->setFrom('christianschool.main@gmail.com', 'C-chen Beach Resort');
             $mail->addAddress($email);
