@@ -63,11 +63,11 @@ if (isset($_SESSION['id'])) {
                                         <tbody>
                                             <?php
                                             $stmtBookings = $conn->prepare(' SELECT
-                                            tbl_bookings.*,
-                                            tbl_mode_of_payment.mode_of_payment
-                                            FROM tbl_bookings
-                                            INNER JOIN tbl_mode_of_payment ON tbl_bookings.mode_of_payment_id = tbl_mode_of_payment.mode_of_payment_id
-                                            ORDER BY tbl_bookings.created_at ASC');
+                                            t_b.*,
+                                            t_mop.mode_of_payment
+                                            FROM tbl_bookings t_b
+                                            INNER JOIN tbl_mode_of_payment t_mop ON t_b.mode_of_payment_id = t_mop.mode_of_payment_id
+                                            ORDER BY t_b.created_at ASC');
                                             $stmtBookings->execute();
                                             $resultBookings = $stmtBookings->get_result();
                                             if ($resultBookings->num_rows > 0) {
@@ -80,6 +80,14 @@ if (isset($_SESSION['id'])) {
                                                     $date_check_out = (new DateTime($rowBookings['date_check_out']))->format("F j, Y");
                                                     $message = $rowBookings['message'];
                                                     $mode_of_payment = $rowBookings['mode_of_payment'];
+                                                    $down_payment = $rowBookings['down_payment'];
+                                                    if ($down_payment == 0) {
+                                                        $down_payment = "Not set";
+                                                        $dpClass = "text-danger";
+                                                    } else {
+                                                        $down_payment = "₱" . $down_payment;
+                                                        $dpClass = "text-dark";
+                                                    }
                                                     $evidence = $rowBookings['evidence'];
                                                     $booking_status_id = $rowBookings['booking_status_id'];
                                                     $created_at = (new DateTime($rowBookings['created_at']))->format("F j, Y");
@@ -168,7 +176,7 @@ if (isset($_SESSION['id'])) {
                                                                             </div>
                                                                             <div class="mt-2 col-12 col-lg-4 col-md-4 col-sm-6">
                                                                                 <h6 class="text-secondary">Down payment: </h6>
-                                                                                <p><?= $mode_of_payment ?></p>
+                                                                                <p class="<?= $dpClass ?>"><?= $down_payment ?></p>
                                                                             </div>
 
                                                                             <div class="mt-2 col-12 col-lg-4 col-md-6 col-sm-6 mt-3">
@@ -300,12 +308,7 @@ if (isset($_SESSION['id'])) {
         <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
         <?php include 'includes/footer.php' ?>
-
-        <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="../../assets/js/main.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <?php include 'includes/scripts.php' ?>
         <script>
             $(document).ready(function() {
                 $('#paginateAllReservations').DataTable({
@@ -322,12 +325,6 @@ if (isset($_SESSION['id'])) {
                     }
                 });
             });
-
-            // function redirectToAssignRoom() {
-            //     const bookingId = <?= json_encode($booking_id) ?>;
-            //     const url = `room-assignment.php?booking_id=${bookingId}`;
-            //     window.location.href = url;
-            // }
         </script>
 
     </body>

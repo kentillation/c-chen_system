@@ -69,7 +69,7 @@ if (isset($_SESSION['id'])) {
                         }
                         ?>
                         <?php
-    $stmt = $conn->prepare("SELECT tbl_room_number.*,
+                        $stmt = $conn->prepare("SELECT tbl_room_number.*,
                         tbl_room_category.room_category_name,
                         tbl_room_category.room_category_price,
                         tbl_room_category.room_capacity,
@@ -84,8 +84,8 @@ if (isset($_SESSION['id'])) {
                         $result = $stmt->get_result();
                         $row = $result->fetch_assoc();
                         $room_number = $row['room_number'];
-    $room_category_id = $row['room_category_id'];
-    $room_category_name = $row['room_category_name'];
+                        $room_category_id = $row['room_category_id'];
+                        $room_category_name = $row['room_category_name'];
                         $room_availability_id = $row['room_availability_id'];
                         $availability = $row['availability'];
                         ?>
@@ -149,13 +149,7 @@ if (isset($_SESSION['id'])) {
         <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
         <?php include 'includes/footer.php' ?>
-
-        <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="../../assets/js/main.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+        <?php include 'includes/scripts.php' ?>
     </body>
 
     </html>

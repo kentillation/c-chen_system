@@ -164,9 +164,7 @@ if (isset($_SESSION['id'])) {
     ?>
 
     <?php include 'includes/footer.php' ?>
-
-    <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../../assets/js/main.js"></script>
+    <?php include 'includes/scripts.php' ?>
 
     <script>
       let email = document.getElementById("email");

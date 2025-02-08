@@ -38,7 +38,7 @@ if (isset($_SESSION['id'])) {
                         <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive mt-4" id="data-table">
-                                    <table class="table" id="paginateAllReservations">
+                                    <table class="table">
                                         <col width="20%">
                                         <col width="20%">
                                         <col width="20%">
@@ -72,9 +72,9 @@ if (isset($_SESSION['id'])) {
                                                     echo "
                                                     <tr>
                                                         <td class='text-center'>$reference_number</td>
+                                                        <td class='text-center'>$created_at</td>
                                                         <td class='text-center'>$date_check_in</td>
                                                         <td class='text-center'>$date_check_out</td>
-                                                        <td class='text-center'>$created_at</td>
                                                         <td class='text-center'>ADMINISTRATOR</td>
                                                     </tr>
                                                     ";
@@ -97,30 +97,7 @@ if (isset($_SESSION['id'])) {
         <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
         <?php include 'includes/footer.php' ?>
-
-        <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="../../assets/js/main.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-            $(document).ready(function() {
-                $('#paginateAllReservations').DataTable({
-                    "lengthMenu": [10, 25, 50, 100],
-                    "pagingType": "full_numbers",
-                    "searching": true,
-                    "language": {
-                        "paginate": {
-                            "first": "Begin",
-                            "last": "End",
-                            "next": "Next",
-                            "previous": "Previous"
-                        }
-                    }
-                });
-            });
-        </script>
-
+        <?php include 'includes/scripts.php' ?>
     </body>
 
     </html>

@@ -157,7 +157,7 @@ if (isset($_SESSION['id'])) {
                     <i class="bi bi-envelope-open"></i>&nbsp; You have no announcements.
                 </p>
                 ';
-        }
+          }
           ?>
         </div>
       </section>
@@ -234,10 +234,7 @@ if (isset($_SESSION['id'])) {
     ?>
 
     <?php include 'includes/footer.php' ?>
-
-    <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../../assets/js/main.js"></script>
-
+    <?php include 'includes/scripts.php' ?>
     <script>
       let announcement = document.getElementById("announcement");
       let submit = document.getElementById("submit");

@@ -102,7 +102,7 @@ if (isset($_SESSION['id'])) {
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                                   <input type="hidden" name="room_category_id[]" value="<?= $room_category_id ?>">
-                                  <select name="room_number[<?= $room_category_id ?>][]" class="form-select">
+                                  <select name="room_number[<?= $room_category_id ?>][]" class="form-select" required>
                                     <?php
                                     if (!empty($rm_nmbr)) {
                                     ?>
@@ -149,9 +149,7 @@ if (isset($_SESSION['id'])) {
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
     <?php include 'includes/footer.php' ?>
-
-    <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../../assets/js/main.js"></script>
+    <?php include 'includes/scripts.php' ?>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const roomNumberDropdowns = document.querySelectorAll('select[name="room_number[]"]');

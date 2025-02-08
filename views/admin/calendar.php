@@ -86,14 +86,14 @@ if (isset($_SESSION['id'])) {
 
         <?php include 'includes/footer.php' ?>
 
-        <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="../../assets/js/main.js"></script>
         <script src="../../js/script.js"></script>
+        <script src="../../js/jquery-3.6.0.min.js"></script>
+        <script src="../../js/bootstrap.min.js"></script>
+        <script src="../../fullcalendar/lib/main.min.js"></script>
         <script>
             var scheds = $.parseJSON('<?= json_encode($sched_res) ?>')
             var currentDate = new Date();
-            document.getElementById("date_check_in").min = currentDate.toISOString().slice(0, -8);
-            document.getElementById("date_check_out").min = currentDate.toISOString().slice(0, -8);
         </script>
     </body>
 

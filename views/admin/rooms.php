@@ -82,7 +82,7 @@ if (isset($_SESSION['id'])) {
                                         </thead>
                                         <tbody>
                                             <?php
-    $stmt = $conn->prepare("SELECT tbl_room_number.*,
+                                            $stmt = $conn->prepare("SELECT tbl_room_number.*,
                                             tbl_room_category.room_category_name,
                                             tbl_room_category.room_category_price,
                                             tbl_room_category.room_capacity
@@ -144,6 +144,23 @@ if (isset($_SESSION['id'])) {
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#paginateAllRooms').DataTable({
+                    "lengthMenu": [10, 25, 50, 100],
+                    "pagingType": "full_numbers",
+                    "searching": true,
+                    "language": {
+                        "paginate": {
+                            "first": "Begin",
+                            "last": "End",
+                            "next": "Next",
+                            "previous": "Previous"
+                        }
+                    }
+                });
+            });
+        </script>
 
     </body>
 

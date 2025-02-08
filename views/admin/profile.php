@@ -41,7 +41,7 @@ if (isset($_SESSION['id'])) {
           </ol>
         </nav>
       </div>
-      
+
       <section class="section profile mb-5">
         <div class="row">
           <div class="col-xl-4">
@@ -150,21 +150,21 @@ if (isset($_SESSION['id'])) {
                       <div class="row mb-3">
                         <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
                         <div class="col-md-8 col-lg-9">
-                          <input name="current_password" type="password" class="form-control" id="currentPassword">
+                          <input name="current_password" type="password" class="form-control" id="currentPassword" autocomplete="off" required>
                         </div>
                       </div>
 
                       <div class="row mb-3">
                         <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
                         <div class="col-md-8 col-lg-9">
-                          <input name="newpassword" type="password" class="form-control" id="newPassword">
+                          <input name="newpassword" type="password" class="form-control" id="newPassword" autocomplete="off" required>
                         </div>
                       </div>
 
                       <div class="row mb-3">
                         <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
                         <div class="col-md-8 col-lg-9">
-                          <input name="renewpassword" type="password" class="form-control" id="renewPassword" required>
+                          <input name="renewpassword" type="password" class="form-control" id="renewPassword" autocomplete="off" required>
                         </div>
                       </div>
 
@@ -357,10 +357,8 @@ if (isset($_SESSION['id'])) {
     ?>
 
     <?php include 'includes/footer.php' ?>
-
-    <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../../assets/js/main.js"></script>
-    <script> 
+    <?php include 'includes/scripts.php' ?>
+    <script>
       document.addEventListener('DOMContentLoaded', function(e) {
         (function() {
           let accountUserImage = document.getElementById('uploadedImg');

@@ -28,7 +28,7 @@ if (isset($_SESSION['id'])) {
         <div class="col-lg-8 mt-5">
             <div class="border rounded p-3">
                 <div class="table-responsive mt-4" id="data-table">
-                    <table class="table" id="paginateAllReservations">
+                    <table class="table">
                         <col width="20%">
                         <col width="20%">
                         <col width="20%">
@@ -62,9 +62,9 @@ if (isset($_SESSION['id'])) {
                                     echo "
                                                     <tr>
                                                         <td class='text-center'>$reference_number</td>
+                                                        <td class='text-center'>$created_at</td>
                                                         <td class='text-center'>$date_check_in</td>
                                                         <td class='text-center'>$date_check_out</td>
-                                                        <td class='text-center'>$created_at</td>
                                                         <td class='text-center'>ADMINISTRATOR</td>
                                                     </tr>
                                                     ";

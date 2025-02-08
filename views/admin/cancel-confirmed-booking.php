@@ -56,9 +56,7 @@ if (isset($_SESSION['id'])) {
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
     <?php include 'includes/footer.php' ?>
-
-    <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../../assets/js/main.js"></script>
+    <?php include 'includes/scripts.php' ?>
   </body>
 
   </html>

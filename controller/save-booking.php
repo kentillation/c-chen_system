@@ -73,9 +73,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $conn->begin_transaction();
     try {
-        $stmt = $conn->prepare('INSERT INTO tbl_bookings (reference_number, fullname, email, phone_number, date_check_in, date_check_out, message, mode_of_payment_id, evidence, booking_status_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        $checking_status_id = 3;
+        $stmt = $conn->prepare('INSERT INTO tbl_bookings (reference_number, fullname, email, phone_number, date_check_in, date_check_out, message, mode_of_payment_id, evidence, booking_status_id, checking_status_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
         $booking_status_id = 1;
-        $stmt->bind_param('sssssssisis', $referenceNumber, $fullname, $email, $phone_number, $date_check_in, $date_check_out, $message, $mode_of_payment_id, $new_evidence, $booking_status_id, $created_at);
+        $stmt->bind_param('sssssssisiis', $referenceNumber, $fullname, $email, $phone_number, $date_check_in, $date_check_out, $message, $mode_of_payment_id, $new_evidence, $booking_status_id, $checking_status_id, $created_at);
         $stmt->execute();
         $booking_id = $stmt->insert_id;
 
@@ -234,11 +235,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fullname = $row['fullname'];
         $email = $row['email'];
         $phone_number = $row['phone_number'];
-        // date_default_timezone_set('Asia/Manila');
-        $date_check_in = $row['date_check_in'];
-        $date_check_out = $row['date_check_out'];
-        // $date_check_in = new DateTime($row['date_check_in']);
-        // $date_check_out = new DateTime($row['date_check_out']);
+        $date_check_in = (new DateTime($row['date_check_in']))->format("F j, Y");
+        $date_check_out = (new DateTime($row['date_check_out']))->format("F j, Y");
         $mode_of_payment = $row['mode_of_payment'];
 
         $mail = new PHPMailer(true);
