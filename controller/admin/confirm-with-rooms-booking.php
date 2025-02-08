@@ -91,13 +91,11 @@ if (isset($_SESSION['id'])) {
         $room = ($room_payment ?? 0) * $days;
         // $cottage = ($cottage_payment ?? 0) * $days;
         $service = ($service_payment ?? 0) * $days;
-
         $total_payment = $room + $cottage_payment + $service;
-        $total_payment = number_format($total_payment);
-
-        $down_payment = number_format($_POST['down_payment']);
-
         $remaining_balance = $total_payment - $down_payment;
+
+        $total_payment = number_format($total_payment);
+        $down_payment = number_format($_POST['down_payment']);
         $remaining_balance = number_format($remaining_balance);
 
         // echo "Total payment: $total_payment \n";
@@ -137,7 +135,7 @@ if (isset($_SESSION['id'])) {
             echo 'Email could not be sent. Error: ', $mail->ErrorInfo;
         }
 
-        header("Location: ../../views/admin/bookings?updated");
+        header("Location: ../../views/admin/room-assignment.php?booking_id=$booking_id&updated");
         exit();
     }
 } else {

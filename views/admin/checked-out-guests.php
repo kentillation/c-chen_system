@@ -20,11 +20,11 @@ if (isset($_SESSION['id'])) {
         <main id="main" class="main">
 
             <div class="pagetitle">
-                <h1>Checked-in Guests</h1>
+                <h1>Checked-out Guests</h1>
                 <nav>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">Main</li>
-                        <li class="breadcrumb-item active">Checked-in Guests</li>
+                        <li class="breadcrumb-item active">Checked-out Guests</li>
                     </ol>
                 </nav>
             </div>
@@ -35,46 +35,44 @@ if (isset($_SESSION['id'])) {
                         <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive mt-2" id="data-table">
-                                    <table class="table" id="paginateAllCheckedIn">
+                                    <table class="table" id="paginateCheckedOut">
                                         <colgroup>
-                                            <col width="15%">
-                                            <col width="15%">
-                                            <col width="15%">
-                                            <col width="15%">
-                                            <col width="15%">
-                                            <col width="15%">
+                                            <col width="25%">
+                                            <col width="25%">
+                                            <col width="25%">
+                                            <col width="25%">
                                         </colgroup>
                                         <thead class="bg-secondary-light">
                                             <tr>
                                                 <th>Customer name</th>
-                                                <th>Check-in Date</th>
                                                 <th>Check-out Date</th>
                                                 <th>Reservation Date</th>
                                                 <th>Charge</th>
-                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $checkedIn = 1;
+                                            $checkedOut = 2;
                                             $stmt = $conn->prepare('SELECT
                                                     tb.*,
+                                                    tcg.created_at AS check_out,
+                                                    tcg.checking_status_id AS checking_status,
                                                     SUM(trc.room_category_price) AS payment
                                                 FROM tbl_bookings tb
                                                 INNER JOIN tbl_booking_room tbr ON tb.booking_id = tbr.booking_id
                                                 INNER JOIN tbl_room_category trc ON tbr.room_category_id = trc.room_category_id
+                                                INNER JOIN tbl_checking_guest tcg ON tb.booking_id = tcg.booking_id
                                                 WHERE tb.checking_status_id = ?
                                                 GROUP BY tb.reference_number
                                                 ORDER BY tb.booking_id DESC ');
-                                            $stmt->bind_param('i', $checkedIn);
+                                            $stmt->bind_param('i', $checkedOut);
                                             $stmt->execute();
                                             $result_reservation = $stmt->get_result();
                                             while ($reservation_row = $result_reservation->fetch_assoc()) {
                                                 $booking_id = $reservation_row['booking_id'];
                                                 $fullname = $reservation_row['fullname'];
-                                                $date_check_in = (new DateTime($reservation_row['date_check_in']))->format("F j, Y");
-                                                $date_check_out = (new DateTime($reservation_row['date_check_out']))->format("F j, Y");
-                                                $created_at = (new DateTime($reservation_row['created_at']))->format("F j, Y");
+                                                $created_at = (new DateTime($reservation_row['created_at']))->format("F j, Y H:i:s a");
+                                                $check_out = (new DateTime($reservation_row['check_out']))->format("F j, Y H:i:s a");
                                                 $d_check_in = new DateTime($reservation_row['date_check_in']);
                                                 $d_check_out = new DateTime($reservation_row['date_check_out']);
                                                 $interval = $d_check_in->diff($d_check_out);
@@ -84,39 +82,10 @@ if (isset($_SESSION['id'])) {
                                             ?>
                                                 <tr class='small'>
                                                     <td><?= $fullname ?></td>
-                                                    <td><?= $date_check_in ?></td>
-                                                    <td><?= $date_check_out ?></td>
+                                                    <td><?= $check_out ?></td>
                                                     <td><?= $created_at ?></td>
                                                     <td>₱ <?= $total_payment ?></td>
-                                                    <td>
-                                                        <button class='btn btn-primary py-1' data-bs-toggle='modal' data-bs-target='#conFirmCheckOut<?= $booking_id ?>'>
-                                                            <i class='bi bi-check'></i><span class='to-hide'>&nbsp; Check-out</span>
-                                                        </button>
-                                                    </td>
                                                 </tr>
-                                                <div class="modal fade" tabindex="-1" id="conFirmCheckOut<?= $booking_id ?>">
-                                                    <div class="modal-dialog modal-dialog-centered">
-                                                        <form action="../../controller/admin/confirm-check-out.php?booking_id=<?= $booking_id ?>" method="post">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title">Confirmation</h5>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="modal-body py-4">
-                                                                    <p class="text-center">Are you sure the guest will check out today?</p>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-danger rounded-2 px-3 py-1" data-bs-dismiss="modal" aria-label="Close">
-                                                                        <i class="bi bi-x"></i>&nbsp; Cancel
-                                                                    </button>
-                                                                    <button type="submit" class="btn btn-primary rounded-2 px-3 py-1">
-                                                                        <i class="bi bi-check"></i>&nbsp; Yes
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
                                                 </tr>
                                             <?php
                                             }
@@ -138,7 +107,7 @@ if (isset($_SESSION['id'])) {
         <?php include 'includes/scripts.php' ?>
         <script>
             $(document).ready(function() {
-                $('#paginateCheckedIn').DataTable({
+                $('#paginateCheckedOut').DataTable({
                     "lengthMenu": [10, 25, 50, 100],
                     "pagingType": "full_numbers",
                     "searching": true,

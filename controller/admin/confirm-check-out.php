@@ -1,5 +1,5 @@
 <?php
-include "../../../config.php";
+include "../../config.php";
 session_start();
 
 if (isset($_SESSION['id'])) {
@@ -10,17 +10,17 @@ if (isset($_SESSION['id'])) {
         $data = htmlspecialchars($data);
         return $data;
     }
-    $reservation_id = validate($_GET['reservation_id']);
+    $booking_id = validate($_GET['booking_id']);
     date_default_timezone_set('Asia/Manila');
     $dateCreated = date("Y-m-d H:i:s");
     $checking_status_id = 2;
 
-    $stmt = $conn->prepare("UPDATE tbl_reservation SET checking_status_id = ?, updated_at = ? WHERE reservation_id = ? ");
-    $stmt->bind_param('isi', $checking_status_id, $dateCreated, $reservation_id);
+    $stmt = $conn->prepare("UPDATE tbl_bookings SET checking_status_id = ? WHERE booking_id = ? ");
+    $stmt->bind_param('ii', $checking_status_id, $booking_id);
     $stmt->execute();
 
-    $stmt = $conn->prepare("INSERT INTO tbl_checking_guest (reservation_id, checking_status_id, created_at, updated_at) VALUES (?, ?, ?, ?) ");
-    $stmt->bind_param('iiss', $reservation_id, $checking_status_id, $dateCreated, $dateCreated);
+    $stmt = $conn->prepare("INSERT INTO tbl_checking_guest (booking_id, checking_status_id, created_at) VALUES (?, ?, ?) ");
+    $stmt->bind_param('iis', $booking_id, $checking_status_id, $dateCreated);
     $stmt->execute();
 
     header("Location: ../../views/admin/checked-out-guests");

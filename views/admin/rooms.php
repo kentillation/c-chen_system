@@ -138,12 +138,7 @@ if (isset($_SESSION['id'])) {
         <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
         <?php include 'includes/footer.php' ?>
-
-        <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="../../assets/js/main.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <?php include 'includes/scripts.php' ?>
         <script>
             $(document).ready(function() {
                 $('#paginateAllRooms').DataTable({

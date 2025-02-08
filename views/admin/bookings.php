@@ -32,18 +32,6 @@ if (isset($_SESSION['id'])) {
             <section class="section dashboard mb-5">
                 <div class="row">
                     <div class="col-lg-12">
-                        <?php
-                        if (isset($_GET['updated'])) {
-                        ?>
-                            <div class="alert alert-success alert-dismissible fade show d-flex align-items-center justify-content-center" role="alert">
-                                <span><?php echo $_GET['updated'], "Booking has been updated successfully!"; ?></span>
-                                <a href="#">
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </a>
-                            </div>
-                        <?php
-                        }
-                        ?>
                         <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive mt-4" id="data-table">
@@ -62,12 +50,15 @@ if (isset($_SESSION['id'])) {
                                         </thead>
                                         <tbody>
                                             <?php
+                                            $check = 3;
                                             $stmtBookings = $conn->prepare(' SELECT
                                             t_b.*,
                                             t_mop.mode_of_payment
                                             FROM tbl_bookings t_b
                                             INNER JOIN tbl_mode_of_payment t_mop ON t_b.mode_of_payment_id = t_mop.mode_of_payment_id
+                                            WHERE t_b.checking_status_id = ?
                                             ORDER BY t_b.created_at ASC');
+                                            $stmtBookings->bind_param('i', $check);
                                             $stmtBookings->execute();
                                             $resultBookings = $stmtBookings->get_result();
                                             if ($resultBookings->num_rows > 0) {
@@ -98,7 +89,7 @@ if (isset($_SESSION['id'])) {
                                                         $status = "Pending";
                                                         $badge = "class='badge bg-warning'";
                                                         $style = "class='text-warning'";
-                                                        $cnfrmBtn = "flex;";
+                                                        $cnfrmBtn = "block;";
                                                         $reason = "none";
                                                     } else if ($booking_status_id == 2) {
                                                         $status = "Confirmed";
@@ -116,7 +107,7 @@ if (isset($_SESSION['id'])) {
                                                         $status = "Cancelled";
                                                         $badge = "class='badge bg-warning'";
                                                         $style = "class='text-warning'";
-                                                        $cnfrmBtn = "flex;";
+                                                        $cnfrmBtn = "block;";
                                                         $reason = "block";
                                                     }
                                                     echo "
@@ -125,172 +116,14 @@ if (isset($_SESSION['id'])) {
                                                         <td class='text-center'>$created_at</td>
                                                         <td class='text-center'><span $badge>$status</span></td>
                                                         <td class='text-center'>
-                                                            <button class='btn btn-sm btn-primary rounded-5' data-bs-toggle='modal' data-bs-target='#infoModal$booking_id'>
-                                                                <i class='bi bi-eye'></i>&nbsp; <span class='to-hide'>View</span>
-                                                            </button>
+                                                            <a href='booking-details.php?booking_id=$booking_id'>
+                                                                <button class='btn btn-sm btn-primary rounded-5' type='button'>
+                                                                    <i class='bi bi-eye'></i>&nbsp; <span class='to-hide'>View</span>
+                                                                </button>
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                     ";
-                                            ?>
-                                                    <div class="modal fade" id="infoModal<?= $booking_id ?>" aria-hidden="true" tabindex="-1">
-                                                        <div class="modal-dialog modal-xl modal-dialog-centered">
-                                                            <form action="../../controller/admin/confirm-booking.php?booking_id=<?= $booking_id ?>" method="post">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title">Booking details</h5>
-                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <div class="row">
-                                                                            <div class="mt-2 col-12 col-lg-4 col-md-4 col-sm-6">
-                                                                                <h6 class="text-secondary">Date check-in: </h6>
-                                                                                <p><?= $date_check_in ?></p>
-                                                                            </div>
-                                                                            <div class="mt-2 col-12 col-lg-4 col-md-4 col-sm-6">
-                                                                                <h6 class="text-secondary">Date check-out: </h6>
-                                                                                <p><?= $date_check_out ?></p>
-                                                                            </div>
-                                                                            <div class="mt-2 col-12 col-lg-4 col-md-4 col-sm-6">
-                                                                                <h6 class="text-secondary">Customer name: </h6>
-                                                                                <p><?= $fullname ?></p>
-                                                                            </div>
-                                                                            <div class="mt-2 col-12 col-lg-4 col-md-4 col-sm-6">
-                                                                                <h6 class="text-secondary">Email: </h6>
-                                                                                <p><?= $email ?></p>
-                                                                            </div>
-                                                                            <div class="mt-2 col-12 col-lg-4 col-md-4 col-sm-6">
-                                                                                <h6 class="text-secondary">Phone number: </h6>
-                                                                                <p><?= $phone_number ?></p>
-                                                                            </div>
-                                                                            <div class="mt-2 col-12 col-lg-4 col-md-4 col-sm-6">
-                                                                                <h6 class="text-secondary">Message: </h6>
-                                                                                <textarea cols="30" row="30" class="form-control"><?= $message ?></textarea>
-                                                                            </div>
-                                                                            <div class="mt-2 col-12 col-lg-4 col-md-4 col-sm-6">
-                                                                                <h6 class="text-secondary">Mode of payment: </h6>
-                                                                                <p><?= $mode_of_payment ?></p>
-                                                                            </div>
-                                                                            <div class="mt-2 col-12 col-lg-4 col-md-4 col-sm-6">
-                                                                                <h6 class="text-secondary">Payment receipt: </h6>
-                                                                                <img src="../../evidence/<?= $evidence ?>" width="250" height="250" alt="Evidence">
-                                                                            </div>
-                                                                            <div class="mt-2 col-12 col-lg-4 col-md-4 col-sm-6">
-                                                                                <h6 class="text-secondary">Down payment: </h6>
-                                                                                <p class="<?= $dpClass ?>"><?= $down_payment ?></p>
-                                                                            </div>
-
-                                                                            <div class="mt-2 col-12 col-lg-4 col-md-6 col-sm-6 mt-3">
-                                                                                <h6 class="text-secondary">Cottages: </h6>
-                                                                                <div class="d-flex flex-column">
-                                                                                    <?php
-                                                                                    $stmtCottage = $conn->prepare('SELECT 
-                                                                                            tbl_booking_cottage.booking_id,
-                                                                                            tbl_cottages.cottage_name
-                                                                                            FROM tbl_booking_cottage
-                                                                                            INNER JOIN tbl_cottages ON tbl_booking_cottage.cottage_id = tbl_cottages.cottage_id
-                                                                                            WHERE tbl_booking_cottage.booking_id = ?
-                                                                                            ORDER BY tbl_booking_cottage.booking_id ');
-                                                                                    $stmtCottage->bind_param('i', $booking_id);
-                                                                                    $stmtCottage->execute();
-                                                                                    $resultCottage = $stmtCottage->get_result();
-                                                                                    while ($rowCottage = $resultCottage->fetch_assoc()) {
-                                                                                        $cottage_name = $rowCottage['cottage_name'];
-                                                                                    ?>
-                                                                                        <span><?= $cottage_name ?></span>
-                                                                                    <?php
-                                                                                    }
-                                                                                    ?>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="mt-2 col-12 col-lg-4 col-md-6 col-sm-6 mt-3">
-                                                                                <h6 class="text-secondary">Rooms: </h6>
-                                                                                <div class="d-flex flex-column">
-                                                                                    <?php
-                                                                                    $stmtRooms = $conn->prepare('SELECT 
-                                                                                            tbl_booking_room.booking_id,
-                                                                                            tbl_booking_room.room_category_id,
-                                                                                            COUNT(tbl_booking_room.room_category_id) AS occupied_room,
-                                                                                            tbl_room_category.room_category_name
-                                                                                            FROM tbl_booking_room
-                                                                                            INNER JOIN tbl_room_category ON tbl_booking_room.room_category_id = tbl_room_category.room_category_id
-                                                                                            WHERE tbl_booking_room.booking_id = ?
-                                                                                            GROUP BY tbl_booking_room.booking_id, tbl_booking_room.room_category_id
-                                                                                            ORDER BY tbl_booking_room.booking_id ');
-                                                                                    $stmtRooms->bind_param('i', $booking_id);
-                                                                                    $stmtRooms->execute();
-                                                                                    $resultRooms = $stmtRooms->get_result();
-                                                                                    while ($rowRooms = $resultRooms->fetch_assoc()) {
-                                                                                        $room_category_name = $rowRooms['room_category_name'];
-                                                                                        $occupied_room = $rowRooms['occupied_room'];
-                                                                                    ?>
-                                                                                        <span><?= $occupied_room . "&nbsp;" . $room_category_name ?></span>
-                                                                                    <?php
-                                                                                    }
-                                                                                    ?>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="mt-2 col-12 col-lg-4 col-md-6 col-sm-6 mt-3">
-                                                                                <h6 class="text-secondary">Other services: </h6>
-                                                                                <div class="d-flex flex-column">
-                                                                                    <?php
-                                                                                    $stmtOthers = $conn->prepare('SELECT 
-                                                                                            tbl_booking_service.booking_id,
-                                                                                            tbl_services.service_name
-                                                                                            FROM tbl_booking_service
-                                                                                            INNER JOIN tbl_services ON tbl_booking_service.service_id = tbl_services.service_id
-                                                                                            WHERE tbl_booking_service.booking_id = ?
-                                                                                            ORDER BY tbl_booking_service.booking_id ');
-                                                                                    $stmtOthers->bind_param('i', $booking_id);
-                                                                                    $stmtOthers->execute();
-                                                                                    $resultOthers = $stmtOthers->get_result();
-                                                                                    while ($rowOthers = $resultOthers->fetch_assoc()) {
-                                                                                        $service_name = $rowOthers['service_name'];
-                                                                                    ?>
-                                                                                        <span><?= $service_name ?></span>
-                                                                                    <?php
-                                                                                    }
-                                                                                    ?>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="mt-3 text-end">
-                                                                                <h6><span class="text-secondary">Status: </span><span <?= $style ?>><?= $status ?></span></h6>
-                                                                                <h6 style="display: <?= $reason ?>;"><span class="text-secondary">Reason: <br /></span><?= $reason_for_cancellation ?></h6>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer d-flex justify-content-between p-3">
-                                                                        <div class="d-flex">
-                                                                            <?php
-                                                                            $stmtAssign = $conn->prepare("SELECT * FROM tbl_booking_room WHERE booking_id = ?");
-                                                                            $stmtAssign->bind_param('i', $booking_id);
-                                                                            $stmtAssign->execute();
-                                                                            $resultAssign = $stmtAssign->get_result();
-                                                                            if ($resultAssign->num_rows > 0) {
-                                                                                $assignRmBtn = "flex;";
-                                                                            } else {
-                                                                                $assignRmBtn = "none;";
-                                                                            }
-                                                                            ?>
-                                                                            <a href="room-assignment.php?booking_id=<?= $booking_id ?>">
-                                                                                <button style="display: <?= $assignRmBtn ?>" class="btn btn-sm btn-primary px-3 rounded-5" type="button">
-                                                                                    <i class="bi bi-pin"></i>&nbsp; Assign Room
-                                                                                </button>
-                                                                            </a>
-                                                                        </div>
-                                                                        <div class="d-flex">
-                                                                            <button class="btn btn-sm btn-danger px-3 rounded-5" type="button" data-bs-dismiss="modal" aria-label="Close">
-                                                                                <i class="bi bi-x"></i>&nbsp; Close
-                                                                            </button>
-                                                                            <button class="btn btn-sm btn-success px-3 rounded-5 ms-1" type="submit" style="display: <?= $cnfrmBtn ?>">
-                                                                                <i class="bi bi-check"></i>&nbsp; Confirm
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                            <?php
                                                 }
                                             }
                                             ?>
@@ -326,7 +159,6 @@ if (isset($_SESSION['id'])) {
                 });
             });
         </script>
-
     </body>
 
     </html>
