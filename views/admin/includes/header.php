@@ -8,7 +8,7 @@ $stmt->bind_param('i', $id);
 $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
-$firstname = $row['firstname'];
+// $firstname = $row['firstname'];
 $img_url = $row['img_url'];
 ?>
 <header id="header" class="header fixed-top d-flex align-items-center">

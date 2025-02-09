@@ -38,7 +38,7 @@ if (isset($_SESSION['id'])) {
                         <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive mt-4" id="data-table">
-                                    <table class="table">
+                                    <table class="table" id="paginateAllReservations">
                                         <col width="20%">
                                         <col width="20%">
                                         <col width="20%">
@@ -98,6 +98,23 @@ if (isset($_SESSION['id'])) {
 
         <?php include 'includes/footer.php' ?>
         <?php include 'includes/scripts.php' ?>
+        <script>
+            $(document).ready(function() {
+                $('#paginateAllReservations').DataTable({
+                    "lengthMenu": [10, 25, 50, 100],
+                    "pagingType": "full_numbers",
+                    "searching": true,
+                    "language": {
+                        "paginate": {
+                            "first": "Begin",
+                            "last": "End",
+                            "next": "Next",
+                            "previous": "Previous"
+                        }
+                    }
+                });
+            });
+        </script>
     </body>
 
     </html>

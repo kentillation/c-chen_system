@@ -9,7 +9,7 @@
         </li>
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#guest-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-book"></i><span>Bookings</span><i class="bi bi-chevron-down ms-auto"></i>
+                <i class="bi bi-people"></i><span>Guests</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="guest-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                 <li>
@@ -29,12 +29,12 @@
                 </li>
             </ul>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a class="nav-link" href="../admin/calendar">
                 <i class="bi bi-calendar-event"></i>
                 <span>Calendar</span>
             </a>
-        </li>
+        </li> -->
 
         <li class="nav-item">
             <a class="nav-link" href="../admin/rooms">
