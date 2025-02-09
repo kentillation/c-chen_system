@@ -55,11 +55,6 @@
         border: none;
     }
 
-    /* .btn-primary:hover,
-    .btn-primary.active {
-        background: #357ea8;
-    } */
-
     .fc-daygrid-day.fc-day-today {
         background: #ffe5e5 !important;
         /* secondary color */

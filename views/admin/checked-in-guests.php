@@ -44,7 +44,7 @@ if (isset($_SESSION['id'])) {
                                             <col width="15%">
                                             <col width="15%">
                                         </colgroup>
-                                        <thead class="bg-secondary-light">
+                                        <thead>
                                             <tr>
                                                 <th>Customer name</th>
                                                 <th>Check-in Date</th>
@@ -138,7 +138,7 @@ if (isset($_SESSION['id'])) {
         <?php include 'includes/scripts.php' ?>
         <script>
             $(document).ready(function() {
-                $('#paginateCheckedIn').DataTable({
+                $('#paginateAllCheckedIn').DataTable({
                     "lengthMenu": [10, 25, 50, 100],
                     "pagingType": "full_numbers",
                     "searching": true,
