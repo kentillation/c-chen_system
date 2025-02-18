@@ -644,35 +644,28 @@ h6 {
   font-weight: 600;
   color: var(--accent-color);
   transition: 0.3;
-  background: #f6f9ff;
+  background: var(--light-color);
   padding: 10px 15px;
   border-radius: 30px;
 }
 
+.sidebar-nav .nav-link:hover i {
+  color: var(--light-color);
+}
 .sidebar-nav .nav-link i {
   font-size: 16px;
   margin-right: 10px;
-  color: var(--secondary-color);
+  color: var(--accent-color);
 }
 
 .sidebar-nav .nav-link.collapsed {
   color: var(--accent-color);
-    /* background: var(--accent-color); */
-  border-radius: 20px;
+  border-radius: 30px;
 }
 
-/* .sidebar-nav .nav-link.collapsed i {
-  color: var(--light-color);
-}
-
-*/
 .sidebar-nav .nav-link:hover {
-  color: var(--accent-color);
-  background: var(--primary-color);
-}
-
-.sidebar-nav .nav-link:hover i {
-  color: var(--accent-color);
+  color: var(--light-color) !important;
+    background: var(--accent-color);
 }
 
 .sidebar-nav .nav-link .bi-chevron-down {
@@ -698,11 +691,12 @@ h6 {
   color: var(--accent-color);
   padding: 10px 0 10px 40px;
   transition: 0.3s;
+  border-radius: 30px;
 }
 
 .sidebar-nav .nav-content a:hover {
-  background-color: var(--primary-color);
-  color: var(--light-color);
+  background-color: var(--accent-color);
+    color: var(--light-color) !important;
 }
 .sidebar-nav .nav-content a i {
   font-size: 6px;

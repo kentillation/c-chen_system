@@ -45,7 +45,7 @@
 
         <li class="nav-item">
             <a class="nav-link" href="../admin/services">
-                <i class="bi bi-bezier"></i>
+                <i class="bi bi-heart"></i>
                 <span>Services</span>
             </a>
         </li>
